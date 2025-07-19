@@ -17,13 +17,18 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         super.intervalDidStart(for: activity)
         
         // Handle the start of the interval.
-//        let model = ShieldViewModel()
+        print("Interval has started")
+//        let socialStore = ManagedSettingsStore(named: .social)
+//        socialStore.clearAllSettings()
     }
     
     override func intervalDidEnd(for activity: DeviceActivityName) {
         super.intervalDidEnd(for: activity)
         
         // Handle the end of the interval.
+//        let socialStore = ManagedSettingsStore(named: .social)
+//        let socialCategory = database
+        
     }
     
     override func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
@@ -49,4 +54,10 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         
         // Handle the warning before the event reaches its threshold.
     }
+}
+
+
+extension ManagedSettingsStore.Name {
+    static let gaming = Self("Gaming")
+    static let social = Self("Social")
 }

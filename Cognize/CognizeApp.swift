@@ -17,7 +17,7 @@ struct CognizeApp: App {
             ContentView()
                 .onAppear {
                     Task {
-                        do { // Request Authorisation
+                        do { // Request Authorisation for Family Controls
                             try await center.requestAuthorization(for: .individual)
                         } catch {
                             print("Failed to enroll a user with error: \(error)")

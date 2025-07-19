@@ -10,7 +10,13 @@ import ManagedSettings
 import FamilyControls
 
 class ShieldViewModel: ObservableObject {
-    @Published var selectionToDiscourage = FamilyActivitySelection()
+    @Published var activitySelection = FamilyActivitySelection()
     
-//    private let store = ManagedSettingsStore.shared
+    private let store = ManagedSettingsStore.shared
+    
+    func shieldActivities() {
+        store.shield(familyActivitySelection: activitySelection)
+    }
 }
+
+

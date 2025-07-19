@@ -93,6 +93,7 @@
 			membershipExceptions = (
 				Extensions/DeviceActivityNameExtension.swift,
 				Extensions/ManagedSettingsStore.swift,
+				NotificationManager.swift,
 				"View Models/ShieldViewModel.swift",
 			);
 			target = D83E29CE2E2A6FBB006BECC2 /* MyMonitor */;

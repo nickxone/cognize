@@ -5,31 +5,32 @@
 //  Created by Matvii Ustich on 18/07/2025.
 //
 
+// Neither logs nor print statements seem to work from this extension
 import DeviceActivity
 import ManagedSettings
-import os
+import UserNotifications
 
 // Optionally override any of the functions below.
 // Make sure that your class name matches the NSExtensionPrincipalClass in your Info.plist.
 class DeviceActivityMonitorExtension: DeviceActivityMonitor {
-    let store = ManagedSettingsStore() // get access to application shield restriction
+    // let store = ManagedSettingsStore() // get access to application shield restriction
     
     override func intervalDidStart(for activity: DeviceActivityName) {
         super.intervalDidStart(for: activity)
         
         // Handle the start of the interval.
         let model = ShieldViewModel()
-        model.shieldActivities()
-        
+        model.removeShielding()
+        NotificationManager.shared.scheduleNotification(title: "Start schedule", body: "Started", inSeconds: 2)
+//        store.clearAllSettings() // setting store.shiels.applications to nil doesn't work
+//        store.clearAllSettings()
     }
     
     override func intervalDidEnd(for activity: DeviceActivityName) {
         super.intervalDidEnd(for: activity)
         
         // Handle the end of the interval.
-//        let socialStore = ManagedSettingsStore(named: .social)
-//        let socialCategory = database
-        
+        NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended", inSeconds: 2)
     }
     
     override func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
@@ -42,13 +43,15 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         super.intervalWillStartWarning(for: activity)
         
         // Handle the warning before the interval starts.
-        print("Warning occured before interval start")
     }
     
     override func intervalWillEndWarning(for activity: DeviceActivityName) {
         super.intervalWillEndWarning(for: activity)
         
         // Handle the warning before the interval ends.
+        let model = ShieldViewModel()
+        model.shieldActivities()
+        NotificationManager.shared.scheduleNotification(title: "Schedule Warning", body: "Warning", inSeconds: 2)
     }
     
     override func eventWillReachThresholdWarning(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {

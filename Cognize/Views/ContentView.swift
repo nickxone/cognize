@@ -21,6 +21,9 @@ struct ContentView: View {
                 Text("Select Apps to Discourage")
             }
             .familyActivityPicker(isPresented: $pickerIsPresented, selection: $model.selectionToDiscourage)
+            .onChange(of: model.selectionToDiscourage) { _, _ in
+                model.saveSelectionToDiscourage()
+            }
             
             Spacer()
             
@@ -33,9 +36,9 @@ struct ContentView: View {
             Spacer()
             
             Button {
-                createAllowSchedule()
+                model.unlockActivities(for: 5)
             } label: {
-                Text("Unlock apps for 15 minutes")
+                Text("Unlock apps for 5 minutes")
             }
             
             Spacer()
@@ -43,7 +46,7 @@ struct ContentView: View {
             Button {
                 stopMonitoring()
             } label: {
-                Text("Clear all Settings")
+                Text("Clear All Settings")
             }
 
         }
@@ -52,27 +55,6 @@ struct ContentView: View {
     
     func stopMonitoring() {
         model.clearAllSettings()
-    }
-    
-    func createAllowSchedule() {
-        
-        let now = Date()
-        let endDate = Calendar.current.date(byAdding: .minute, value: 15, to: now)!
-        
-        let intervalStart = Calendar.current.dateComponents([.hour, .minute], from: now)
-        let intervalEnd = Calendar.current.dateComponents([.hour, .minute], from: endDate)
-        print(intervalStart.hour!, intervalStart.minute!)
-        print(intervalEnd.hour!, intervalEnd.minute!)
-        
-        let schedule = DeviceActivitySchedule(intervalStart: intervalStart, intervalEnd: intervalEnd, repeats: false)
-        
-        let center = DeviceActivityCenter()
-        do {
-            try center.startMonitoring(.allow, during: schedule)
-        } catch {
-            print("Error occured setting a schedule: \(error)")
-        }
-        
     }
 
 }

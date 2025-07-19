@@ -16,6 +16,7 @@ struct CognizeApp: App {
         WindowGroup {
             ContentView()
                 .onAppear {
+                    NotificationManager.shared.requestAuthorization()
                     Task {
                         do { // Request Authorisation for Family Controls
                             try await center.requestAuthorization(for: .individual)

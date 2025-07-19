@@ -10,7 +10,6 @@ import ManagedSettings
 import FamilyControls
 
 extension ManagedSettingsStore {
-    static var shared = ManagedSettingsStore()
     
     func shield(familyActivitySelection: FamilyActivitySelection) {
         clearAllSettings()

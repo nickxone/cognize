@@ -21,16 +21,14 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         // Handle the start of the interval.
         let model = ShieldViewModel()
         model.removeShielding()
-        NotificationManager.shared.scheduleNotification(title: "Start schedule", body: "Started", inSeconds: 2)
-//        store.clearAllSettings() // setting store.shiels.applications to nil doesn't work
-//        store.clearAllSettings()
+        NotificationManager.shared.scheduleNotification(title: "Start schedule", body: "Started \(activity.rawValue)", inSeconds: 5)
     }
     
     override func intervalDidEnd(for activity: DeviceActivityName) {
         super.intervalDidEnd(for: activity)
         
         // Handle the end of the interval.
-        NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended", inSeconds: 2)
+        NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended \(activity.rawValue)", inSeconds: 5)
     }
     
     override func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
@@ -51,7 +49,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         // Handle the warning before the interval ends.
         let model = ShieldViewModel()
         model.shieldActivities()
-        NotificationManager.shared.scheduleNotification(title: "Schedule Warning", body: "Warning", inSeconds: 2)
+        NotificationManager.shared.scheduleNotification(title: "Schedule Warning", body: "Warning \(activity.rawValue)", inSeconds: 5)
     }
     
     override func eventWillReachThresholdWarning(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {

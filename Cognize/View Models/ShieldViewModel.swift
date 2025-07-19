@@ -25,12 +25,20 @@ class ShieldViewModel: ObservableObject {
     
     func unlockActivities(for minutes: Int) {
         let now = Date()
-        let endDate = Calendar.current.date(byAdding: .minute, value: 15, to: now)!
-
-        let intervalStart = Calendar.current.dateComponents([.hour, .minute, .second], from: now)
-        let intervalEnd = Calendar.current.dateComponents([.hour, .minute, .second], from: endDate)
+        let calendar = Calendar.current
         
-        let schedule = DeviceActivitySchedule(intervalStart: intervalStart, intervalEnd: intervalEnd, repeats: false, warningTime: DateComponents(minute: 14)) // time bounds in which extension will monitor for activity
+        // Use 'now' as anchor for both start and end
+        let startDate = calendar.date(byAdding: .second, value: 15, to: now)!
+        let endDate = calendar.date(byAdding: .minute, value: 16, to: now)!
+        
+        // Convert from 'startDate' and 'endDate' using calendar
+        let intervalStart = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: startDate)
+        let intervalEnd = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: endDate)
+        
+        print("intervalStart:", intervalStart)
+        print("intervalEnd:", intervalEnd)
+        
+        let schedule = DeviceActivitySchedule(intervalStart: intervalStart, intervalEnd: intervalEnd, repeats: false, warningTime: DateComponents(minute: 5)) // time bounds in which extension will monitor for activity
         
         let center = DeviceActivityCenter()
         do {
@@ -66,14 +74,14 @@ extension ShieldViewModel {
     
     private func loadSelection() {
         let defaults = UserDefaults(suiteName: "group.com.app.cognize") ?? .standard
-            if let data = defaults.data(forKey: "selectionToDiscourage") {
-                do {
-                    let decoded = try JSONDecoder().decode(FamilyActivitySelection.self, from: data)
-                    selectionToDiscourage = decoded
-                } catch {
-                    print("Failed to load selectionToDiscourage: \(error)")
-                }
+        if let data = defaults.data(forKey: "selectionToDiscourage") {
+            do {
+                let decoded = try JSONDecoder().decode(FamilyActivitySelection.self, from: data)
+                selectionToDiscourage = decoded
+            } catch {
+                print("Failed to load selectionToDiscourage: \(error)")
             }
+        }
     }
 }
 

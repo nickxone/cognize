@@ -88,6 +88,15 @@
 			);
 			target = D83E29F82E2A8880006BECC2 /* MyShieldActionExtension */;
 		};
+		D8F0F3092E2B97AF0061A375 /* Exceptions for "Cognize" folder in "MyMonitor" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Extensions/DeviceActivityNameExtension.swift,
+				Extensions/ManagedSettingsStore.swift,
+				"View Models/ShieldViewModel.swift",
+			);
+			target = D83E29CE2E2A6FBB006BECC2 /* MyMonitor */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -117,6 +126,9 @@
 		};
 		D84293612E27A65C00062B39 /* Cognize */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D8F0F3092E2B97AF0061A375 /* Exceptions for "Cognize" folder in "MyMonitor" target */,
+			);
 			path = Cognize;
 			sourceTree = "<group>";
 		};

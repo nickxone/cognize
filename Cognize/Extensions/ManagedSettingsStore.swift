@@ -23,3 +23,7 @@ extension ManagedSettingsStore {
         shield.webDomainCategories = categoryTokens.isEmpty ? nil : .specific(categoryTokens)
     }
 }
+
+extension ManagedSettingsStore.Name {
+    static let entertainment = Self("entertainment")
+}

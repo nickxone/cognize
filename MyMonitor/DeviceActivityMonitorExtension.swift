@@ -7,6 +7,7 @@
 
 import DeviceActivity
 import ManagedSettings
+import os
 
 // Optionally override any of the functions below.
 // Make sure that your class name matches the NSExtensionPrincipalClass in your Info.plist.
@@ -17,9 +18,9 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         super.intervalDidStart(for: activity)
         
         // Handle the start of the interval.
-        print("Interval has started")
-//        let socialStore = ManagedSettingsStore(named: .social)
-//        socialStore.clearAllSettings()
+        let model = ShieldViewModel()
+        model.shieldActivities()
+        
     }
     
     override func intervalDidEnd(for activity: DeviceActivityName) {
@@ -41,6 +42,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         super.intervalWillStartWarning(for: activity)
         
         // Handle the warning before the interval starts.
+        print("Warning occured before interval start")
     }
     
     override func intervalWillEndWarning(for activity: DeviceActivityName) {

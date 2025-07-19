@@ -9,4 +9,5 @@ import DeviceActivity
 
 extension DeviceActivityName {
     static let daily = Self("daily")
+    static let allow = Self("allow")
 }

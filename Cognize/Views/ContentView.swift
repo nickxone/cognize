@@ -12,14 +12,15 @@ import DeviceActivity
 struct ContentView: View {
     @ObservedObject private var model = ShieldViewModel()
     @State private var pickerIsPresented = false
+    
     var body: some View {
         VStack {
             Button {
                 pickerIsPresented = true
             } label: {
-                Text("Select Apps")
+                Text("Select Apps to Discourage")
             }
-            .familyActivityPicker(isPresented: $pickerIsPresented, selection: $model.activitySelection)
+            .familyActivityPicker(isPresented: $pickerIsPresented, selection: $model.selectionToDiscourage)
             
             Spacer()
             
@@ -29,25 +30,49 @@ struct ContentView: View {
                 Text("Shield Selected Activities")
             }
             
-//            Button {
-//                
-//            } label: {
-//                Text("Create Schedule")
-//            }
+            Spacer()
+            
+            Button {
+                createAllowSchedule()
+            } label: {
+                Text("Unlock apps for 15 minutes")
+            }
+            
+            Spacer()
+            
+            Button {
+                stopMonitoring()
+            } label: {
+                Text("Clear all Settings")
+            }
 
         }
         .padding()
     }
     
-    func createSchedule() {
-        let schedule = DeviceActivitySchedule(intervalStart: DateComponents(hour: 0, minute: 0), intervalEnd: DateComponents(hour: 23, minute: 59), repeats: true)
+    func stopMonitoring() {
+        model.clearAllSettings()
+    }
+    
+    func createAllowSchedule() {
+        
+        let now = Date()
+        let endDate = Calendar.current.date(byAdding: .minute, value: 15, to: now)!
+        
+        let intervalStart = Calendar.current.dateComponents([.hour, .minute], from: now)
+        let intervalEnd = Calendar.current.dateComponents([.hour, .minute], from: endDate)
+        print(intervalStart.hour!, intervalStart.minute!)
+        print(intervalEnd.hour!, intervalEnd.minute!)
+        
+        let schedule = DeviceActivitySchedule(intervalStart: intervalStart, intervalEnd: intervalEnd, repeats: false)
         
         let center = DeviceActivityCenter()
         do {
-            try center.startMonitoring(.daily, during: schedule)
+            try center.startMonitoring(.allow, during: schedule)
         } catch {
             print("Error occured setting a schedule: \(error)")
         }
+        
     }
 
 }

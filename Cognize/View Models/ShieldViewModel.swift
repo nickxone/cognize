@@ -14,6 +14,8 @@ class ShieldViewModel: ObservableObject {
     @Published var selectionToDiscourage = FamilyActivitySelection()
     
     private let entertainmentStore = ManagedSettingsStore(named: .entertainment)
+    private let workStore = ManagedSettingsStore(named: .work)
+    private let defaultStore = ManagedSettingsStore()
     
     init() {
         loadSelection()
@@ -68,6 +70,8 @@ class ShieldViewModel: ObservableObject {
     
     func clearAllSettings() {
         entertainmentStore.clearAllSettings()
+        workStore.clearAllSettings()
+        defaultStore.clearAllSettings()
     }
     
 }

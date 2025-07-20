@@ -11,46 +11,19 @@ import DeviceActivity
 
 struct ContentView: View {
     @ObservedObject private var model = ShieldViewModel()
-    @State private var pickerIsPresented = false
     
     var body: some View {
-        VStack {
-            Button {
-                pickerIsPresented = true
-            } label: {
-                Text("Select Apps to Discourage")
-            }
-            .familyActivityPicker(isPresented: $pickerIsPresented, selection: $model.selectionToDiscourage)
-            .onChange(of: model.selectionToDiscourage) { _, _ in
-                model.saveSelectionToDiscourage()
+        TabView {
+            Tab("Home", systemImage: "book.circle.fill") {
+                HomeView()
             }
             
-            Spacer()
-            
-            Button {
-                model.shieldEntertainment()
-            } label: {
-                Text("Shield Selected Activities")
+            Tab("Settings", systemImage: "gearshape.fill") {
+                SettingsView()
             }
-            
-            Spacer()
-            
-            Button {
-                model.unlockActivities(for: 1)
-            } label: {
-                Text("Unlock apps for 5 minutes")
-            }
-            
-            Spacer()
-            
-            Button {
-                model.clearAllSettings()
-            } label: {
-                Text("Clear All Settings")
-            }
-
         }
-        .padding()
+        .environmentObject(model)
+
     }
     
 }

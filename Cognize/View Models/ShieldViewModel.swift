@@ -13,14 +13,22 @@ import DeviceActivity
 class ShieldViewModel: ObservableObject {
     @Published var selectionToDiscourage = FamilyActivitySelection()
     
-    private let store = ManagedSettingsStore()
+    private let entertainmentStore = ManagedSettingsStore(named: .entertainment)
     
     init() {
         loadSelection()
     }
     
-    func shieldActivities() {
+    private func shieldActivities(for store: ManagedSettingsStore) {
         store.shield(familyActivitySelection: selectionToDiscourage)
+    }
+    
+    private func removeShielding(for store: ManagedSettingsStore) {
+        store.clearAllSettings()
+    }
+    
+    func shieldEntertainment() {
+        shieldActivities(for: entertainmentStore)
     }
     
     func unlockActivities(for minutes: Int) {
@@ -32,7 +40,7 @@ class ShieldViewModel: ObservableObject {
         let now = Date()
         let calendar = Calendar.current
         
-        let startDate = calendar.date(byAdding: .minute, value: -15, to: now)!
+        let startDate = calendar.date(byAdding: .minute, value: -15, to: now)! // interval can be at least 15 minutes
         let endDate = calendar.date(byAdding: .minute, value: minutes, to: now)!
         
         // Convert from 'startDate' and 'endDate' using calendar
@@ -48,21 +56,18 @@ class ShieldViewModel: ObservableObject {
         let center = DeviceActivityCenter()
         do {
             try center.startMonitoring(.allow, during: schedule)
-            removeShielding()
+            removeEntertainmentShielding()
         } catch {
             print("Error occured while unlocking activities: \(error)")
         }
     }
     
-    func removeShielding() {
-        store.shield.applications = nil // just adding applications won't always work
-        store.shield.applicationCategories = nil
-        store.shield.webDomainCategories = nil
-        store.shield.webDomains = nil
+    func removeEntertainmentShielding() {
+        removeShielding(for: entertainmentStore)
     }
     
     func clearAllSettings() {
-        store.clearAllSettings()
+        entertainmentStore.clearAllSettings()
     }
     
 }

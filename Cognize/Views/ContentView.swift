@@ -28,7 +28,7 @@ struct ContentView: View {
             Spacer()
             
             Button {
-                model.shieldActivities()
+                model.shieldEntertainment()
             } label: {
                 Text("Shield Selected Activities")
             }
@@ -44,7 +44,7 @@ struct ContentView: View {
             Spacer()
             
             Button {
-                stopMonitoring()
+                model.clearAllSettings()
             } label: {
                 Text("Clear All Settings")
             }
@@ -53,10 +53,6 @@ struct ContentView: View {
         .padding()
     }
     
-    func stopMonitoring() {
-        model.clearAllSettings()
-    }
-
 }
 
 #Preview {

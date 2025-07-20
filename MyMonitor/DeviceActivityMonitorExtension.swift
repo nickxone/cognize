@@ -28,7 +28,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         if activity == .allow {
             NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended \(activity.rawValue)", inSeconds: 1.5)
             let model = ShieldViewModel()
-            model.shieldActivities()
+            model.shieldEntertainment()
         }
     }
     

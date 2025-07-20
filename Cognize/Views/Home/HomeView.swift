@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct HomeView: View {
-    
     @EnvironmentObject var model: ShieldViewModel
+    
+    @State private var selectedDuration = 5
+    
     @State private var pickerIsPresented = false
+    @State private var durationPickerIsPresented = false
     
     var body: some View {
         VStack {
@@ -35,9 +38,16 @@ struct HomeView: View {
             Spacer()
             
             Button {
-                model.unlockActivities(for: 1)
+                durationPickerIsPresented = true
             } label: {
-                Text("Unlock apps for 5 minutes")
+                Text("Unlock apps")
+            }
+            .sheet(isPresented: $durationPickerIsPresented) {
+                DurationPickerView(selectedDuration: $selectedDuration) {
+                    model.unlockActivities(for: selectedDuration)
+                    durationPickerIsPresented = false
+                }
+                .presentationDetents([.medium])
             }
             
         }

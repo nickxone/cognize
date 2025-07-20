@@ -50,9 +50,6 @@ class ShieldViewModel: ObservableObject {
         let intervalStart = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: startDate)
         let intervalEnd = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: endDate)
         
-        print("intervalStart:", intervalStart)
-        print("intervalEnd:", intervalEnd)
-        
         let schedule = DeviceActivitySchedule(intervalStart: intervalStart, intervalEnd: intervalEnd, repeats: false, warningTime: DateComponents(second: 30)) // time bounds in which extension will monitor for activity
         
         let center = DeviceActivityCenter()

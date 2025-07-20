@@ -48,7 +48,7 @@ final class NotificationManager {
     func cancelNotification(identifier: String) {
         center.removePendingNotificationRequests(withIdentifiers: [identifier])
     }
-
+    
     // Cancel all
     func cancelAllNotifications() {
         center.removeAllPendingNotificationRequests()

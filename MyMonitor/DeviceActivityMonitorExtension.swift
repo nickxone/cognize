@@ -19,16 +19,17 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         super.intervalDidStart(for: activity)
         
         // Handle the start of the interval.
-        let model = ShieldViewModel()
-        model.removeShielding()
-        NotificationManager.shared.scheduleNotification(title: "Start schedule", body: "Started \(activity.rawValue)", inSeconds: 5)
     }
     
     override func intervalDidEnd(for activity: DeviceActivityName) {
         super.intervalDidEnd(for: activity)
         
         // Handle the end of the interval.
-        NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended \(activity.rawValue)", inSeconds: 5)
+        if activity == .allow {
+            NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended \(activity.rawValue)", inSeconds: 1.5)
+            let model = ShieldViewModel()
+            model.shieldActivities()
+        }
     }
     
     override func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
@@ -47,9 +48,9 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         super.intervalWillEndWarning(for: activity)
         
         // Handle the warning before the interval ends.
-        let model = ShieldViewModel()
-        model.shieldActivities()
-        NotificationManager.shared.scheduleNotification(title: "Schedule Warning", body: "Warning \(activity.rawValue)", inSeconds: 5)
+        if activity == .allow {
+            NotificationManager.shared.scheduleNotification(title: "Cognize", body: "Apps are about to relock", inSeconds: 1.5)
+        }
     }
     
     override func eventWillReachThresholdWarning(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {

@@ -8,10 +8,9 @@
 import DeviceActivity
 
 extension DeviceActivityName {
-    static let daily = Self("daily")
-//    static let allow = Self("allow")
-}
-
-extension DeviceActivityEvent.Name {
     static let allow = Self("allow")
 }
+
+//extension DeviceActivityEvent.Name {
+//    static let allow = Self("allow")
+//}

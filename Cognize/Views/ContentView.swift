@@ -36,7 +36,7 @@ struct ContentView: View {
             Spacer()
             
             Button {
-                model.unlockActivities(for: 5)
+                model.unlockActivities(for: 1)
             } label: {
                 Text("Unlock apps for 5 minutes")
             }

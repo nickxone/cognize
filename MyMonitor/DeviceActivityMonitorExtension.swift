@@ -59,9 +59,3 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         // Handle the warning before the event reaches its threshold.
     }
 }
-
-
-extension ManagedSettingsStore.Name {
-    static let gaming = Self("Gaming")
-    static let social = Self("Social")
-}

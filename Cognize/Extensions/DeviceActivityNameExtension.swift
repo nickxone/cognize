@@ -9,8 +9,12 @@ import DeviceActivity
 
 extension DeviceActivityName {
     static let allow = Self("allow")
+    
+    static let productivityFirst = Self("productivityFirst")
+    static let productivitySecond = Self("productivitySecond")
 }
 
-//extension DeviceActivityEvent.Name {
-//    static let allow = Self("allow")
-//}
+extension DeviceActivityEvent.Name {
+    static let productivityFirstEvent = Self("productivityFirstEvent")
+    static let productivitySecondEvent = Self("productivitySecondEvent")
+}

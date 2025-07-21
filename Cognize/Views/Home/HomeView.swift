@@ -20,11 +20,11 @@ struct HomeView: View {
             Button {
                 pickerIsPresented = true
             } label: {
-                Text("Select Apps to Discourage")
+                Text("Select Entertainment Apps")
             }
-            .familyActivityPicker(isPresented: $pickerIsPresented, selection: $model.selectionToDiscourage)
-            .onChange(of: model.selectionToDiscourage) { _, _ in
-                model.saveSelectionToDiscourage()
+            .familyActivityPicker(isPresented: $pickerIsPresented, selection: $model.entertainmentSelection)
+            .onChange(of: model.entertainmentSelection) { _, _ in
+                model.saveSelections()
             }
             
             Spacer()

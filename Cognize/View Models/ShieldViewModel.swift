@@ -11,18 +11,19 @@ import FamilyControls
 import DeviceActivity
 
 class ShieldViewModel: ObservableObject {
-    @Published var selectionToDiscourage = FamilyActivitySelection()
+    @Published var entertainmentSelection = FamilyActivitySelection()
+    @Published var workSelection = FamilyActivitySelection()
     
     private let entertainmentStore = ManagedSettingsStore(named: .entertainment)
     private let workStore = ManagedSettingsStore(named: .work)
     private let defaultStore = ManagedSettingsStore()
     
     init() {
-        loadSelection()
+        loadSelections()
     }
     
     private func shieldActivities(for store: ManagedSettingsStore) {
-        store.shield(familyActivitySelection: selectionToDiscourage)
+        store.shield(familyActivitySelection: entertainmentSelection)
     }
     
     private func removeShielding(for store: ManagedSettingsStore) {
@@ -74,27 +75,33 @@ class ShieldViewModel: ObservableObject {
 }
 
 extension ShieldViewModel {
-    func saveSelectionToDiscourage() {
-        do {
-            let data = try JSONEncoder().encode(selectionToDiscourage)
-            let defaults = UserDefaults(suiteName: "group.com.app.cognize") ?? .standard
-            defaults.set(data, forKey: "selectionToDiscourage")
-        } catch {
-            print("Failed to save selectionToDiscourage: \(error)")
+    private func saveSelection(_ selection: FamilyActivitySelection, forKey key: String, in defaults: UserDefaults) {
+        if let data = try? JSONEncoder().encode(selection) {
+            defaults.set(data, forKey: key)
         }
     }
     
-    private func loadSelection() {
+    private func loadSelection(forKey key: String, from defaults: UserDefaults) -> FamilyActivitySelection? {
+        guard let data = defaults.data(forKey: key) else { return nil }
+        return try? JSONDecoder().decode(FamilyActivitySelection.self, from: data)
+    }
+    
+    private func loadSelections() {
         let defaults = UserDefaults(suiteName: "group.com.app.cognize") ?? .standard
-        if let data = defaults.data(forKey: "selectionToDiscourage") {
-            do {
-                let decoded = try JSONDecoder().decode(FamilyActivitySelection.self, from: data)
-                selectionToDiscourage = decoded
-            } catch {
-                print("Failed to load selectionToDiscourage: \(error)")
-            }
+        if let e = loadSelection(forKey: "entertainmentSelection", from: defaults) {
+            entertainmentSelection = e
+        }
+        if let w = loadSelection(forKey: "workSelection", from: defaults) {
+            workSelection = w
         }
     }
+    
+    func saveSelections() {
+        let defaults = UserDefaults(suiteName: "group.com.app.cognize") ?? .standard
+        saveSelection(entertainmentSelection, forKey: "entertainmentSelection", in: defaults)
+        saveSelection(workSelection, forKey: "workSelection", in: defaults)
+    }
+    
 }
 
 

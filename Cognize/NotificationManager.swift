@@ -15,7 +15,7 @@ final class NotificationManager {
     
     private init() {}
     
-    // Request permission (call this once, e.g. on first launch)
+    // Request permission (call once)
     func requestAuthorization(completion: @escaping (Bool) -> Void = { _ in }) {
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
             completion(granted)

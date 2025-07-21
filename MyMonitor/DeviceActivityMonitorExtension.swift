@@ -36,6 +36,11 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         super.eventDidReachThreshold(event, activity: activity)
         
         // Handle the event reaching its threshold.
+        if event == .productivityUsageThresholdEvent {
+            let model = ShieldViewModel()
+            model.shieldWork()
+            NotificationManager.shared.scheduleNotification(title: "Log your intention", body: "\(activity.rawValue)", inSeconds: 1.5)
+        }
     }
     
     override func intervalWillStartWarning(for activity: DeviceActivityName) {
@@ -50,6 +55,12 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         // Handle the warning before the interval ends.
         if activity == .allow {
             NotificationManager.shared.scheduleNotification(title: "Cognize", body: "Apps are about to relock", inSeconds: 1.5)
+        } else if activity == .productivityFirst {
+            let model = ShieldViewModel()
+            model.scheduleProductivityFirst()
+        } else if activity == .productivitySecond {
+            let model = ShieldViewModel()
+            model.scheduleProductivityFirst()
         }
     }
     
@@ -57,5 +68,8 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         super.eventWillReachThresholdWarning(event, activity: activity)
         
         // Handle the warning before the event reaches its threshold.
+        if event == .productivityUsageThresholdEvent {
+            NotificationManager.shared.scheduleNotification(title: "Productivity", body: "Remember to log your intention beforehand", inSeconds: 1.5)
+        }
     }
 }

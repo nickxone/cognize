@@ -15,6 +15,5 @@ extension DeviceActivityName {
 }
 
 extension DeviceActivityEvent.Name {
-    static let productivityFirstEvent = Self("productivityFirstEvent")
-    static let productivitySecondEvent = Self("productivitySecondEvent")
+    static let productivityUsageThresholdEvent = Self("productivityFirstEvent")
 }

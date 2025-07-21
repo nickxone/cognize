@@ -12,19 +12,40 @@ struct HomeView: View {
     
     @State private var selectedDuration = 5
     
-    @State private var pickerIsPresented = false
+    @State private var entertainmentPickerIsPresented = false
+    @State private var workPickerIsPresented = false
     @State private var durationPickerIsPresented = false
     
     var body: some View {
         VStack {
             Button {
-                pickerIsPresented = true
+                entertainmentPickerIsPresented = true
             } label: {
                 Text("Select Entertainment Apps")
             }
-            .familyActivityPicker(isPresented: $pickerIsPresented, selection: $model.entertainmentSelection)
+            .familyActivityPicker(isPresented: $entertainmentPickerIsPresented, selection: $model.entertainmentSelection)
             .onChange(of: model.entertainmentSelection) { _, _ in
                 model.saveSelections()
+            }
+            
+            Spacer()
+            
+            Button {
+                workPickerIsPresented = true
+            } label: {
+                Text("Select Work Apps")
+            }
+            .familyActivityPicker(isPresented: $workPickerIsPresented, selection: $model.workSelection)
+            .onChange(of: model.workSelection) { _, _ in
+                model.saveSelections()
+            }
+            
+            Spacer()
+            
+            Button {
+                model.trackWorkActivities(thresholdUsageMinutes: 3, duringIntervalMinutes: 15)
+            } label: {
+                Text("Track Work Activities")
             }
             
             Spacer()
@@ -44,7 +65,7 @@ struct HomeView: View {
             }
             .sheet(isPresented: $durationPickerIsPresented) {
                 DurationPickerView(selectedDuration: $selectedDuration) {
-                    model.unlockActivities(for: selectedDuration)
+                    model.unlockEntertainmentActivities(for: selectedDuration)
                     durationPickerIsPresented = false
                 }
                 .presentationDetents([.medium])

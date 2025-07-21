@@ -23,9 +23,8 @@ struct HomeView: View {
             } label: {
                 Text("Select Entertainment Apps")
             }
-            .familyActivityPicker(isPresented: $entertainmentPickerIsPresented, selection: $model.entertainmentSelection)
-            .onChange(of: model.entertainmentSelection) { _, _ in
-                model.saveSelections()
+            .sheet(isPresented: $entertainmentPickerIsPresented) {
+                CustomFamilyActivityPicker(shieldCategory: .entertainment)
             }
             
             Spacer()
@@ -35,10 +34,9 @@ struct HomeView: View {
             } label: {
                 Text("Select Work Apps")
             }
-            .familyActivityPicker(isPresented: $workPickerIsPresented, selection: $model.workSelection)
-            .onChange(of: model.workSelection) { _, _ in
-                model.saveSelections()
-            }
+            .sheet(isPresented: $workPickerIsPresented, content: {
+                CustomFamilyActivityPicker(shieldCategory: .work)
+            })
             
             Spacer()
             
@@ -51,9 +49,10 @@ struct HomeView: View {
             Spacer()
             
             Button {
-                model.shieldEntertainment()
+                model.shield(.entertainment)
+                model.shield(.work)
             } label: {
-                Text("Shield Selected Activities")
+                Text("Shield Work & Entertainment Selected Activities")
             }
             
             Spacer()

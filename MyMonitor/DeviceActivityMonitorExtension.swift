@@ -28,7 +28,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         if activity == .allow {
             NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended \(activity.rawValue)", inSeconds: 1.5)
             let model = ShieldViewModel()
-            model.shieldEntertainment()
+            model.shield(.entertainment)
         }
     }
     
@@ -38,7 +38,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         // Handle the event reaching its threshold.
         if event == .productivityUsageThresholdEvent {
             let model = ShieldViewModel()
-            model.shieldWork()
+            model.shield(.work)
             NotificationManager.shared.scheduleNotification(title: "Log your intention", body: "\(activity.rawValue)", inSeconds: 1.5)
         }
     }
@@ -57,10 +57,10 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
             NotificationManager.shared.scheduleNotification(title: "Cognize", body: "Apps are about to relock", inSeconds: 1.5)
         } else if activity == .productivityFirst {
             let model = ShieldViewModel()
-            model.scheduleProductivityFirst()
+            model.scheduleProductivity(name: .productivitySecond)
         } else if activity == .productivitySecond {
             let model = ShieldViewModel()
-            model.scheduleProductivityFirst()
+            model.scheduleProductivity(name: .productivityFirst)
         }
     }
     
@@ -69,7 +69,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         
         // Handle the warning before the event reaches its threshold.
         if event == .productivityUsageThresholdEvent {
-            NotificationManager.shared.scheduleNotification(title: "Productivity", body: "Remember to log your intention beforehand", inSeconds: 1.5)
+
         }
     }
 }

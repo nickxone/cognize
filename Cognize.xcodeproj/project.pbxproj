@@ -94,7 +94,9 @@
 				Extensions/DeviceActivityNameExtension.swift,
 				Extensions/ManagedSettingsStore.swift,
 				NotificationManager.swift,
-				"View Models/ShieldViewModel.swift",
+				ViewModels/ShieldCategory.swift,
+				ViewModels/ShieldViewModel.swift,
+				"ViewModels/ShieldViewModel+Storage.swift",
 			);
 			target = D83E29CE2E2A6FBB006BECC2 /* MyMonitor */;
 		};

@@ -18,8 +18,9 @@ struct TotalActivityReport: DeviceActivityReportScene {
     
     func makeConfiguration(representing data: DeviceActivityResults<DeviceActivityData>) async -> TotalActivityView.Configuration {
         var totalUsageByCategory: [ActivityCategory: TimeInterval] = [:]
-//        totalUsageByCategory = data.map( /*do smth*/)
         
+//        Sorry for three nested for-loops 😔
+//        I'll try to make it cleaner later
         for await activity in data {
             for await activitySegment in activity.activitySegments {
                 for await event in activitySegment.categories {
@@ -27,6 +28,7 @@ struct TotalActivityReport: DeviceActivityReportScene {
                 }
             }
         }
+        
         return TotalActivityView.Configuration(totalUsageByCategory: totalUsageByCategory)
     }
 }

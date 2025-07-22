@@ -9,17 +9,25 @@ import SwiftUI
 
 struct DurationPickerView: View {
     @Binding var selectedDuration: Int
+    
+    @Environment(\.dismiss) var dismiss
+    
     var onConfirm: () -> Void
     
     var body: some View {
-        NavigationView {
             VStack {
+                Text("Unlock Duration")
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .padding(.top)
                 
                 Spacer()
                 
                 HStack {
                     Text("Break duration:")
+                        .padding(.leading)
                     
+                    Spacer()
                     
                     Picker("Break duration", selection: $selectedDuration) {
                         ForEach(1...30, id: \.self) { minute in
@@ -27,30 +35,57 @@ struct DurationPickerView: View {
                         }
                     }
                     .pickerStyle(.wheel)
-                    .frame(width: 80, height: 100)
+                    .frame(width: 80, height: 130)
                     .clipped()
                     .compositingGroup()
-                    .padding(.leading)
                     
                     Text("minute\(selectedDuration == 1 ? "" : "s")")
+                        .padding(.trailing)
                 }
                 
                 Spacer()
                 
-                Button("Start Break") {
+                Button(action: {
                     onConfirm()
+                    dismiss()
+                }) {
+                    Text("Select Apps or Website")
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
                 }
-                .padding()
-                .buttonStyle(.borderedProminent)
+                .padding(.top, 4)
+
+                Button(action: {
+                    dismiss()
+                }) {
+                    Text("Cancel")
+                        .fontWeight(.regular)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.gray.opacity(0.2))
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
+                }
             }
-            .navigationTitle("Select Break Duration")
+            .padding()
             .navigationBarTitleDisplayMode(.inline)
-        }
+            .preferredColorScheme(.dark)
+    
     }
 }
 
 #Preview {
+    @Previewable @State var isPresented = true
     @Previewable @State var duration: Int = 5
     
-    DurationPickerView(selectedDuration: $duration, onConfirm: { print("Start break button pressed") })
+    Color(.black)
+        .sheet(isPresented: $isPresented) {
+            DurationPickerView(selectedDuration: $duration, onConfirm: { print("Start break button pressed") })
+                .presentationDetents([.medium])
+        }
+        .ignoresSafeArea()
 }

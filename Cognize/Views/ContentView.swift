@@ -14,17 +14,18 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            Tab("Home", image: "SpiralIcon") {
+            Tab("Home", systemImage: "book.circle.fill") {
                 HomeView()
             }
             
-            Tab("Home", systemImage: "book.circle.fill") {
-                HomeView()
+            Tab("Report", systemImage: "paperplane.fill") {
+                ReportView()
             }
             
             Tab("Settings", systemImage: "gearshape.fill") {
                 SettingsView()
             }
+            
         }
         .environmentObject(model)
 

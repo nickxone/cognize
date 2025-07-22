@@ -19,8 +19,6 @@ struct HomeView: View {
     
     var body: some View {
         VStack {
-            DeviceActivityReport(.totalActivity)
-            
             Button {
                 entertainmentPickerIsPresented = true
             } label: {

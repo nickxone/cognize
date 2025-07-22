@@ -14,6 +14,7 @@
 		D83E29F02E2A882A006BECC2 /* MyShieldConfiguration.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D83E29E42E2A882A006BECC2 /* MyShieldConfiguration.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D83E29FA2E2A8880006BECC2 /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D83E29E52E2A882A006BECC2 /* ManagedSettings.framework */; };
 		D83E2A022E2A8880006BECC2 /* MyShieldActionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D83E29F92E2A8880006BECC2 /* MyShieldActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D8EEDE8F2E2F998100EB3DF6 /* CognizeReportExtension.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = D8EEDE832E2F998100EB3DF6 /* CognizeReportExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,13 @@
 			remoteGlobalIDString = D83E29F82E2A8880006BECC2;
 			remoteInfo = MyShieldActionExtension;
 		};
+		D8EEDE8D2E2F998100EB3DF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D84293572E27A65C00062B39 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D8EEDE822E2F998100EB3DF6;
+			remoteInfo = CognizeReportExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,6 +62,17 @@
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D8EEDE942E2F998100EB3DF6 /* Embed ExtensionKit Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(EXTENSIONS_FOLDER_PATH)";
+			dstSubfolderSpec = 16;
+			files = (
+				D8EEDE8F2E2F998100EB3DF6 /* CognizeReportExtension.appex in Embed ExtensionKit Extensions */,
+			);
+			name = "Embed ExtensionKit Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +83,7 @@
 		D83E29E72E2A882A006BECC2 /* ManagedSettingsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettingsUI.framework; path = System/Library/Frameworks/ManagedSettingsUI.framework; sourceTree = SDKROOT; };
 		D83E29F92E2A8880006BECC2 /* MyShieldActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MyShieldActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D842935F2E27A65C00062B39 /* Cognize.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cognize.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8EEDE832E2F998100EB3DF6 /* CognizeReportExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = CognizeReportExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -88,10 +108,24 @@
 			);
 			target = D83E29F82E2A8880006BECC2 /* MyShieldActionExtension */;
 		};
+		D8EEDE902E2F998100EB3DF6 /* Exceptions for "CognizeReportExtension" folder in "CognizeReportExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = D8EEDE822E2F998100EB3DF6 /* CognizeReportExtension */;
+		};
+		D8EEDE9D2E2F9C8D00EB3DF6 /* Exceptions for "Cognize" folder in "CognizeReportExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Extensions/DeviceActivityReportContext.swift,
+			);
+			target = D8EEDE822E2F998100EB3DF6 /* CognizeReportExtension */;
+		};
 		D8F0F3092E2B97AF0061A375 /* Exceptions for "Cognize" folder in "MyMonitor" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Extensions/DeviceActivityNameExtension.swift,
+				Extensions/DeviceActivityExtension.swift,
 				Extensions/ManagedSettingsStore.swift,
 				NotificationManager.swift,
 				ViewModels/ShieldCategory.swift,
@@ -131,8 +165,17 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				D8F0F3092E2B97AF0061A375 /* Exceptions for "Cognize" folder in "MyMonitor" target */,
+				D8EEDE9D2E2F9C8D00EB3DF6 /* Exceptions for "Cognize" folder in "CognizeReportExtension" target */,
 			);
 			path = Cognize;
+			sourceTree = "<group>";
+		};
+		D8EEDE842E2F998100EB3DF6 /* CognizeReportExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D8EEDE902E2F998100EB3DF6 /* Exceptions for "CognizeReportExtension" folder in "CognizeReportExtension" target */,
+			);
+			path = CognizeReportExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -170,6 +213,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D8EEDE802E2F998100EB3DF6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -190,6 +240,7 @@
 				D83E29D32E2A6FBB006BECC2 /* MyMonitor */,
 				D83E29E92E2A882A006BECC2 /* MyShieldConfiguration */,
 				D83E29FB2E2A8880006BECC2 /* MyShieldActionExtension */,
+				D8EEDE842E2F998100EB3DF6 /* CognizeReportExtension */,
 				D83E29D02E2A6FBB006BECC2 /* Frameworks */,
 				D84293602E27A65C00062B39 /* Products */,
 			);
@@ -202,6 +253,7 @@
 				D83E29CF2E2A6FBB006BECC2 /* MyMonitor.appex */,
 				D83E29E42E2A882A006BECC2 /* MyShieldConfiguration.appex */,
 				D83E29F92E2A8880006BECC2 /* MyShieldActionExtension.appex */,
+				D8EEDE832E2F998100EB3DF6 /* CognizeReportExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -283,6 +335,7 @@
 				D842935C2E27A65C00062B39 /* Frameworks */,
 				D842935D2E27A65C00062B39 /* Resources */,
 				D83E29DF2E2A6FBB006BECC2 /* Embed Foundation Extensions */,
+				D8EEDE942E2F998100EB3DF6 /* Embed ExtensionKit Extensions */,
 			);
 			buildRules = (
 			);
@@ -290,6 +343,7 @@
 				D83E29D92E2A6FBB006BECC2 /* PBXTargetDependency */,
 				D83E29EF2E2A882A006BECC2 /* PBXTargetDependency */,
 				D83E2A012E2A8880006BECC2 /* PBXTargetDependency */,
+				D8EEDE8E2E2F998100EB3DF6 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				D84293612E27A65C00062B39 /* Cognize */,
@@ -300,6 +354,28 @@
 			productName = Cognize;
 			productReference = D842935F2E27A65C00062B39 /* Cognize.app */;
 			productType = "com.apple.product-type.application";
+		};
+		D8EEDE822E2F998100EB3DF6 /* CognizeReportExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8EEDE912E2F998100EB3DF6 /* Build configuration list for PBXNativeTarget "CognizeReportExtension" */;
+			buildPhases = (
+				D8EEDE7F2E2F998100EB3DF6 /* Sources */,
+				D8EEDE802E2F998100EB3DF6 /* Frameworks */,
+				D8EEDE812E2F998100EB3DF6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				D8EEDE842E2F998100EB3DF6 /* CognizeReportExtension */,
+			);
+			name = CognizeReportExtension;
+			packageProductDependencies = (
+			);
+			productName = CognizeReportExtension;
+			productReference = D8EEDE832E2F998100EB3DF6 /* CognizeReportExtension.appex */;
+			productType = "com.apple.product-type.extensionkit-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -323,6 +399,9 @@
 					D842935E2E27A65C00062B39 = {
 						CreatedOnToolsVersion = 16.4;
 					};
+					D8EEDE822E2F998100EB3DF6 = {
+						CreatedOnToolsVersion = 16.4;
+					};
 				};
 			};
 			buildConfigurationList = D842935A2E27A65C00062B39 /* Build configuration list for PBXProject "Cognize" */;
@@ -343,6 +422,7 @@
 				D83E29CE2E2A6FBB006BECC2 /* MyMonitor */,
 				D83E29E32E2A882A006BECC2 /* MyShieldConfiguration */,
 				D83E29F82E2A8880006BECC2 /* MyShieldActionExtension */,
+				D8EEDE822E2F998100EB3DF6 /* CognizeReportExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -370,6 +450,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D842935D2E27A65C00062B39 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8EEDE812E2F998100EB3DF6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -407,6 +494,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D8EEDE7F2E2F998100EB3DF6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -424,6 +518,11 @@
 			isa = PBXTargetDependency;
 			target = D83E29F82E2A8880006BECC2 /* MyShieldActionExtension */;
 			targetProxy = D83E2A002E2A8880006BECC2 /* PBXContainerItemProxy */;
+		};
+		D8EEDE8E2E2F998100EB3DF6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D8EEDE822E2F998100EB3DF6 /* CognizeReportExtension */;
+			targetProxy = D8EEDE8D2E2F998100EB3DF6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -763,6 +862,58 @@
 			};
 			name = Release;
 		};
+		D8EEDE922E2F998100EB3DF6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = CognizeReportExtension/CognizeReportExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 65ZG4NKQUS;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CognizeReportExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CognizeReportExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.CognizeReportExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D8EEDE932E2F998100EB3DF6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = CognizeReportExtension/CognizeReportExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 65ZG4NKQUS;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CognizeReportExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CognizeReportExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.CognizeReportExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -807,6 +958,15 @@
 			buildConfigurations = (
 				D842936B2E27A65D00062B39 /* Debug */,
 				D842936C2E27A65D00062B39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8EEDE912E2F998100EB3DF6 /* Build configuration list for PBXNativeTarget "CognizeReportExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8EEDE922E2F998100EB3DF6 /* Debug */,
+				D8EEDE932E2F998100EB3DF6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

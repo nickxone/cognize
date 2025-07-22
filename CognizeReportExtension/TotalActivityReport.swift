@@ -7,25 +7,26 @@
 
 import DeviceActivity
 import SwiftUI
+import ManagedSettings
 
 struct TotalActivityReport: DeviceActivityReportScene {
     // Define which context your scene will represent.
     let context: DeviceActivityReport.Context = .totalActivity
     
     // Define the custom configuration and the resulting view for this report.
-    let content: (String) -> TotalActivityView
+    let content: (TotalActivityView.Configuration) -> TotalActivityView
     
-    func makeConfiguration(representing data: DeviceActivityResults<DeviceActivityData>) async -> String {
-        // Reformat the data into a configuration that can be used to create
-        // the report's view.
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.day, .hour, .minute, .second]
-        formatter.unitsStyle = .abbreviated
-        formatter.zeroFormattingBehavior = .dropAll
+    func makeConfiguration(representing data: DeviceActivityResults<DeviceActivityData>) async -> TotalActivityView.Configuration {
+        var totalUsageByCategory: [ActivityCategory: TimeInterval] = [:]
+//        totalUsageByCategory = data.map( /*do smth*/)
         
-        let totalActivityDuration = await data.flatMap { $0.activitySegments }.reduce(0, {
-            $0 + $1.totalActivityDuration
-        })
-        return formatter.string(from: totalActivityDuration) ?? "No activity data"
+        for await activity in data {
+            for await activitySegment in activity.activitySegments {
+                for await event in activitySegment.categories {
+                    totalUsageByCategory[event.category] = event.totalActivityDuration
+                }
+            }
+        }
+        return TotalActivityView.Configuration(totalUsageByCategory: totalUsageByCategory)
     }
 }

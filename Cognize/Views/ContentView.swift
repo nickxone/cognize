@@ -14,6 +14,12 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
+            Tab {
+                HomeView()
+            } label: {
+                Label("Home", systemImage: "book.circle.fill")
+            }
+            
             Tab("Home", systemImage: "book.circle.fill") {
                 HomeView()
             }

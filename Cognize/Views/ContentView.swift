@@ -14,6 +14,10 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
+            Tab("Home", image: "SpiralIcon") {
+                HomeView()
+            }
+            
             Tab("Home", systemImage: "book.circle.fill") {
                 HomeView()
             }

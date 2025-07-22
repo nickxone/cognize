@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DeviceActivity
 
 struct HomeView: View {
     @EnvironmentObject var model: ShieldViewModel
@@ -18,6 +19,8 @@ struct HomeView: View {
     
     var body: some View {
         VStack {
+            DeviceActivityReport(.totalActivity)
+            
             Button {
                 entertainmentPickerIsPresented = true
             } label: {
@@ -72,6 +75,7 @@ struct HomeView: View {
             
         }
         .padding()
+        .preferredColorScheme(.dark)
     }
 }
 

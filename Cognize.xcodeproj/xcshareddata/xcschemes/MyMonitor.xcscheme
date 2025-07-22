@@ -17,8 +17,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D83E29CE2E2A6FBB006BECC2"
-               BuildableName = "MyMonitor.appex"
-               BlueprintName = "MyMonitor"
+               BuildableName = "CognizeMonitor.appex"
+               BlueprintName = "CognizeMonitor"
                ReferencedContainer = "container:Cognize.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

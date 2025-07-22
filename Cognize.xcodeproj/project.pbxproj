@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		D83E29D22E2A6FBB006BECC2 /* DeviceActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D83E29D12E2A6FBB006BECC2 /* DeviceActivity.framework */; };
-		D83E29DA2E2A6FBB006BECC2 /* MyMonitor.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D83E29CF2E2A6FBB006BECC2 /* MyMonitor.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D83E29DA2E2A6FBB006BECC2 /* CognizeMonitor.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D83E29CF2E2A6FBB006BECC2 /* CognizeMonitor.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D83E29E62E2A882A006BECC2 /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D83E29E52E2A882A006BECC2 /* ManagedSettings.framework */; };
 		D83E29E82E2A882A006BECC2 /* ManagedSettingsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D83E29E72E2A882A006BECC2 /* ManagedSettingsUI.framework */; };
-		D83E29F02E2A882A006BECC2 /* MyShieldConfiguration.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D83E29E42E2A882A006BECC2 /* MyShieldConfiguration.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D83E29F02E2A882A006BECC2 /* CognizeShieldConfiguration.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D83E29E42E2A882A006BECC2 /* CognizeShieldConfiguration.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D83E29FA2E2A8880006BECC2 /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D83E29E52E2A882A006BECC2 /* ManagedSettings.framework */; };
-		D83E2A022E2A8880006BECC2 /* MyShieldActionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D83E29F92E2A8880006BECC2 /* MyShieldActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D83E2A022E2A8880006BECC2 /* CognizeShieldActionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D83E29F92E2A8880006BECC2 /* CognizeShieldActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D8EEDE8F2E2F998100EB3DF6 /* CognizeReportExtension.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = D8EEDE832E2F998100EB3DF6 /* CognizeReportExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -55,9 +55,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				D83E29F02E2A882A006BECC2 /* MyShieldConfiguration.appex in Embed Foundation Extensions */,
-				D83E2A022E2A8880006BECC2 /* MyShieldActionExtension.appex in Embed Foundation Extensions */,
-				D83E29DA2E2A6FBB006BECC2 /* MyMonitor.appex in Embed Foundation Extensions */,
+				D83E29F02E2A882A006BECC2 /* CognizeShieldConfiguration.appex in Embed Foundation Extensions */,
+				D83E2A022E2A8880006BECC2 /* CognizeShieldActionExtension.appex in Embed Foundation Extensions */,
+				D83E29DA2E2A6FBB006BECC2 /* CognizeMonitor.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -76,37 +76,37 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D83E29CF2E2A6FBB006BECC2 /* MyMonitor.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MyMonitor.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D83E29CF2E2A6FBB006BECC2 /* CognizeMonitor.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CognizeMonitor.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D83E29D12E2A6FBB006BECC2 /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
-		D83E29E42E2A882A006BECC2 /* MyShieldConfiguration.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MyShieldConfiguration.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D83E29E42E2A882A006BECC2 /* CognizeShieldConfiguration.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CognizeShieldConfiguration.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D83E29E52E2A882A006BECC2 /* ManagedSettings.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettings.framework; path = System/Library/Frameworks/ManagedSettings.framework; sourceTree = SDKROOT; };
 		D83E29E72E2A882A006BECC2 /* ManagedSettingsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettingsUI.framework; path = System/Library/Frameworks/ManagedSettingsUI.framework; sourceTree = SDKROOT; };
-		D83E29F92E2A8880006BECC2 /* MyShieldActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MyShieldActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D83E29F92E2A8880006BECC2 /* CognizeShieldActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CognizeShieldActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D842935F2E27A65C00062B39 /* Cognize.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cognize.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8EEDE832E2F998100EB3DF6 /* CognizeReportExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = CognizeReportExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		D83E29DB2E2A6FBB006BECC2 /* Exceptions for "MyMonitor" folder in "MyMonitor" target */ = {
+		D83E29DB2E2A6FBB006BECC2 /* Exceptions for "CognizeMonitor" folder in "CognizeMonitor" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = D83E29CE2E2A6FBB006BECC2 /* MyMonitor */;
+			target = D83E29CE2E2A6FBB006BECC2 /* CognizeMonitor */;
 		};
-		D83E29F12E2A882A006BECC2 /* Exceptions for "MyShieldConfiguration" folder in "MyShieldConfiguration" target */ = {
+		D83E29F12E2A882A006BECC2 /* Exceptions for "CognizeShieldConfiguration" folder in "CognizeShieldConfiguration" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = D83E29E32E2A882A006BECC2 /* MyShieldConfiguration */;
+			target = D83E29E32E2A882A006BECC2 /* CognizeShieldConfiguration */;
 		};
-		D83E2A032E2A8880006BECC2 /* Exceptions for "MyShieldActionExtension" folder in "MyShieldActionExtension" target */ = {
+		D83E2A032E2A8880006BECC2 /* Exceptions for "CognizeShieldActionExtension" folder in "CognizeShieldActionExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = D83E29F82E2A8880006BECC2 /* MyShieldActionExtension */;
+			target = D83E29F82E2A8880006BECC2 /* CognizeShieldActionExtension */;
 		};
 		D8EEDE902E2F998100EB3DF6 /* Exceptions for "CognizeReportExtension" folder in "CognizeReportExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -122,7 +122,7 @@
 			);
 			target = D8EEDE822E2F998100EB3DF6 /* CognizeReportExtension */;
 		};
-		D8F0F3092E2B97AF0061A375 /* Exceptions for "Cognize" folder in "MyMonitor" target */ = {
+		D8F0F3092E2B97AF0061A375 /* Exceptions for "Cognize" folder in "CognizeMonitor" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Extensions/DeviceActivityExtension.swift,
@@ -132,39 +132,39 @@
 				ViewModels/ShieldViewModel.swift,
 				"ViewModels/ShieldViewModel+Storage.swift",
 			);
-			target = D83E29CE2E2A6FBB006BECC2 /* MyMonitor */;
+			target = D83E29CE2E2A6FBB006BECC2 /* CognizeMonitor */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		D83E29D32E2A6FBB006BECC2 /* MyMonitor */ = {
+		D83E29D32E2A6FBB006BECC2 /* CognizeMonitor */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				D83E29DB2E2A6FBB006BECC2 /* Exceptions for "MyMonitor" folder in "MyMonitor" target */,
+				D83E29DB2E2A6FBB006BECC2 /* Exceptions for "CognizeMonitor" folder in "CognizeMonitor" target */,
 			);
-			path = MyMonitor;
+			path = CognizeMonitor;
 			sourceTree = "<group>";
 		};
-		D83E29E92E2A882A006BECC2 /* MyShieldConfiguration */ = {
+		D83E29E92E2A882A006BECC2 /* CognizeShieldConfiguration */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				D83E29F12E2A882A006BECC2 /* Exceptions for "MyShieldConfiguration" folder in "MyShieldConfiguration" target */,
+				D83E29F12E2A882A006BECC2 /* Exceptions for "CognizeShieldConfiguration" folder in "CognizeShieldConfiguration" target */,
 			);
-			path = MyShieldConfiguration;
+			path = CognizeShieldConfiguration;
 			sourceTree = "<group>";
 		};
-		D83E29FB2E2A8880006BECC2 /* MyShieldActionExtension */ = {
+		D83E29FB2E2A8880006BECC2 /* CognizeShieldActionExtension */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				D83E2A032E2A8880006BECC2 /* Exceptions for "MyShieldActionExtension" folder in "MyShieldActionExtension" target */,
+				D83E2A032E2A8880006BECC2 /* Exceptions for "CognizeShieldActionExtension" folder in "CognizeShieldActionExtension" target */,
 			);
-			path = MyShieldActionExtension;
+			path = CognizeShieldActionExtension;
 			sourceTree = "<group>";
 		};
 		D84293612E27A65C00062B39 /* Cognize */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				D8F0F3092E2B97AF0061A375 /* Exceptions for "Cognize" folder in "MyMonitor" target */,
+				D8F0F3092E2B97AF0061A375 /* Exceptions for "Cognize" folder in "CognizeMonitor" target */,
 				D8EEDE9D2E2F9C8D00EB3DF6 /* Exceptions for "Cognize" folder in "CognizeReportExtension" target */,
 			);
 			path = Cognize;
@@ -237,9 +237,9 @@
 			isa = PBXGroup;
 			children = (
 				D84293612E27A65C00062B39 /* Cognize */,
-				D83E29D32E2A6FBB006BECC2 /* MyMonitor */,
-				D83E29E92E2A882A006BECC2 /* MyShieldConfiguration */,
-				D83E29FB2E2A8880006BECC2 /* MyShieldActionExtension */,
+				D83E29D32E2A6FBB006BECC2 /* CognizeMonitor */,
+				D83E29E92E2A882A006BECC2 /* CognizeShieldConfiguration */,
+				D83E29FB2E2A8880006BECC2 /* CognizeShieldActionExtension */,
 				D8EEDE842E2F998100EB3DF6 /* CognizeReportExtension */,
 				D83E29D02E2A6FBB006BECC2 /* Frameworks */,
 				D84293602E27A65C00062B39 /* Products */,
@@ -250,9 +250,9 @@
 			isa = PBXGroup;
 			children = (
 				D842935F2E27A65C00062B39 /* Cognize.app */,
-				D83E29CF2E2A6FBB006BECC2 /* MyMonitor.appex */,
-				D83E29E42E2A882A006BECC2 /* MyShieldConfiguration.appex */,
-				D83E29F92E2A8880006BECC2 /* MyShieldActionExtension.appex */,
+				D83E29CF2E2A6FBB006BECC2 /* CognizeMonitor.appex */,
+				D83E29E42E2A882A006BECC2 /* CognizeShieldConfiguration.appex */,
+				D83E29F92E2A8880006BECC2 /* CognizeShieldActionExtension.appex */,
 				D8EEDE832E2F998100EB3DF6 /* CognizeReportExtension.appex */,
 			);
 			name = Products;
@@ -261,9 +261,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D83E29CE2E2A6FBB006BECC2 /* MyMonitor */ = {
+		D83E29CE2E2A6FBB006BECC2 /* CognizeMonitor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D83E29DC2E2A6FBB006BECC2 /* Build configuration list for PBXNativeTarget "MyMonitor" */;
+			buildConfigurationList = D83E29DC2E2A6FBB006BECC2 /* Build configuration list for PBXNativeTarget "CognizeMonitor" */;
 			buildPhases = (
 				D83E29CB2E2A6FBB006BECC2 /* Sources */,
 				D83E29CC2E2A6FBB006BECC2 /* Frameworks */,
@@ -274,18 +274,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				D83E29D32E2A6FBB006BECC2 /* MyMonitor */,
+				D83E29D32E2A6FBB006BECC2 /* CognizeMonitor */,
 			);
-			name = MyMonitor;
+			name = CognizeMonitor;
 			packageProductDependencies = (
 			);
 			productName = MyMonitor;
-			productReference = D83E29CF2E2A6FBB006BECC2 /* MyMonitor.appex */;
+			productReference = D83E29CF2E2A6FBB006BECC2 /* CognizeMonitor.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		D83E29E32E2A882A006BECC2 /* MyShieldConfiguration */ = {
+		D83E29E32E2A882A006BECC2 /* CognizeShieldConfiguration */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D83E29F22E2A882A006BECC2 /* Build configuration list for PBXNativeTarget "MyShieldConfiguration" */;
+			buildConfigurationList = D83E29F22E2A882A006BECC2 /* Build configuration list for PBXNativeTarget "CognizeShieldConfiguration" */;
 			buildPhases = (
 				D83E29E02E2A882A006BECC2 /* Sources */,
 				D83E29E12E2A882A006BECC2 /* Frameworks */,
@@ -296,18 +296,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				D83E29E92E2A882A006BECC2 /* MyShieldConfiguration */,
+				D83E29E92E2A882A006BECC2 /* CognizeShieldConfiguration */,
 			);
-			name = MyShieldConfiguration;
+			name = CognizeShieldConfiguration;
 			packageProductDependencies = (
 			);
 			productName = MyShieldConfiguration;
-			productReference = D83E29E42E2A882A006BECC2 /* MyShieldConfiguration.appex */;
+			productReference = D83E29E42E2A882A006BECC2 /* CognizeShieldConfiguration.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		D83E29F82E2A8880006BECC2 /* MyShieldActionExtension */ = {
+		D83E29F82E2A8880006BECC2 /* CognizeShieldActionExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D83E2A042E2A8880006BECC2 /* Build configuration list for PBXNativeTarget "MyShieldActionExtension" */;
+			buildConfigurationList = D83E2A042E2A8880006BECC2 /* Build configuration list for PBXNativeTarget "CognizeShieldActionExtension" */;
 			buildPhases = (
 				D83E29F52E2A8880006BECC2 /* Sources */,
 				D83E29F62E2A8880006BECC2 /* Frameworks */,
@@ -318,13 +318,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				D83E29FB2E2A8880006BECC2 /* MyShieldActionExtension */,
+				D83E29FB2E2A8880006BECC2 /* CognizeShieldActionExtension */,
 			);
-			name = MyShieldActionExtension;
+			name = CognizeShieldActionExtension;
 			packageProductDependencies = (
 			);
 			productName = MyShieldActionExtension;
-			productReference = D83E29F92E2A8880006BECC2 /* MyShieldActionExtension.appex */;
+			productReference = D83E29F92E2A8880006BECC2 /* CognizeShieldActionExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		D842935E2E27A65C00062B39 /* Cognize */ = {
@@ -419,9 +419,9 @@
 			projectRoot = "";
 			targets = (
 				D842935E2E27A65C00062B39 /* Cognize */,
-				D83E29CE2E2A6FBB006BECC2 /* MyMonitor */,
-				D83E29E32E2A882A006BECC2 /* MyShieldConfiguration */,
-				D83E29F82E2A8880006BECC2 /* MyShieldActionExtension */,
+				D83E29CE2E2A6FBB006BECC2 /* CognizeMonitor */,
+				D83E29E32E2A882A006BECC2 /* CognizeShieldConfiguration */,
+				D83E29F82E2A8880006BECC2 /* CognizeShieldActionExtension */,
 				D8EEDE822E2F998100EB3DF6 /* CognizeReportExtension */,
 			);
 		};
@@ -506,17 +506,17 @@
 /* Begin PBXTargetDependency section */
 		D83E29D92E2A6FBB006BECC2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D83E29CE2E2A6FBB006BECC2 /* MyMonitor */;
+			target = D83E29CE2E2A6FBB006BECC2 /* CognizeMonitor */;
 			targetProxy = D83E29D82E2A6FBB006BECC2 /* PBXContainerItemProxy */;
 		};
 		D83E29EF2E2A882A006BECC2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D83E29E32E2A882A006BECC2 /* MyShieldConfiguration */;
+			target = D83E29E32E2A882A006BECC2 /* CognizeShieldConfiguration */;
 			targetProxy = D83E29EE2E2A882A006BECC2 /* PBXContainerItemProxy */;
 		};
 		D83E2A012E2A8880006BECC2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D83E29F82E2A8880006BECC2 /* MyShieldActionExtension */;
+			target = D83E29F82E2A8880006BECC2 /* CognizeShieldActionExtension */;
 			targetProxy = D83E2A002E2A8880006BECC2 /* PBXContainerItemProxy */;
 		};
 		D8EEDE8E2E2F998100EB3DF6 /* PBXTargetDependency */ = {
@@ -530,13 +530,13 @@
 		D83E29DD2E2A6FBB006BECC2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = MyMonitor/MyMonitor.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CognizeMonitor/CognizeMonitor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65ZG4NKQUS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyMonitor/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = MyMonitor;
+				INFOPLIST_FILE = CognizeMonitor/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CognizeMonitor;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -544,7 +544,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.MyMonitor;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.CognizeMonitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -556,13 +556,13 @@
 		D83E29DE2E2A6FBB006BECC2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = MyMonitor/MyMonitor.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CognizeMonitor/CognizeMonitor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65ZG4NKQUS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyMonitor/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = MyMonitor;
+				INFOPLIST_FILE = CognizeMonitor/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CognizeMonitor;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -570,7 +570,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.MyMonitor;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.CognizeMonitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -582,13 +582,13 @@
 		D83E29F32E2A882A006BECC2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = MyShieldConfiguration/MyShieldConfiguration.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CognizeShieldConfiguration/CognizeShieldConfiguration.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65ZG4NKQUS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyShieldConfiguration/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = MyShieldConfiguration;
+				INFOPLIST_FILE = CognizeShieldConfiguration/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CognizeShieldConfiguration;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -596,7 +596,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.MyShieldConfiguration;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.CognizeShieldConfiguration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -608,13 +608,13 @@
 		D83E29F42E2A882A006BECC2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = MyShieldConfiguration/MyShieldConfiguration.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CognizeShieldConfiguration/CognizeShieldConfiguration.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65ZG4NKQUS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyShieldConfiguration/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = MyShieldConfiguration;
+				INFOPLIST_FILE = CognizeShieldConfiguration/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CognizeShieldConfiguration;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -622,7 +622,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.MyShieldConfiguration;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.CognizeShieldConfiguration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -634,13 +634,13 @@
 		D83E2A052E2A8880006BECC2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = MyShieldActionExtension/MyShieldActionExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CognizeShieldActionExtension/CognizeShieldActionExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65ZG4NKQUS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyShieldActionExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = MyShieldActionExtension;
+				INFOPLIST_FILE = CognizeShieldActionExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CognizeShieldActionExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -648,7 +648,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.MyShieldActionExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.CognizeShieldActionExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -660,13 +660,13 @@
 		D83E2A062E2A8880006BECC2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = MyShieldActionExtension/MyShieldActionExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CognizeShieldActionExtension/CognizeShieldActionExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65ZG4NKQUS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyShieldActionExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = MyShieldActionExtension;
+				INFOPLIST_FILE = CognizeShieldActionExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CognizeShieldActionExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -674,7 +674,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.MyShieldActionExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.cognize.CognizeShieldActionExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -917,7 +917,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D83E29DC2E2A6FBB006BECC2 /* Build configuration list for PBXNativeTarget "MyMonitor" */ = {
+		D83E29DC2E2A6FBB006BECC2 /* Build configuration list for PBXNativeTarget "CognizeMonitor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D83E29DD2E2A6FBB006BECC2 /* Debug */,
@@ -926,7 +926,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D83E29F22E2A882A006BECC2 /* Build configuration list for PBXNativeTarget "MyShieldConfiguration" */ = {
+		D83E29F22E2A882A006BECC2 /* Build configuration list for PBXNativeTarget "CognizeShieldConfiguration" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D83E29F32E2A882A006BECC2 /* Debug */,
@@ -935,7 +935,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D83E2A042E2A8880006BECC2 /* Build configuration list for PBXNativeTarget "MyShieldActionExtension" */ = {
+		D83E2A042E2A8880006BECC2 /* Build configuration list for PBXNativeTarget "CognizeShieldActionExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D83E2A052E2A8880006BECC2 /* Debug */,

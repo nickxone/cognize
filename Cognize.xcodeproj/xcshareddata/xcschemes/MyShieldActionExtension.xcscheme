@@ -17,8 +17,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D83E29F82E2A8880006BECC2"
-               BuildableName = "MyShieldActionExtension.appex"
-               BlueprintName = "MyShieldActionExtension"
+               BuildableName = "CognizeShieldActionExtension.appex"
+               BlueprintName = "CognizeShieldActionExtension"
                ReferencedContainer = "container:Cognize.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

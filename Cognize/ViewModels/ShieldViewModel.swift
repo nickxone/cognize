@@ -55,9 +55,9 @@ class ShieldViewModel: ObservableObject {
     }
     
     // MARK: - Scheduling
-    private func makeInterval(startOffset: TimeInterval = 0, duration: TimeInterval) -> (DateComponents, DateComponents) {
+    private func makeInterval(startOffset: TimeInterval = 0, endOffset: TimeInterval) -> (DateComponents, DateComponents) {
         let now = Date().addingTimeInterval(startOffset)
-        let end = now.addingTimeInterval(duration)
+        let end = Date().addingTimeInterval(endOffset)
         let calendar = Calendar.current
         return (
             calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: now),
@@ -65,8 +65,8 @@ class ShieldViewModel: ObservableObject {
         )
     }
     
-    private func createSchedule(startOffset: TimeInterval = 0, duration: TimeInterval, warningTime: DateComponents? = nil) -> DeviceActivitySchedule {
-        let (start, end) = makeInterval(startOffset: startOffset, duration: duration)
+    private func createSchedule(startOffset: TimeInterval = 0, endOffset: TimeInterval, warningTime: DateComponents? = nil) -> DeviceActivitySchedule {
+        let (start, end) = makeInterval(startOffset: startOffset, endOffset: endOffset)
         return DeviceActivitySchedule(intervalStart: start, intervalEnd: end, repeats: false, warningTime: warningTime)
     }
     
@@ -79,7 +79,7 @@ class ShieldViewModel: ObservableObject {
         
         let schedule = createSchedule(
             startOffset: -15 * 60, // 15 minutes in the past
-            duration: TimeInterval(minutes * 60),
+            endOffset: TimeInterval(minutes * 60),
             warningTime: DateComponents(second: 30)
         )
         
@@ -87,6 +87,7 @@ class ShieldViewModel: ObservableObject {
             try DeviceActivityCenter().startMonitoring(.allow, during: schedule)
             removeShielding(.entertainment)
         } catch {
+            print(schedule)
             print("Error occured while unlocking activities: \(error)")
         }
     }
@@ -107,7 +108,7 @@ class ShieldViewModel: ObservableObject {
     
     func scheduleProductivity(name: DeviceActivityName) {
         let schedule = createSchedule(
-            duration: TimeInterval(productivityInterval * 60),
+            endOffset: TimeInterval(productivityInterval * 60),
             warningTime: DateComponents(minute: productivityUsageThreshold)
         )
         

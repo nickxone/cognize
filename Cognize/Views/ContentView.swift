@@ -12,29 +12,32 @@ import DeviceActivity
 struct ContentView: View {
     @ObservedObject private var model = ShieldViewModel()
     
+    @State private var tabSelection = 0
+    
     var body: some View {
-        TabView {
-            Tab {
+        TabView(selection: $tabSelection) {
+            Tab(value: 0) {
                 HomeView()
             } label: {
                 Label("Home", systemImage: "book.circle.fill")
             }
             
-            Tab("Home", systemImage: "book.circle.fill") {
-                HomeView()
-            }
-            
-            Tab("Report", systemImage: "paperplane.fill") {
+            Tab(value: 1) {
                 ReportView()
+            } label: {
+                Label("Report", systemImage: "paperplane.fill")
             }
             
-            Tab("Settings", systemImage: "gearshape.fill") {
+            Tab(value: 2) {
                 SettingsView()
+            } label: {
+                Label("Settings", systemImage: "gearshape.fill")
             }
             
         }
         .environmentObject(model)
-
+        .sensoryFeedback(.impact, trigger: tabSelection)
+        
     }
     
 }

@@ -58,6 +58,7 @@ struct DurationPickerView: View {
                         .cornerRadius(12)
                 }
                 .padding(.top, 4)
+                .hapticFeedback(.confirmHaptic)
 
                 Button(action: {
                     dismiss()
@@ -70,6 +71,8 @@ struct DurationPickerView: View {
                         .foregroundColor(.white)
                         .cornerRadius(12)
                 }
+                .hapticFeedback(.cancelHaptic)
+                
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)

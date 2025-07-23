@@ -8,16 +8,22 @@
 import Foundation
 import SwiftUI
 
+
 struct PressActions: ViewModifier {
     var onPress: () -> Void
     var onRelease: () -> Void
+    
+    @State private var isPressed = false
     
     func body(content: Content) -> some View {
         content
             .simultaneousGesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged({ _ in
-                        onPress()
+                        if !isPressed {
+                            onPress()
+                            isPressed.toggle()
+                        }
                     })
                     .onEnded({ _ in
                         onRelease()
@@ -25,4 +31,3 @@ struct PressActions: ViewModifier {
             )
     }
 }
-

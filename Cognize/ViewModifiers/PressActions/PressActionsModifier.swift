@@ -13,16 +13,16 @@ struct PressActions: ViewModifier {
     var onPress: () -> Void
     var onRelease: () -> Void
     
-    @State private var isPressed = false
+    @GestureState private var isPressed = false
     
     func body(content: Content) -> some View {
         content
             .simultaneousGesture(
                 DragGesture(minimumDistance: 0)
-                    .onChanged({ _ in
-                        if !isPressed {
+                    .updating($isPressed, body: { _, state, _ in
+                        if !state {
+                            state = true
                             onPress()
-                            isPressed.toggle()
                         }
                     })
                     .onEnded({ _ in

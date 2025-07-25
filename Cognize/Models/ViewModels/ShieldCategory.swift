@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum ShieldCategory {
+enum ShieldCategory: String, Codable {
     case entertainment, work
 }

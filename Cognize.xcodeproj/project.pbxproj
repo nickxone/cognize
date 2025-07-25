@@ -127,10 +127,10 @@
 			membershipExceptions = (
 				Extensions/DeviceActivityExtension.swift,
 				Extensions/ManagedSettingsStore.swift,
+				Models/ViewModels/ShieldCategory.swift,
+				Models/ViewModels/ShieldViewModel.swift,
+				"Models/ViewModels/ShieldViewModel+Storage.swift",
 				Services/NotificationManager.swift,
-				ViewModels/ShieldCategory.swift,
-				ViewModels/ShieldViewModel.swift,
-				"ViewModels/ShieldViewModel+Storage.swift",
 			);
 			target = D83E29CE2E2A6FBB006BECC2 /* CognizeMonitor */;
 		};

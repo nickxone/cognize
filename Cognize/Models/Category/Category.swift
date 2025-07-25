@@ -8,7 +8,7 @@
 import Foundation
 import FamilyControls
 
-class Category: Codable {
+class Category: Codable, ObservableObject {
     enum RestrictionType: String, Codable {
         case allow
         case shield
@@ -16,7 +16,7 @@ class Category: Codable {
     }
     
     var id: UUID
-    var name: String
+    var name = String()
     var appSelection: FamilyActivitySelection
     var restrictionType: RestrictionType
     

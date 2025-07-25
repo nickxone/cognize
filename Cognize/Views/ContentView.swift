@@ -17,7 +17,7 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $tabSelection) {
             Tab(value: 0) {
-                HomeView()
+                CategoriesView()
             } label: {
                 Label("Home", systemImage: "book.circle.fill")
             }

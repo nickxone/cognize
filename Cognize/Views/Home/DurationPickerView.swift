@@ -49,7 +49,7 @@ struct DurationPickerView: View {
                     onConfirm()
                     dismiss()
                 }) {
-                    Text("Select Apps or Website")
+                    Text("Unlock")
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity)
                         .padding()

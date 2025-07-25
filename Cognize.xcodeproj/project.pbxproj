@@ -127,6 +127,10 @@
 			membershipExceptions = (
 				Extensions/DeviceActivityExtension.swift,
 				Extensions/ManagedSettingsStore.swift,
+				Models/Category/Category.swift,
+				Models/Category/CategoryStore.swift,
+				Models/RestrictionStrategies/RestrictionStrategy.swift,
+				Models/RestrictionStrategies/ShieldRestriction.swift,
 				Models/ViewModels/ShieldCategory.swift,
 				Models/ViewModels/ShieldViewModel.swift,
 				"Models/ViewModels/ShieldViewModel+Storage.swift",

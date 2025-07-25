@@ -25,9 +25,18 @@ class ShieldRestriction: RestrictionStrategy, Codable {
         .init("store-\(categoryId.uuidString)")
     }
     
+    private var deviceActivityName: DeviceActivityName {
+        .init("allow-\(categoryId.uuidString)")
+    }
+    
     private func removeShielding() {
         let store = ManagedSettingsStore(named: storeName)
         store.clearAllSettings()
+    }
+    
+    func shield() {
+        let store = ManagedSettingsStore(named: storeName)
+        store.shield(familyActivitySelection: appSelection)
     }
     
     // MARK: - Scheduling
@@ -60,7 +69,7 @@ class ShieldRestriction: RestrictionStrategy, Codable {
         )
         
         do {
-            try DeviceActivityCenter().startMonitoring(.allow, during: schedule)
+            try DeviceActivityCenter().startMonitoring(deviceActivityName, during: schedule)
             removeShielding()
         } catch {
             print(schedule)
@@ -74,8 +83,7 @@ class ShieldRestriction: RestrictionStrategy, Codable {
     
     func intervalDidEnd() {
         NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended \(categoryName)", inSeconds: 1.5)
-        let store = ManagedSettingsStore(named: storeName)
-        store.shield(familyActivitySelection: appSelection)
+        shield()
     }
     
     func eventDidReachThreshold() {

@@ -10,29 +10,31 @@ import FamilyControls
 
 struct CategoriesView: View {
     private var store = CategoryStore.shared
-
+    
     @State private var categories: [Category] = []
     @State private var isCreating = false
     @State private var newName = ""
     @State private var newType: Category.RestrictionType = .shield
     @State private var newSelection = FamilyActivitySelection()
     @State private var showPicker = false
-
+    
     var body: some View {
         NavigationView {
             List {
                 ForEach(categories, id: \.id) { category in
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(category.name)
-                            .font(.headline)
-                        Text("Type: \(category.restrictionType.rawValue.capitalized)")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        Text("Apps selected: \(category.appSelection.applicationTokens.count)")
-                            .font(.footnote)
-                            .foregroundColor(.gray)
+                    NavigationLink(destination: CategoryDetailView(category: category)) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(category.name)
+                                .font(.headline)
+                            Text("Type: \(category.restrictionType.rawValue.capitalized)")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                            Text("Apps selected: \(category.appSelection.applicationTokens.count)")
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                        }
+                        .padding(.vertical, 4)
                     }
-                    .padding(.vertical, 4)
                 }
             }
             .navigationTitle("Categories")
@@ -47,7 +49,7 @@ struct CategoriesView: View {
                         Section(header: Text("Name")) {
                             TextField("Enter name", text: $newName)
                         }
-
+                        
                         Section(header: Text("Restriction Type")) {
                             Picker("Type", selection: $newType) {
                                 Text("Shield").tag(Category.RestrictionType.shield)
@@ -56,7 +58,7 @@ struct CategoriesView: View {
                             }
                             .pickerStyle(SegmentedPickerStyle())
                         }
-
+                        
                         Section(header: Text("App Selection")) {
                             Button("Choose Apps") {
                                 showPicker = true
@@ -64,11 +66,12 @@ struct CategoriesView: View {
                             Text("\(newSelection.applicationTokens.count) apps selected")
                                 .font(.footnote)
                         }
-
+                        
                         Section {
                             Button("Save") {
                                 let newCategory = Category(name: newName, appSelection: newSelection, restrictionType: newType)
                                 categories.append(newCategory)
+                                newCategory.strategy.shield()
                                 store.save(categories)
                                 resetNewInputs()
                                 isCreating = false
@@ -96,7 +99,7 @@ struct CategoriesView: View {
             }
         }
     }
-
+    
     private func resetNewInputs() {
         newName = ""
         newType = .shield

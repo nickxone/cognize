@@ -8,6 +8,7 @@
 import Foundation
 
 protocol RestrictionStrategy: Codable {
+    func shield()
     func intervalDidStart()
     func intervalDidEnd()
     func eventDidReachThreshold()

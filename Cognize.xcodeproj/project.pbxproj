@@ -118,25 +118,22 @@
 		D8EEDE9D2E2F9C8D00EB3DF6 /* Exceptions for "Cognize" folder in "CognizeReportExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Extensions/DeviceActivityReportContext.swift,
+				Shared/Extensions/DeviceActivityReportContext.swift,
 			);
 			target = D8EEDE822E2F998100EB3DF6 /* CognizeReportExtension */;
 		};
 		D8F0F3092E2B97AF0061A375 /* Exceptions for "Cognize" folder in "CognizeMonitor" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Extensions/DeviceActivityExtension.swift,
-				Extensions/ManagedSettingsStore.swift,
-				Models/Category/Category.swift,
-				Models/Category/CategoryStore.swift,
-				Models/RestrictionStrategies/BaseRestriction.swift,
-				Models/RestrictionStrategies/IntervalTrackRestriction.swift,
-				Models/RestrictionStrategies/RestrictionStrategy.swift,
-				Models/RestrictionStrategies/ShieldRestriction.swift,
-				Models/ViewModels/ShieldCategory.swift,
-				Models/ViewModels/ShieldViewModel.swift,
-				"Models/ViewModels/ShieldViewModel+Storage.swift",
-				Services/NotificationManager.swift,
+				Shared/Extensions/ManagedSettingsStore.swift,
+				Shared/Models/Category/Category.swift,
+				Shared/Models/Category/CategoryStore.swift,
+				Shared/Models/RestrictionStrategies/BaseRestriction.swift,
+				Shared/Models/RestrictionStrategies/IntervalTrackRestriction.swift,
+				Shared/Models/RestrictionStrategies/RestrictionStrategy.swift,
+				Shared/Models/RestrictionStrategies/ShieldRestriction.swift,
+				Shared/Services/HapticsEngine.swift,
+				Shared/Services/NotificationManager.swift,
 			);
 			target = D83E29CE2E2A6FBB006BECC2 /* CognizeMonitor */;
 		};

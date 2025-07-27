@@ -23,9 +23,3 @@ extension ManagedSettingsStore {
     }
     
 }
-
-extension ManagedSettingsStore.Name {
-    static let entertainment = Self("entertainment")
-    static let work = Self("work")
-//    create a separte "messaging" category, where notifications would be allowed
-}

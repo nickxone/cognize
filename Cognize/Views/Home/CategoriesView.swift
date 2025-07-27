@@ -75,7 +75,7 @@ struct CategoriesView: View {
                                     strategy.shield()
                                 } else if newCategory.restrictionType == .interval {
                                     let strategy = newCategory.strategy as! IntervalTrackRestriction
-                                    strategy.track(thresholdUsageMinutes: 5, duringIntervalMinutes: 15)
+                                    strategy.track(thresholdUsageMinutes: 2, duringIntervalMinutes: 15)
                                 }
                                 print(newCategory)
                                 store.save(categories)

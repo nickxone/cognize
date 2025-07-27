@@ -34,11 +34,6 @@ class ShieldRestriction: RestrictionStrategy, Codable {
         store.clearAllSettings()
     }
     
-    func shield() {
-        let store = ManagedSettingsStore(named: storeName)
-        store.shield(familyActivitySelection: appSelection)
-    }
-    
     // MARK: - Scheduling
     private func makeInterval(startOffset: TimeInterval = 0, endOffset: TimeInterval) -> (DateComponents, DateComponents) {
         let now = Date().addingTimeInterval(startOffset)
@@ -77,30 +72,34 @@ class ShieldRestriction: RestrictionStrategy, Codable {
         }
     }
     
-    func intervalDidStart() {
+//    MARK: - RestrictionStrategy Implementation
+    func shield() {
+        let store = ManagedSettingsStore(named: storeName)
+        store.shield(familyActivitySelection: appSelection)
+    }
+    
+    func intervalDidStart(for activity: DeviceActivityName) {
         print("\(categoryName) intervalDidStart")
     }
     
-    func intervalDidEnd() {
+    func intervalDidEnd(for activity: DeviceActivityName) {
         NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended \(categoryName)", inSeconds: 1.5)
         shield()
     }
     
-    func eventDidReachThreshold() {
+    func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, for activity: DeviceActivityName) {
         print("\(categoryName) eventDidReachThreshold")
     }
     
-    func intervalWillStartWarning() {
+    func intervalWillStartWarning(for activity: DeviceActivityName) {
         print("\(categoryId) intervalWillStartWarning ")
     }
     
-    func intervalWillEndWarning() {
+    func intervalWillEndWarning(for activity: DeviceActivityName) {
         NotificationManager.shared.scheduleNotification(title: "Cognize", body: "Apps are about to relock", inSeconds: 1.5)
     }
     
-    func eventWillReachThresholdWarning() {
+    func eventWillReachThresholdWarning(_ event: DeviceActivityEvent.Name, for activity: DeviceActivityName) {
         print("\(categoryName) eventWillReachThresholdWarning")
     }
-    
-    
 }

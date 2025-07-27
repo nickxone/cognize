@@ -53,8 +53,7 @@ struct CategoriesView: View {
                         Section(header: Text("Restriction Type")) {
                             Picker("Type", selection: $newType) {
                                 Text("Shield").tag(Category.RestrictionType.shield)
-                                Text("Allow").tag(Category.RestrictionType.allow)
-                                Text("Productivity").tag(Category.RestrictionType.productivity)
+                                Text("Interval").tag(Category.RestrictionType.interval)
                             }
                             .pickerStyle(SegmentedPickerStyle())
                         }
@@ -71,7 +70,14 @@ struct CategoriesView: View {
                             Button("Save") {
                                 let newCategory = Category(name: newName, appSelection: newSelection, restrictionType: newType)
                                 categories.append(newCategory)
-                                newCategory.strategy.shield()
+                                if newCategory.restrictionType == .shield {
+                                    let strategy = newCategory.strategy as! ShieldRestriction
+                                    strategy.shield()
+                                } else if newCategory.restrictionType == .interval {
+                                    let strategy = newCategory.strategy as! IntervalTrackRestriction
+                                    strategy.track(thresholdUsageMinutes: 5, duringIntervalMinutes: 15)
+                                }
+                                print(newCategory)
                                 store.save(categories)
                                 resetNewInputs()
                                 isCreating = false

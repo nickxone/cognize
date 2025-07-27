@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var model: ShieldViewModel
     
     var body: some View {
         Button {
-            model.clearAllSettings()
+            print("I don't do anything yet...")
         } label: {
             Text("Clear All Settings")
         }

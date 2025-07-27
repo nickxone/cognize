@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import DeviceActivity
 
 protocol RestrictionStrategy: Codable {
     func shield()
-    func intervalDidStart()
-    func intervalDidEnd()
-    func eventDidReachThreshold()
-    func intervalWillStartWarning()
-    func intervalWillEndWarning()
-    func eventWillReachThresholdWarning()
+    func intervalDidStart(for activity: DeviceActivityName)
+    func intervalDidEnd(for activity: DeviceActivityName)
+    func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, for activity: DeviceActivityName)
+    func intervalWillStartWarning(for activity: DeviceActivityName)
+    func intervalWillEndWarning(for activity: DeviceActivityName)
+    func eventWillReachThresholdWarning(_ event: DeviceActivityEvent.Name, for activity: DeviceActivityName)
 }

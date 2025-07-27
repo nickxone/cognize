@@ -129,6 +129,7 @@
 				Extensions/ManagedSettingsStore.swift,
 				Models/Category/Category.swift,
 				Models/Category/CategoryStore.swift,
+				Models/RestrictionStrategies/IntervalTrackRestriction.swift,
 				Models/RestrictionStrategies/RestrictionStrategy.swift,
 				Models/RestrictionStrategies/ShieldRestriction.swift,
 				Models/ViewModels/ShieldCategory.swift,

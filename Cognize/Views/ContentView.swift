@@ -10,8 +10,6 @@ import FamilyControls
 import DeviceActivity
 
 struct ContentView: View {
-    @ObservedObject private var model = ShieldViewModel()
-    
     @State private var tabSelection = 0
     
     var body: some View {
@@ -35,7 +33,6 @@ struct ContentView: View {
             }
             
         }
-        .environmentObject(model)
         .sensoryFeedback(.impact, trigger: tabSelection)
         
     }

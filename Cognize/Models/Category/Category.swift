@@ -12,7 +12,7 @@ class Category: Codable, ObservableObject {
     enum RestrictionType: String, Codable {
         case allow
         case shield
-        case productivity
+        case interval
     }
     
     var id: UUID
@@ -33,8 +33,8 @@ class Category: Codable, ObservableObject {
             return ShieldRestriction(categoryName: name, categoryId: id, appSelection: appSelection)
         case .allow:
             return ShieldRestriction(categoryName: name, categoryId: id, appSelection: appSelection)
-        case .productivity:
-            return ShieldRestriction(categoryName: name, categoryId: id, appSelection: appSelection)
+        case .interval:
+            return IntervalTrackRestriction(categoryName: name, categoryId: id, appSelection: appSelection)
         }
     }
     

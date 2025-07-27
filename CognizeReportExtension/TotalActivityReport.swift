@@ -17,18 +17,20 @@ struct TotalActivityReport: DeviceActivityReportScene {
     let content: (TotalActivityView.Configuration) -> TotalActivityView
     
     func makeConfiguration(representing data: DeviceActivityResults<DeviceActivityData>) async -> TotalActivityView.Configuration {
-        var totalUsageByCategory: [ActivityCategory: TimeInterval] = [:]
+        var totalUsageByApp: [Application: TimeInterval] = [:]
         
-//        Sorry for three nested for-loops 😔
+//        Sorry about the nested for-loops 😔
 //        I'll try to make it cleaner later
         for await activity in data {
             for await activitySegment in activity.activitySegments {
                 for await event in activitySegment.categories {
-                    totalUsageByCategory[event.category] = event.totalActivityDuration
+                    for await app in event.applications {
+                        totalUsageByApp[app.application] = app.totalActivityDuration
+                    }
                 }
             }
         }
         
-        return TotalActivityView.Configuration(totalUsageByCategory: totalUsageByCategory)
+        return TotalActivityView.Configuration(totalUsageByCategory: totalUsageByApp)
     }
 }

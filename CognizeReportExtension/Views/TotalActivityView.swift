@@ -11,22 +11,13 @@ import ManagedSettings
 
 struct TotalActivityView: View {
     struct Configuration {
-        let totalUsageByCategory: [ActivityCategory: TimeInterval]
+        let totalUsageByCategory: [Application: TimeInterval]
     }
 
     let totalActivity: Configuration
 
     var body: some View {
-        List {
-            ForEach(totalActivity.totalUsageByCategory.sorted(by: { $0.value > $1.value }), id: \.key) { category, duration in
-                HStack {
-                    Text(category.localizedDisplayName ?? "Unknown")
-                    Spacer()
-                    Text(formattedDuration(duration))
-                        .foregroundColor(.gray)
-                }
-            }
-        }
+       DonutChartView(activity: totalActivity)
         .navigationTitle("Total Usage")
     }
 

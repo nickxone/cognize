@@ -10,24 +10,14 @@ import ManagedSettings
 import FamilyControls
 import DeviceActivity
 
-class IntervalTrackRestriction: RestrictionStrategy {
-    let categoryName: String
-    let categoryId: UUID
-    let appSelection: FamilyActivitySelection
-    
+class IntervalTrackRestriction: BaseRestriction, RestrictionStrategy {
     var productivityUsageThreshold = Int()
     var productivityInterval = Int()
     
-    init(categoryName: String, categoryId: UUID, appSelection: FamilyActivitySelection) {
-        self.categoryName = categoryName
-        self.categoryId = categoryId
-        self.appSelection = appSelection
+    override init(categoryName: String, categoryId: UUID, appSelection: FamilyActivitySelection) {
+        super.init(categoryName: categoryName, categoryId: categoryId, appSelection: appSelection)
         
         loadSelections()
-    }
-    
-    private var storeName: ManagedSettingsStore.Name {
-        .init("store-\(categoryId.uuidString)")
     }
     
     private var deviceActivityNameFirst: DeviceActivityName {
@@ -50,22 +40,6 @@ class IntervalTrackRestriction: RestrictionStrategy {
         if let pInterval = loadCodable(Int.self, forKey: "productivityInterval-\(categoryId.uuidString)", from: defaults) {
             productivityInterval = pInterval
         }
-    }
-    
-    // MARK: - Scheduling
-    private func makeInterval(startOffset: TimeInterval = 0, endOffset: TimeInterval) -> (DateComponents, DateComponents) {
-        let now = Date().addingTimeInterval(startOffset)
-        let end = Date().addingTimeInterval(endOffset)
-        let calendar = Calendar.current
-        return (
-            calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: now),
-            calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: end)
-        )
-    }
-    
-    private func createSchedule(startOffset: TimeInterval = 0, endOffset: TimeInterval, warningTime: DateComponents? = nil) -> DeviceActivitySchedule {
-        let (start, end) = makeInterval(startOffset: startOffset, endOffset: endOffset)
-        return DeviceActivitySchedule(intervalStart: start, intervalEnd: end, repeats: false, warningTime: warningTime)
     }
     
     func scheduleProductivity(name: DeviceActivityName) {
@@ -122,11 +96,6 @@ class IntervalTrackRestriction: RestrictionStrategy {
     }
     
     //    MARK: - RestrictionStrategy Implementation
-    func shield() {
-        let store = ManagedSettingsStore(named: storeName)
-        store.shield(familyActivitySelection: appSelection)
-    }
-    
     func intervalDidStart(for activity: DeviceActivityName) {
         print("\(categoryName) intervalDidStart")
         NotificationManager.shared.scheduleNotification(title: "intervalDidStart", body: "\(activity.rawValue)", inSeconds: 1.5)

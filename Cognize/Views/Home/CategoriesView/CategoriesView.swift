@@ -16,22 +16,32 @@ struct CategoriesView: View {
     
     var body: some View {
         NavigationView {
-            List {
-                ForEach(categories, id: \.id) { category in
-                    NavigationLink(destination: CategoryDetailView(category: category)) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(category.name)
-                                .font(.headline)
-                            Text("Type: \(category.restrictionType.rawValue.capitalized)")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                            Text("Apps selected: \(category.appSelection.applicationTokens.count)")
-                                .font(.footnote)
-                                .foregroundColor(.gray)
+            VStack {
+                if categories.isEmpty {
+                    Text("No Categories")
+                        .foregroundColor(.gray)
+                        .padding()
+                } else {
+                    GeometryReader { geometry in
+                        TabView {
+                            ForEach(categories, id: \.id) { category in
+                                GeometryReader { cardGeo in
+                                    let scale = max(0.9, 1 - abs(cardGeo.frame(in: .global).midX - geometry.size.width / 2) / 500)
+                                    
+                                    CategoryView(category: category)
+                                        .scaleEffect(scale)
+                                        .animation(.easeOut(duration: 0.3), value: scale)
+                                        .padding(.horizontal, 24)
+                                    
+                                }
+                            }
                         }
-                        .padding(.vertical, 4)
+                        .tabViewStyle(.page)
+                        .indexViewStyle(.page(backgroundDisplayMode: .always))
                     }
                 }
+                
+                Spacer()
             }
             .navigationTitle("Categories")
             .toolbar {
@@ -47,6 +57,4 @@ struct CategoriesView: View {
             }
         }
     }
-    
 }
-

@@ -15,6 +15,7 @@ struct ReportView: View {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         return DateInterval(start: startOfDay, end: Date())
     }
+    
     @State private var context: DeviceActivityReport.Context = .totalActivity
     @State private var filter: DeviceActivityFilter?
     
@@ -23,11 +24,13 @@ struct ReportView: View {
             if let filter {
                 DeviceActivityReport(context, filter: filter)
             } else {
-                
+                Text("Nothing yet...")
             }
         }
         .onAppear {
-            filter = DeviceActivityFilter(segment: .daily(during: thisDay), applications: category.appSelection.applicationTokens, categories: category.appSelection.categoryTokens, webDomains: category.appSelection.webDomainTokens)
+            withAnimation {
+                filter = DeviceActivityFilter(segment: .daily(during: thisDay), applications: category.appSelection.applicationTokens, categories: category.appSelection.categoryTokens, webDomains: category.appSelection.webDomainTokens)
+            }
         }
     }
 }

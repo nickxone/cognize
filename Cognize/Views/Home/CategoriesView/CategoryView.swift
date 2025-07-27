@@ -11,7 +11,12 @@ struct CategoryView: View {
     let category: Category
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("\(category.name)")
+            
+            ReportView(category: category)
+        }
+        .padding()
     }
 }
 

@@ -22,7 +22,6 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         super.intervalDidStart(for: activity)
         
         // Handle the start of the interval.
-        NotificationManager.shared.scheduleNotification(title: "intervalDidStart", body: "Started \(activity.rawValue)", inSeconds: 1.5)
         guard let category = findCategory(for: activity) else { return }
         category.strategy.intervalDidStart(for: activity)
     }

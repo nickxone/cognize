@@ -10,44 +10,14 @@ import ManagedSettings
 import FamilyControls
 import DeviceActivity
 
-class ShieldRestriction: RestrictionStrategy, Codable {
-    let categoryName: String
-    let categoryId: UUID
-    let appSelection: FamilyActivitySelection
+class ShieldRestriction: BaseRestriction, RestrictionStrategy {
     
-    init(categoryName: String, categoryId: UUID, appSelection: FamilyActivitySelection) {
-        self.categoryName = categoryName
-        self.categoryId = categoryId
-        self.appSelection = appSelection
-    }
-    
-    private var storeName: ManagedSettingsStore.Name {
-        .init("store-\(categoryId.uuidString)")
-    }
+//    init(categoryName: String, categoryId: UUID, appSelection: FamilyActivitySelection) {
+//        super.init(categoryName: categoryName, categoryId: categoryId, appSelection: appSelection)
+//    }
     
     private var deviceActivityName: DeviceActivityName {
         .init("allow-\(categoryId.uuidString)")
-    }
-    
-    private func removeShielding() {
-        let store = ManagedSettingsStore(named: storeName)
-        store.clearAllSettings()
-    }
-    
-    // MARK: - Scheduling
-    private func makeInterval(startOffset: TimeInterval = 0, endOffset: TimeInterval) -> (DateComponents, DateComponents) {
-        let now = Date().addingTimeInterval(startOffset)
-        let end = Date().addingTimeInterval(endOffset)
-        let calendar = Calendar.current
-        return (
-            calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: now),
-            calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: end)
-        )
-    }
-    
-    private func createSchedule(startOffset: TimeInterval = 0, endOffset: TimeInterval, warningTime: DateComponents? = nil) -> DeviceActivitySchedule {
-        let (start, end) = makeInterval(startOffset: startOffset, endOffset: endOffset)
-        return DeviceActivitySchedule(intervalStart: start, intervalEnd: end, repeats: false, warningTime: warningTime)
     }
     
     // MARK: - Unlocking
@@ -73,11 +43,6 @@ class ShieldRestriction: RestrictionStrategy, Codable {
     }
     
 //    MARK: - RestrictionStrategy Implementation
-    func shield() {
-        let store = ManagedSettingsStore(named: storeName)
-        store.shield(familyActivitySelection: appSelection)
-    }
-    
     func intervalDidStart(for activity: DeviceActivityName) {
         print("\(categoryName) intervalDidStart")
     }

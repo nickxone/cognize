@@ -8,17 +8,30 @@
 import SwiftUI
 import DeviceActivity
 
-
-
 struct ReportView: View {
+    var category: Category
+    
+    private var thisDay: DateInterval {
+        let startOfDay = Calendar.current.startOfDay(for: Date())
+        return DateInterval(start: startOfDay, end: Date())
+    }
     @State private var context: DeviceActivityReport.Context = .totalActivity
-    @State private var filter = DeviceActivityFilter(segment: .daily(during: DateInterval(start: (Calendar.current as NSCalendar).startOfDay(for: Date()), end: Date())))
+    @State private var filter: DeviceActivityFilter?
     
     var body: some View {
-        DeviceActivityReport(context, filter: filter)
+        Group {
+            if let filter {
+                DeviceActivityReport(context, filter: filter)
+            } else {
+                
+            }
+        }
+        .onAppear {
+            filter = DeviceActivityFilter(segment: .daily(during: thisDay), applications: category.appSelection.applicationTokens, categories: category.appSelection.categoryTokens, webDomains: category.appSelection.webDomainTokens)
+        }
     }
 }
 
 #Preview {
-    ReportView()
+    //    ReportView()
 }

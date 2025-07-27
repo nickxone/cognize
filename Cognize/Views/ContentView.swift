@@ -21,7 +21,7 @@ struct ContentView: View {
             }
             
             Tab(value: 1) {
-                ReportView()
+                Text("To Be Created")
             } label: {
                 Label("Report", systemImage: "paperplane.fill")
             }

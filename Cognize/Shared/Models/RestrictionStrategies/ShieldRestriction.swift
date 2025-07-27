@@ -12,10 +12,6 @@ import DeviceActivity
 
 class ShieldRestriction: BaseRestriction, RestrictionStrategy {
     
-//    init(categoryName: String, categoryId: UUID, appSelection: FamilyActivitySelection) {
-//        super.init(categoryName: categoryName, categoryId: categoryId, appSelection: appSelection)
-//    }
-    
     private var deviceActivityName: DeviceActivityName {
         .init("allow-\(categoryId.uuidString)")
     }

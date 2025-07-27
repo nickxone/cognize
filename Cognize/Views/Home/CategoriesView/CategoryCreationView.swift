@@ -10,6 +10,7 @@ import FamilyControls
 
 struct CategoryCreationView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.categoryStore) private var store
     
     @Binding var categories: [Category]
     
@@ -17,8 +18,6 @@ struct CategoryCreationView: View {
     @State private var newType: Category.RestrictionType = .shield
     @State private var newSelection = FamilyActivitySelection()
     @State private var showPicker = false
-    
-    private var store = CategoryStore.shared
     
     init(categories: Binding<[Category]>) {
         self._categories = categories

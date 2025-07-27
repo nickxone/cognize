@@ -128,6 +128,7 @@
 				Shared/Extensions/ManagedSettingsStore.swift,
 				Shared/Models/Category/Category.swift,
 				Shared/Models/Category/CategoryStore.swift,
+				"Shared/Models/Category/CategoryStore+Environment.swift",
 				Shared/Models/RestrictionStrategies/BaseRestriction.swift,
 				Shared/Models/RestrictionStrategies/IntervalTrackRestriction.swift,
 				Shared/Models/RestrictionStrategies/RestrictionStrategy.swift,

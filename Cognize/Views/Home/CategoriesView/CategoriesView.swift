@@ -9,7 +9,7 @@ import SwiftUI
 import FamilyControls
 
 struct CategoriesView: View {
-    private var store = CategoryStore.shared
+    @Environment(\.categoryStore) private var store
     
     @State private var categories: [Category] = []
     @State private var isCreating = false

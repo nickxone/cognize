@@ -32,15 +32,19 @@ struct CategoriesActivityReport: DeviceActivityReportScene {
                 for await activitySegment in activity.activitySegments {
                     for await activityCategory in activitySegment.categories {
                         
-                        if category.appSelection.categories.contains(activityCategory.category) {
-                            usage += activityCategory.totalActivityDuration
+                        for cateogoryFromAppSelection in category.appSelection.categories {
+                            if cateogoryFromAppSelection.token == activityCategory.category.token {
+                                usage += activityCategory.totalActivityDuration
+                            }
                         }
 
                         for await app in activityCategory.applications {
-                            if category.appSelection.applications.contains(app.application) {
-                                usage += app.totalActivityDuration
-                            } else {
-                                otherUsage += app.totalActivityDuration
+                            for appFromAppSelection in category.appSelection.applications {
+                                if appFromAppSelection.token == app.application.token {
+                                    usage += app.totalActivityDuration
+                                } else {
+                                    otherUsage += app.totalActivityDuration
+                                }
                             }
                         }
                         

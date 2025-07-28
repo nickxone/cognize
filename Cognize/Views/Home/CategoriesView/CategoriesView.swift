@@ -23,7 +23,16 @@ struct CategoriesView: View {
                         .padding()
                 } else {
                     GeometryReader { geometry in
+                        
                         TabView {
+                            GeometryReader { cardGeo in
+                                let scale = max(0.9, 1 - abs(cardGeo.frame(in: .global).midX - geometry.size.width / 2) / 500)
+                                CategoriesOverview()
+                                    .scaleEffect(scale)
+                                    .animation(.easeOut(duration: 0.3), value: scale)
+                                    .padding(.horizontal, 24)
+                            }
+                            
                             ForEach(categories, id: \.id) { category in
                                 GeometryReader { cardGeo in
                                     let scale = max(0.9, 1 - abs(cardGeo.frame(in: .global).midX - geometry.size.width / 2) / 500)

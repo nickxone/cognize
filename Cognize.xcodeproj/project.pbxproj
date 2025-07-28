@@ -119,6 +119,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Shared/Extensions/DeviceActivityReportContext.swift,
+				Shared/Extensions/ManagedSettingsStore.swift,
+				Shared/Models/Category/Category.swift,
+				Shared/Models/Category/CategoryStore.swift,
+				"Shared/Models/Category/CategoryStore+Environment.swift",
+				Shared/Models/RestrictionStrategies/BaseRestriction.swift,
+				Shared/Models/RestrictionStrategies/IntervalTrackRestriction.swift,
+				Shared/Models/RestrictionStrategies/RestrictionStrategy.swift,
+				Shared/Models/RestrictionStrategies/ShieldRestriction.swift,
+				Shared/Services/HapticsEngine.swift,
+				Shared/Services/NotificationManager.swift,
 			);
 			target = D8EEDE822E2F998100EB3DF6 /* CognizeReportExtension */;
 		};

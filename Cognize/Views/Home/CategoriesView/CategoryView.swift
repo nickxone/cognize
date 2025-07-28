@@ -14,7 +14,7 @@ struct CategoryView: View {
         VStack {
             Text("\(category.name)")
             
-            ReportView(category: category)
+            CategoryReportView(category: category)
         }
         .padding()
     }

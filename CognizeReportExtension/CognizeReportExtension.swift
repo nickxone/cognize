@@ -12,9 +12,12 @@ import SwiftUI
 struct CognizeReportExtension: DeviceActivityReportExtension {
     var body: some DeviceActivityReportScene {
         // Create a report for each DeviceActivityReport.Context that your app supports.
-        TotalActivityReport { totalActivity in
-            TotalActivityView(totalActivity: totalActivity)
+        AppsActivityReport { totalActivity in
+            AppsActivityView(totalActivity: totalActivity)
         }
         // Add more reports here...
+        CategoriesActivityReport { totalActivity in
+            CategoriesActivityView(totalActivity: totalActivity)
+        }
     }
 }

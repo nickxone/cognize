@@ -9,28 +9,29 @@ import DeviceActivity
 import SwiftUI
 import ManagedSettings
 
-struct TotalActivityReport: DeviceActivityReportScene {
+struct AppsActivityReport: DeviceActivityReportScene {
     // Define which context your scene will represent.
-    let context: DeviceActivityReport.Context = .totalActivity
+    let context: DeviceActivityReport.Context = .appsActivity
     
     // Define the custom configuration and the resulting view for this report.
-    let content: (TotalActivityView.Configuration) -> TotalActivityView
+    let content: (AppsActivityView.Configuration) -> AppsActivityView
     
-    func makeConfiguration(representing data: DeviceActivityResults<DeviceActivityData>) async -> TotalActivityView.Configuration {
+    func makeConfiguration(representing data: DeviceActivityResults<DeviceActivityData>) async -> AppsActivityView.Configuration {
         var totalUsageByApp: [Application: TimeInterval] = [:]
         
 //        Sorry about the nested for-loops 😔
 //        I'll try to make it cleaner later
         for await activity in data {
             for await activitySegment in activity.activitySegments {
-                for await event in activitySegment.categories {
-                    for await app in event.applications {
+                for await activityCategory in activitySegment.categories {
+                    // To-Do include web categories as well
+                    for await app in activityCategory.applications {
                         totalUsageByApp[app.application] = app.totalActivityDuration
                     }
                 }
             }
         }
         
-        return TotalActivityView.Configuration(totalUsageByCategory: totalUsageByApp)
+        return AppsActivityView.Configuration(totalUsageByApp: totalUsageByApp)
     }
 }

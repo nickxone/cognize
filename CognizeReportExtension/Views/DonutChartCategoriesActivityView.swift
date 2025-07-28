@@ -1,8 +1,8 @@
 //
-//  DonutChartView.swift
+//  DonutChartCategoriesActivityView.swift
 //  CognizeReportExtension
 //
-//  Created by Matvii Ustich on 27/07/2025.
+//  Created by Matvii Ustich on 28/07/2025.
 //
 
 import SwiftUI
@@ -10,14 +10,8 @@ import Charts
 import DeviceActivity
 import ManagedSettings
 
-struct AppUsage: Identifiable {
-    let id = UUID()
-    let appName: String
-    let usage: TimeInterval
-}
-
-struct DonutChartView: View {
-    let activity: TotalActivityView.Configuration
+struct DonutChartCategoriesActivityView: View {
+    let activity: CategoriesActivityView.Configuration
     
     @State private var selectedEntry: TimeInterval?
     @State private var selectedApp: AppUsage?
@@ -25,17 +19,10 @@ struct DonutChartView: View {
     
     var usageData: [AppUsage] {
         let sorted = activity.totalUsageByCategory
-            .map { AppUsage(appName: $0.key.localizedDisplayName ?? "Unknown", usage: $0.value) }
+            .map { AppUsage(appName: $0.key, usage: $0.value) }
             .sorted { $0.usage > $1.usage }
         
-        let top5 = sorted.prefix(5)
-        let otherUsage = sorted.dropFirst(5).reduce(0) { $0 + $1.usage }
-
-        if otherUsage > 0 {
-            return Array(top5) + [AppUsage(appName: "Other", usage: otherUsage)]
-        } else {
-            return Array(top5)
-        }
+        return sorted
     }
     
     var body: some View {
@@ -109,7 +96,7 @@ struct DonutChartView: View {
     
     private func restartHideTimer() {
         hideTimer?.invalidate()
-        hideTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { _ in
+        hideTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
             withAnimation(.easeInOut(duration: 0.35)) {
                 selectedApp = nil
             }
@@ -117,6 +104,7 @@ struct DonutChartView: View {
     }
 }
 
+
 #Preview {
-    //    DonutChartView()
+//    DonutChartCategoriesActivityView()
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 import DeviceActivity
 
-struct ReportView: View {
+struct CategoryReportView: View {
     var category: Category
     
     private var thisDay: DateInterval {
@@ -16,7 +16,7 @@ struct ReportView: View {
         return DateInterval(start: startOfDay, end: Date())
     }
     
-    @State private var context: DeviceActivityReport.Context = .totalActivity
+    @State private var context: DeviceActivityReport.Context = .appsActivity
     @State private var filter: DeviceActivityFilter?
     
     var body: some View {

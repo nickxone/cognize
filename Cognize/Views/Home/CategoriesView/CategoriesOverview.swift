@@ -9,7 +9,12 @@ import SwiftUI
 
 struct CategoriesOverview: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("All Categories")
+            
+            CategoriesReportView()
+        }
+        .padding()
     }
 }
 

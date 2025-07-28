@@ -9,25 +9,18 @@ import SwiftUI
 import DeviceActivity
 import ManagedSettings
 
-struct TotalActivityView: View {
+struct AppsActivityView: View {
     struct Configuration {
-        let totalUsageByCategory: [Application: TimeInterval]
+        let totalUsageByApp: [Application: TimeInterval]
     }
-
+    
     let totalActivity: Configuration
-
+    
     var body: some View {
-       DonutChartView(activity: totalActivity)
-        .navigationTitle("Total Usage")
+        DonutChartAppsActivityView(activity: totalActivity)
+            .navigationTitle("Total Usage")
     }
-
-    func formattedDuration(_ duration: TimeInterval) -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.hour, .minute]
-        formatter.unitsStyle = .short
-        formatter.zeroFormattingBehavior = .dropAll
-        return formatter.string(from: duration) ?? "0m"
-    }
+    
 }
 
 // In order to support previews for your extension's custom views, make sure its source files are

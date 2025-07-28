@@ -48,7 +48,7 @@ struct CategoryCreationView: View {
                 
                 Section {
                     Button("Save") {
-                        let newCategory = Category(name: newName, appSelection: newSelection, restrictionType: newType)
+                        let newCategory = Category(name: newName, appSelection: newSelection, restrictionType: newType, color: .blue)
                         categories.append(newCategory)
                         
                         // Apply the initial restriction

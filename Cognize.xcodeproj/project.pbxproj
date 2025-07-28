@@ -118,6 +118,7 @@
 		D8EEDE9D2E2F9C8D00EB3DF6 /* Exceptions for "Cognize" folder in "CognizeReportExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Shared/Extensions/ColorCoding.swift,
 				Shared/Extensions/DeviceActivityReportContext.swift,
 				Shared/Extensions/ManagedSettingsStore.swift,
 				Shared/Models/Category/Category.swift,
@@ -135,6 +136,7 @@
 		D8F0F3092E2B97AF0061A375 /* Exceptions for "Cognize" folder in "CognizeMonitor" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Shared/Extensions/ColorCoding.swift,
 				Shared/Extensions/ManagedSettingsStore.swift,
 				Shared/Models/Category/Category.swift,
 				Shared/Models/Category/CategoryStore.swift,

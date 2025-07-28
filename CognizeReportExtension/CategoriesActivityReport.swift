@@ -20,43 +20,35 @@ struct CategoriesActivityReport: DeviceActivityReportScene {
     let content: (CategoriesActivityView.Configuration) -> CategoriesActivityView
     
     func makeConfiguration(representing data: DeviceActivityResults<DeviceActivityData>) async -> CategoriesActivityView.Configuration {
-        var totalUsageByCategory: [String: TimeInterval] = [:]
         let categories = store.load()
-        
-        for category in categories {
-            totalUsageByCategory[category.name] = 0
-        }
-        
+        var totalUsageByCategory = Dictionary(uniqueKeysWithValues: categories.map { ($0.name, 0.0) })
         var otherUsage: TimeInterval = 0
         
         for await activity in data {
-            for await activitySegment in activity.activitySegments {
-                for await activityCategory in activitySegment.categories {
+            for await segment in activity.activitySegments {
+                for await activityCategory in segment.categories {
+                    // Add usage for matching activity categories
+                    for category in categories where activityCategoryIn(category: category, matches: activityCategory.category) {
+                        totalUsageByCategory[category.name, default: 0] += activityCategory.totalActivityDuration
+                    }
                     
-//                    for cateogoryFromAppSelection in category.appSelection.categories {
-//                        if cateogoryFromAppSelection.token == activityCategory.category.token {
-//                            usage += activityCategory.totalActivityDuration
-//                        }
-//                    }
-                    
+                    // Add usage for matching apps
                     for await app in activityCategory.applications {
-                        var appInCategoryFlag = false
-                        for category in categories {
-                            if appInCategory(app: app.application, category: category) {
-                                totalUsageByCategory[category.name]! += app.totalActivityDuration
-                                appInCategoryFlag = true
-                            }
+                        var matched = false
+                        for category in categories where appIn(category: category, matches: app.application) {
+                            totalUsageByCategory[category.name, default: 0] += app.totalActivityDuration
+                            matched = true
                         }
-                        if !appInCategoryFlag {
+                        if !matched {
                             otherUsage += app.totalActivityDuration
                         }
                     }
                     
-//                        for await webDomain in activityCategory.webDomains {
-//                            if category.appSelection.webDomains.contains(webDomain.webDomain) {
-//                                usage += webDomain.totalActivityDuration
-//                            }
+//                    for await webDomain in activityCategory.webDomains {
+//                        for category in categories where category.appSelection.webDomains.contains(webDomain.webDomain) {
+//                            totalUsageByCategory[category.name, default: 0] += webDomain.totalActivityDuration
 //                        }
+//                    }
                 }
             }
         }
@@ -65,13 +57,13 @@ struct CategoriesActivityReport: DeviceActivityReportScene {
         return CategoriesActivityView.Configuration(totalUsageByCategory: totalUsageByCategory)
     }
     
-    private func appInCategory(app: Application, category: Category) -> Bool {
-        for activity in category.appSelection.applications {
-            if app.token == activity.token {
-                return true
-            }
-        }
-        return false
+    private func appIn(category: Category, matches app: Application) -> Bool {
+        category.appSelection.applications.contains { $0.token == app.token }
     }
+    
+    private func activityCategoryIn(category: Category, matches activityCategory: ActivityCategory) -> Bool {
+        category.appSelection.categories.contains { $0.token == activityCategory.token }
+    }
+    
 }
 

@@ -32,11 +32,11 @@ struct ContentView: View {
                 Label("Settings", systemImage: "gearshape.fill")
             }
             
-            Tab(value: 3) {
-                CategoriesOverview()
-            } label: {
-                Label("Overview", systemImage: "globe")
-            }
+//            Tab(value: 3) {
+//                CategoriesOverview()
+//            } label: {
+//                Label("Overview", systemImage: "globe")
+//            }
             
         }
         .sensoryFeedback(.impact, trigger: tabSelection)

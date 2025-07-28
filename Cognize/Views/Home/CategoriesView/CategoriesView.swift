@@ -24,18 +24,29 @@ struct CategoriesView: View {
                         .foregroundColor(.gray)
                         .padding()
                 } else {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 15) {
+                    //                    ScrollView(.horizontal, showsIndicators: false) {
+                    //                        HStack(spacing: 15) {
+                    //                            CategoriesOverview()
+                    //
+                    //                            ForEach(categories, id: \.id) { category in
+                    //                                CategoryView(category: category)
+                    //                            }
+                    //                        }
+                    //                        .scrollTargetLayout()
+                    //                    }
+                    //                    .scrollTargetBehavior(.viewAligned)
+                    //                    .safeAreaPadding(.horizontal, 30)
+                    
+                    FadingCardScrollView(
+                        items: categories,
+                        leadingView: {
                             CategoriesOverview()
-                            
-                            ForEach(categories, id: \.id) { category in
-                                CategoryView(category: category)
-                            }
+                        },
+                        content: { category in
+                            CategoryView(category: category)
                         }
-                        .scrollTargetLayout()
-                    }
-                    .scrollTargetBehavior(.viewAligned)
-                    .safeAreaPadding(.horizontal, 30)
+                    )
+                    
                 }
                 
                 Spacer()

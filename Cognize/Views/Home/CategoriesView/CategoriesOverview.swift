@@ -17,7 +17,7 @@ struct CategoriesOverview: View {
             
             CategoriesReportView()
         }
-        .frame(width: UIScreen.main.bounds.width - 64)
+        .frame(width: UIScreen.main.bounds.width - 60)
         .background(.thinMaterial)
         .cornerRadius(10)
         .shadow(radius: 4)

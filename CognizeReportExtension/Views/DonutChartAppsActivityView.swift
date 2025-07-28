@@ -38,6 +38,10 @@ struct DonutChartAppsActivityView: View {
         }
     }
     
+    var totalUsage: TimeInterval {
+        usageData.reduce(0) { $0 + $1.usage }
+    }
+    
     var body: some View {
         VStack {
             Chart(usageData) { appUsage in
@@ -71,10 +75,10 @@ struct DonutChartAppsActivityView: View {
                                 .foregroundStyle(.secondary)
                             Text("\(formattedDuration(selectedApp.usage))")
                         } else {
-                            Text("Most Used App")
+                            Text("Total Usage")
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
-                            Text(usageData[0].appName)
+                            Text(formattedDuration(totalUsage))
                                 .font(.title2.bold())
                                 .foregroundStyle(.primary)
                         }

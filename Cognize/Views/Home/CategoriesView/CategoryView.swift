@@ -22,7 +22,7 @@ struct CategoryView: View {
                 
                 CategoryReportView(category: category)
             }
-            .frame(width: UIScreen.main.bounds.width - 64, height: UIScreen.main.bounds.height * 0.4)
+            .frame(width: UIScreen.main.bounds.width - 60, height: UIScreen.main.bounds.height * 0.4)
             .background(
                 AngularGradient(
                     gradient: Gradient(colors: gradientColors(from: category.color)),

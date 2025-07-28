@@ -9,7 +9,7 @@ import Foundation
 import FamilyControls
 import SwiftUI
 
-class Category: Codable, ObservableObject {
+class Category: Codable, ObservableObject, Identifiable {
     enum RestrictionType: String, Codable {
         case allow
         case shield

@@ -18,7 +18,6 @@ struct AppsActivityView: View {
     
     var body: some View {
         DonutChartAppsActivityView(activity: totalActivity)
-            .navigationTitle("Total Usage")
     }
     
 }

@@ -16,10 +16,9 @@ struct CategoriesActivityView: View {
     
     var body: some View {
         DonutChartCategoriesActivityView(activity: totalActivity)
-            .navigationTitle("Total Usage")
     }
 }
 
 #Preview {
-//    CategoriesActivityView()
+    //    CategoriesActivityView()
 }

@@ -25,23 +25,17 @@ struct CategoriesView: View {
                         .padding()
                 } else {
                     ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 32) {
+                        HStack(spacing: 15) {
                             CategoriesOverview()
-                                .frame(width: UIScreen.main.bounds.width - 64) // Card width
-                                .background(.ultraThinMaterial)
-                                .cornerRadius(16)
-                                .shadow(radius: 4)
+                            
                             ForEach(categories, id: \.id) { category in
                                 CategoryView(category: category)
-                                    .frame(width: UIScreen.main.bounds.width - 64) // Card width
-                                    .background(.ultraThinMaterial)
-                                    .cornerRadius(16)
-                                    .shadow(radius: 4)
                             }
                         }
-                        .padding(.horizontal, 16)
+                        .scrollTargetLayout()
                     }
-                    .scrollTargetBehavior(.paging)
+                    .scrollTargetBehavior(.viewAligned)
+                    .safeAreaPadding(.horizontal, 30)
                 }
                 
                 Spacer()

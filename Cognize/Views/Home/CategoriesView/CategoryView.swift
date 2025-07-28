@@ -12,14 +12,25 @@ struct CategoryView: View {
     
     var body: some View {
         VStack {
-            Text("\(category.name)")
+            VStack {
+                Text("\(category.name)")
+                    .font(.title2.bold())
+                    .foregroundStyle(.primary)
+                    .padding()
+                
+                CategoryReportView(category: category)
+            }
+            .frame(width: UIScreen.main.bounds.width - 64, height: UIScreen.main.bounds.height * 0.4)
+            .background(.thinMaterial)
+            .cornerRadius(10)
+            .shadow(radius: 4)
             
-            CategoryReportView(category: category)
+            Spacer()
         }
-        .padding()
+        .preferredColorScheme(.dark)
     }
 }
 
 #Preview {
-//    CategoryView()
+    //    CategoryView()
 }

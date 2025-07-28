@@ -58,7 +58,7 @@ struct DonutChartCategoriesActivityView: View {
                                 .foregroundStyle(.secondary)
                             Text("\(formattedDuration(selectedApp.usage))")
                         } else {
-                            Text("Most Used App")
+                            Text("Most Used Category")
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
                             Text(usageData[0].appName)

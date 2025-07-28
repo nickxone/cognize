@@ -11,10 +11,17 @@ struct CategoriesOverview: View {
     var body: some View {
         VStack {
             Text("All Categories")
+                .font(.title.bold())
+                .foregroundStyle(.primary)
+                .padding()
             
             CategoriesReportView()
         }
-        .padding()
+        .frame(width: UIScreen.main.bounds.width - 64)
+        .background(.thinMaterial)
+        .cornerRadius(10)
+        .shadow(radius: 4)
+        .preferredColorScheme(.dark)
     }
 }
 

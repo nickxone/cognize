@@ -7,12 +7,33 @@
 
 import SwiftUI
 
-struct FadingCardScrollView<Item: Identifiable, Content: View, LeadingView: View>: View {
+fileprivate struct CardMidXPreferenceKey: PreferenceKey {
+    static var defaultValue: [AnyHashable: CGFloat] = [:]
+
+    static func reduce(
+        value: inout [AnyHashable: CGFloat],
+        nextValue: () -> [AnyHashable: CGFloat]
+    ) {
+        value.merge(nextValue(), uniquingKeysWith: { $1 })
+    }
+}
+
+fileprivate enum LeadingViewID: Hashable {
+    case leading
+}
+
+struct FadingCardScrollView<
+    Item: Identifiable,
+    Content: View,
+    LeadingView: View
+>: View {
     var items: [Item]
     var cardWidth: CGFloat = UIScreen.main.bounds.width - 60
     var spacing: CGFloat = 15
     var leadingView: (() -> LeadingView)?
     var content: (Item) -> Content
+
+    @Binding var focusedItem: Item?
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -27,6 +48,9 @@ struct FadingCardScrollView<Item: Identifiable, Content: View, LeadingView: View
                         leadingView()
                             .opacity(fade)
                             .scaleEffect(0.95 + 0.05 * fade)
+                            .background(
+                                Color.clear.preference(key: CardMidXPreferenceKey.self, value: [LeadingViewID.leading: midX])
+                            )
                     }
                     .frame(width: cardWidth)
                 }
@@ -41,18 +65,34 @@ struct FadingCardScrollView<Item: Identifiable, Content: View, LeadingView: View
                         content(item)
                             .opacity(fade)
                             .scaleEffect(0.95 + 0.05 * fade)
+                            .background(
+                                Color.clear.preference(key: CardMidXPreferenceKey.self, value: [AnyHashable(item.id): midX])
+                            )
                     }
                     .frame(width: cardWidth)
                 }
-                
+
             }
             .scrollTargetLayout()
+        }
+        .onPreferenceChange(CardMidXPreferenceKey.self) { midXs in
+            let screenMidX = UIScreen.main.bounds.width / 2
+            if let closest = midXs.min(by: {
+                abs($0.value - screenMidX) < abs($1.value - screenMidX)
+            }) {
+                if let key = closest.key as? Item.ID {
+                    focusedItem = items.first(where: { $0.id == key })
+                } else {
+                    focusedItem = nil // e.g., for leading view
+                }
+            }
         }
         .scrollTargetBehavior(.viewAligned)
         .safeAreaPadding(.horizontal, spacing * 2)
     }
+
 }
 
 #Preview {
-//    FadingCardScrollView()
+    //    FadingCardScrollView()
 }

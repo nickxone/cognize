@@ -16,10 +16,10 @@ struct CategoriesOverview: View {
         ZStack {
             AngularGradient(
                 gradient: Gradient(colors: generateMixedColors(from: categories)),
-                center: .center,
+                center: dynamicGradientCenter(from: categories),
                 angle: rotation
             )
-            .blur(radius: 12)
+            .blur(radius: 20)
             .animation(.linear(duration: 30).repeatForever(autoreverses: false), value: rotation)
             .onAppear {
                 rotation = .degrees(360)
@@ -45,20 +45,52 @@ struct CategoriesOverview: View {
         .preferredColorScheme(.dark)
     }
 
+
     private func generateMixedColors(from categories: [Category]) -> [Color] {
-        let allBlends = categories.flatMap { category in
+        // Convert category colors to hue-sorted array of CGFloat
+        let hues = categories.compactMap { category -> CGFloat? in
             let uiColor = UIColor(category.color)
             var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-            uiColor.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+            guard uiColor.getHue(&h, saturation: &s, brightness: &b, alpha: &a) else { return nil }
+            return h
+        }.sorted()
 
-            return [
-                Color(hue: Double(h), saturation: Double(s * 0.8), brightness: Double(b * 1.1), opacity: 0.3),
-                Color(hue: Double((h + 0.05).truncatingRemainder(dividingBy: 1.0)), saturation: Double(s * 0.6), brightness: Double(b), opacity: 0.4),
-                Color(hue: Double((h + 0.1).truncatingRemainder(dividingBy: 1.0)), saturation: Double(s * 0.4), brightness: Double(b * 0.9), opacity: 0.25)
-            ]
+        // Interpolate hues between each pair for smoother transitions
+        var interpolatedColors: [Color] = []
+
+        for i in 0..<hues.count {
+            let h1 = hues[i]
+            let h2 = hues[(i + 1) % hues.count] // wrap around to make it a circle
+            let steps = 6
+
+            for step in 0..<steps {
+                let t = CGFloat(step) / CGFloat(steps)
+                let interpolatedHue = h1 + t * ((h2 - h1 + 1).truncatingRemainder(dividingBy: 1.0))
+                let hue = interpolatedHue.truncatingRemainder(dividingBy: 1.0)
+
+                interpolatedColors.append(
+                    Color(hue: Double(hue), saturation: 0.6, brightness: 1.0, opacity: 0.4)
+                )
+            }
         }
 
-        return allBlends.isEmpty ? [.blue, .green, .purple] : allBlends + allBlends.reversed()
+        return interpolatedColors.isEmpty ? [.blue, .green, .purple] : interpolatedColors
+    }
+    
+    private func dynamicGradientCenter(from categories: [Category]) -> UnitPoint {
+        let hues = categories.compactMap { category -> CGFloat? in
+            let uiColor = UIColor(category.color)
+            var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+            guard uiColor.getHue(&h, saturation: &s, brightness: &b, alpha: &a) else { return nil }
+            return h
+        }
+
+        guard !hues.isEmpty else { return .center }
+
+        let avgHue = hues.reduce(0, +) / CGFloat(hues.count)
+        let offset = CGFloat((avgHue - 0.5) * 0.25) // scale it down
+
+        return UnitPoint(x: 0.5 + offset, y: 0.5 - offset)
     }
 }
 

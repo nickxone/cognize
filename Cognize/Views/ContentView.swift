@@ -10,36 +10,29 @@ import FamilyControls
 import DeviceActivity
 
 struct ContentView: View {
-    @State private var tabSelection = 0
+    @State private var activeTab: TabItem = .home
     
     var body: some View {
-        TabView(selection: $tabSelection) {
-            Tab(value: 0) {
+        VStack {
+            switch activeTab {
+            case .home:
                 CategoriesView()
-            } label: {
-                Label("Home", systemImage: "book.circle.fill")
-            }
-            
-            Tab(value: 1) {
+            case .achievements:
                 Text("To Be Created")
-            } label: {
-                Label("Report", systemImage: "paperplane.fill")
-            }
-            
-            Tab(value: 2) {
+            case .profile:
                 SettingsView()
-            } label: {
-                Label("Settings", systemImage: "gearshape.fill")
             }
             
-//            Tab(value: 3) {
-//                CategoriesOverview()
-//            } label: {
-//                Label("Overview", systemImage: "globe")
-//            }
+            Spacer()
             
+            CustomTabBar(activeTab: $activeTab) { _ in
+                
+            } onSearchTextChanged: { _ in
+                
+            }
+
         }
-        .sensoryFeedback(.impact, trigger: tabSelection)
+
         
     }
     

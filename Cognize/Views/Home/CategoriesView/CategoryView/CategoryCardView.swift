@@ -8,7 +8,7 @@
 import SwiftUI
 import FamilyControls
 
-struct CategoryView: View {
+struct CategoryCardView: View {
     @State private var rotation: Angle = .zero
     let category: Category
     
@@ -22,7 +22,7 @@ struct CategoryView: View {
                 
                 CategoryReportView(category: category)
             }
-            .frame(width: UIScreen.main.bounds.width - 60, height: UIScreen.main.bounds.height * 0.4)
+            .frame(width: UIScreen.main.bounds.width - 60, height: UIScreen.main.bounds.height * 0.6)
             .background(
                 AngularGradient(
                     gradient: Gradient(colors: gradientColors(from: category.color)),
@@ -78,6 +78,6 @@ struct CategoryView: View {
 #Preview {
     let appSelection = FamilyActivitySelection()
     let category = Category(name: "Social", appSelection: appSelection, restrictionType: .shield, color: .green)
-    CategoryView(category: category)
+    CategoryCardView(category: category)
     
 }

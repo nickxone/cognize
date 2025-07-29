@@ -8,7 +8,7 @@
 import SwiftUI
 import FamilyControls
 
-struct CategoryDetailView: View {
+struct CategoryDetailViewLegacy: View {
     let category: Category
     
     @State private var durationPickerIsPresented: Bool = false
@@ -36,6 +36,7 @@ struct CategoryDetailView: View {
                 }
                 .sheet(isPresented: $durationPickerIsPresented) {
                     DurationPickerView(selectedDuration: $selectedDuration) {
+//                        model.unlockEntertainmentActivities(for: selectedDuration)
                         let strategy: ShieldRestriction = category.strategy as! ShieldRestriction
                         strategy.unlockEntertainmentActivities(for: selectedDuration)
                         durationPickerIsPresented = false

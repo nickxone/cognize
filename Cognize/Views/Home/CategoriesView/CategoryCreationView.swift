@@ -17,6 +17,7 @@ struct CategoryCreationView: View {
     @State private var newName = ""
     @State private var newType: Category.RestrictionType = .shield
     @State private var newSelection = FamilyActivitySelection()
+    @State private var selectedColor: Color = .blue
     @State private var showPicker = false
     
     init(categories: Binding<[Category]>) {
@@ -46,9 +47,13 @@ struct CategoryCreationView: View {
                         .font(.footnote)
                 }
                 
+                Section(header: Text("Color")) {
+                    ColorPicker("Choose Color", selection: $selectedColor)
+                }
+                
                 Section {
                     Button("Save") {
-                        let newCategory = Category(name: newName, appSelection: newSelection, restrictionType: newType, color: .blue)
+                        let newCategory = Category(name: newName, appSelection: newSelection, restrictionType: newType, color: selectedColor)
                         categories.append(newCategory)
                         
                         // Apply the initial restriction

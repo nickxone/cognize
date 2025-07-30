@@ -13,7 +13,10 @@ enum HapticFeedbackType {
 }
 
 struct HapticFeedback: ViewModifier {
-    var type: HapticFeedbackType
+    let type: HapticFeedbackType
+    let scale: CGFloat
+    
+    @State private var scaleEffect: CGFloat = 1
     
     private func feedbackValuesOnPress(type: HapticFeedbackType) -> (intensity: Float, sharpness: Float) {
         switch type {
@@ -36,10 +39,13 @@ struct HapticFeedback: ViewModifier {
         let (onReleaseIntensity, onReleaseSharpness) = feedbackValuesOnRelease(type: type)
         
         content
+            .scaleEffect(scaleEffect)
             .pressActions {
                 HapticsEngine.shared.hapticFeedback(intensity: onPressIntensity, sharpness: onPressSharpness)
+                scaleEffect = scale
             } onRelease: {
                 HapticsEngine.shared.hapticFeedback(intensity: onReleaseIntensity, sharpness: onReleaseSharpness)
+                scaleEffect = 1.0
             }
 
     }

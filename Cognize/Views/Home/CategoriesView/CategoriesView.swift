@@ -12,12 +12,13 @@ import SwiftUI
 
 struct CategoriesView: View {
     @Environment(\.categoryStore) private var store
-
+    
     @State private var categories: [Category] = []
     @State private var isCreating = false
-
+    @State private var showDetailView = false
+    
     @State private var focusedCategory: Category?
-
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -40,6 +41,22 @@ struct CategoriesView: View {
                                 }
                                 VStack {
                                     CategoryCardView(category: category)
+                                        .overlay(alignment: .topLeading) {
+                                            Button {
+                                                showDetailView = true
+                                            } label: {
+                                                Image(systemName: "arrow.up.left.and.arrow.down.right")
+                                                    .font(.callout)
+                                                    .foregroundStyle(.white)
+                                                    .padding(12)
+                                                    .background {
+                                                        Circle()
+                                                            .foregroundStyle(.black.opacity(0.3))
+                                                    }
+                                                    .padding(16) // offset from top and right edge
+                                            }
+                                            .hapticFeedback()
+                                        }
                                     Spacer()
                                 }
                             }
@@ -47,7 +64,7 @@ struct CategoriesView: View {
                         focusedItem: $focusedCategory
                     )
                 }
-
+                
                 Spacer()
             }
             .navigationTitle("Categories")
@@ -59,10 +76,15 @@ struct CategoriesView: View {
             .sheet(isPresented: $isCreating) {
                 CategoryCreationView(categories: $categories)
             }
+            .fullScreenCover(isPresented: $showDetailView) {
+                if let focusedCategory {
+                    CategoryDetailView(category: focusedCategory)
+                }
+            }
             .onAppear {
                 categories = store.load()
             }
         }
     }
-
+    
 }

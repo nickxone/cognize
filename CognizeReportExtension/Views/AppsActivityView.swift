@@ -5,21 +5,21 @@
 //  Created by Matvii Ustich on 22/07/2025.
 //
 
-import SwiftUI
 import DeviceActivity
 import ManagedSettings
+import SwiftUI
 
 struct AppsActivityView: View {
     struct Configuration {
         let totalUsageByApp: [Application: TimeInterval]
     }
-    
+
     let totalActivity: Configuration
-    
+
     var body: some View {
         DonutChartAppsActivityView(activity: totalActivity)
     }
-    
+
 }
 
 // In order to support previews for your extension's custom views, make sure its source files are

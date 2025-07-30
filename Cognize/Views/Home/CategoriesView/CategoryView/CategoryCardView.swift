@@ -9,8 +9,15 @@ import SwiftUI
 import FamilyControls
 
 struct CategoryCardView: View {
-    @State private var rotation: Angle = .zero
     let category: Category
+    let animate: Bool
+    
+    @State private var rotation: Angle = .zero
+    
+    init(category: Category, animate: Bool = true) {
+        self.category = category
+        self.animate = animate
+    }
 
     var body: some View {
         ZStack {
@@ -23,7 +30,9 @@ struct CategoryCardView: View {
             .blur(radius: 12)
             .animation(.linear(duration: 15).repeatForever(autoreverses: false), value: rotation)
             .onAppear {
-                rotation = .degrees(360)
+                if animate {
+                    rotation = .degrees(360)
+                }
             }
 
             // Content
@@ -39,18 +48,18 @@ struct CategoryCardView: View {
             .padding()
         }
         .frame(width: UIScreen.main.bounds.width - 60,
-               height: UIScreen.main.bounds.height * 0.6)
+               height: UIScreen.main.bounds.height * 0.5)
         .cornerRadius(20)
         .shadow(color: category.color.opacity(0.25), radius: 12, x: 0, y: 6)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
                 .stroke(category.color.opacity(0.15), lineWidth: 1)
         )
+        
         .preferredColorScheme(.dark)
     }
 
     // MARK: - Helpers
-
     private func gradientColors(from base: Color) -> [Color] {
         let uiColor = UIColor(base)
         var hue: CGFloat = 0, sat: CGFloat = 0, bri: CGFloat = 0, alpha: CGFloat = 0

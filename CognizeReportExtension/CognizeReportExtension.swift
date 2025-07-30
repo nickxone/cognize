@@ -13,7 +13,7 @@ struct CognizeReportExtension: DeviceActivityReportExtension {
     var body: some DeviceActivityReportScene {
         // Create a report for each DeviceActivityReport.Context that your app supports.
         AppsActivityReport { totalActivity in
-            AppsActivityView(totalActivity: totalActivity)
+            AppsActivityView(totalActivity: totalActivity) // if the activity report isn't visible THIS is not rendering
         }
         // Add more reports here...
         CategoriesActivityReport { totalActivity in

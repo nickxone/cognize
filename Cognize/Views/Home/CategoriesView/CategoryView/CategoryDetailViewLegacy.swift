@@ -8,7 +8,7 @@
 import SwiftUI
 import FamilyControls
 
-struct CategoryDetailView: View {
+struct CategoryDetailViewLegacy: View {
     let category: Category
     
     @State private var durationPickerIsPresented: Bool = false

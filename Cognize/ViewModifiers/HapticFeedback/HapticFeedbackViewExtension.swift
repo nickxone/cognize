@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
  
 extension View {
-    func hapticFeedback(_ type: HapticFeedbackType = .defaultHaptic) -> some View {
-        modifier(HapticFeedback(type: type))
+    func hapticFeedback(_ type: HapticFeedbackType = .defaultHaptic, scale: CGFloat = 0.95) -> some View {
+        modifier(HapticFeedback(type: type, scale: scale))
     }
 }

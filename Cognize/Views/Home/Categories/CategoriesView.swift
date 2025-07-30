@@ -63,6 +63,9 @@ struct CategoriesView: View {
                         },
                         focusedItem: $focusedCategory
                     )
+                    .onChange(of: focusedCategory) { oldValue, newValue in
+                        HapticsEngine.shared.hapticFeedback(intensity: 0.3, sharpness: 1.0)
+                    }
                 }
                 
                 Spacer()

@@ -24,7 +24,11 @@ import SwiftUI
 /// - Computed `color` property backed by encoded `Data` for storage compatibility.
 ///
 /// This model enables the app to group apps under customizable categories and apply personalized usage control logic.
-class Category: Codable, ObservableObject, Identifiable {
+class Category: Codable, ObservableObject, Identifiable, Equatable {
+    static func == (lhs: Category, rhs: Category) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     enum RestrictionType: String, Codable {
         case allow
         case shield

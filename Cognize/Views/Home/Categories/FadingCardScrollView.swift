@@ -9,7 +9,7 @@ import SwiftUI
 
 fileprivate struct CardMidXPreferenceKey: PreferenceKey {
     static var defaultValue: [AnyHashable: CGFloat] = [:]
-
+    
     static func reduce(
         value: inout [AnyHashable: CGFloat],
         nextValue: () -> [AnyHashable: CGFloat]
@@ -32,9 +32,9 @@ struct FadingCardScrollView<
     var spacing: CGFloat = 15
     var leadingView: (() -> LeadingView)?
     var content: (Item) -> Content
-
+    
     @Binding var focusedItem: Item?
-
+    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: spacing) {
@@ -44,7 +44,7 @@ struct FadingCardScrollView<
                         let midX = geo.frame(in: .global).midX
                         let distance = abs(screenWidth / 2 - midX)
                         let fade = max(0.5, 1 - distance / screenWidth)
-
+                        
                         leadingView()
                             .opacity(fade)
                             .scaleEffect(0.95 + 0.05 * fade)
@@ -54,14 +54,14 @@ struct FadingCardScrollView<
                     }
                     .frame(width: cardWidth)
                 }
-
+                
                 ForEach(items) { item in
                     GeometryReader { geo in
                         let screenWidth = UIScreen.main.bounds.width
                         let midX = geo.frame(in: .global).midX
                         let distance = abs(screenWidth / 2 - midX)
                         let fade = max(0.5, 1 - distance / screenWidth)
-
+                        
                         content(item)
                             .opacity(fade)
                             .scaleEffect(0.95 + 0.05 * fade)
@@ -71,7 +71,7 @@ struct FadingCardScrollView<
                     }
                     .frame(width: cardWidth)
                 }
-
+                
             }
             .scrollTargetLayout()
         }
@@ -90,7 +90,7 @@ struct FadingCardScrollView<
         .scrollTargetBehavior(.viewAligned)
         .safeAreaPadding(.horizontal, spacing * 2)
     }
-
+    
 }
 
 #Preview {

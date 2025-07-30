@@ -58,6 +58,9 @@ struct CategoriesView: View {
                                             .hapticFeedback()
                                         }
                                     Spacer()
+                                    
+                                    CategoryActionView(category: category)
+                                    
                                 }
                             }
                         },

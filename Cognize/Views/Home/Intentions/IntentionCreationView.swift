@@ -9,7 +9,7 @@ import SwiftUI
 import FamilyControls
 import SwiftData
 
-struct IntentionLogCreationView: View {
+struct IntentionCreationView: View {
     //    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
@@ -33,11 +33,11 @@ struct IntentionLogCreationView: View {
                 Text("Log Your Intention")
                     .font(.title.bold())
                     .foregroundStyle(.white)
+                    .padding(.top)
                 
                 VStack(spacing: 16) {
                     TextField("What's your intention?", text: $reason)
                         .padding()
-//                        .background(.ultraThinMaterial)
                         .background(.black.opacity(0.25))
                         .cornerRadius(12)
                     
@@ -67,41 +67,57 @@ struct IntentionLogCreationView: View {
                 
                 Spacer()
                 
-                Button {
-                    let _ = IntentionLog(category: category, reason: reason, duration: duration)
-                    //                    modelContext.insert(log)
-                    dismiss()
-                } label: {
-                    Text("Save Intention")
-                        .fontWeight(.semibold)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(category.color.gradient, in: Capsule())
-                        .foregroundStyle(.white)
+                Group {
+                    Button {
+                        let _ = IntentionLog(category: category, reason: reason, duration: duration)
+                        //                    modelContext.insert(log)
+                        dismiss()
+                    } label: {
+                        Text("Save Intention")
+                            .fontWeight(.semibold)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background {
+                                ZStack {
+                                    Capsule()
+                                        .fill(category.color.gradient)
+                                    Capsule()
+                                        .fill(.black.opacity(0.2))
+                                }
+                                .clipShape(Capsule())
+                            }
+                            .foregroundStyle(.white)
+                    }
+                    .disabled(reason.isEmpty)
+                    .opacity(reason.isEmpty ? 0.6 : 1)
+                    
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Cancel")
+                            .fontWeight(.semibold)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(.gray.gradient.opacity(0.25), in: Capsule())
+                            .foregroundStyle(.white)
+                    }
+                    .padding(.top, -15)
                 }
-                .disabled(reason.isEmpty)
-                .opacity(reason.isEmpty ? 0.6 : 1)
-    
-                Button {
-                    dismiss()
-                } label: {
-                    Text("Save Intention")
-                        .fontWeight(.semibold)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(.gray.gradient.opacity(0.25), in: Capsule())
-                        .foregroundStyle(.white)
-                }
-                .padding(.top, -15)
+
+                
             }
             .padding()
         }
-    
+        .gesture(
+            TapGesture().onEnded {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
+        )
+        
         .preferredColorScheme(.dark)
     }
     
     // MARK: - Helpers
-    
     private func gradientColors(from base: Color) -> [Color] {
         let uiColor = UIColor(base)
         var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
@@ -128,5 +144,5 @@ struct IntentionLogCreationView: View {
 #Preview {
     let appSelection = FamilyActivitySelection()
     let category = Category(name: "Social", appSelection: appSelection, restrictionType: .shield, color: .blue)
-    IntentionLogCreationView(category: category)
+    IntentionCreationView(category: category)
 }

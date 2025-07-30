@@ -10,21 +10,21 @@ import FamilyControls
 
 @main
 struct CognizeApp: App {
-    let center = AuthorizationCenter.shared
+//    let center = AuthorizationCenter.shared
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .onAppear {
-                    NotificationManager.shared.requestAuthorization()
-                    Task {
-                        do { // Request Authorisation for Family Controls
-                            try await center.requestAuthorization(for: .individual)
-                        } catch {
-                            print("Failed to enroll a user with error: \(error)")
-                        }
-                    }
-                }
+//                .onAppear {
+//                    NotificationManager.shared.requestAuthorization()
+//                    Task {
+//                        do { // Request Authorisation for Family Controls
+//                            try await center.requestAuthorization(for: .individual)
+//                        } catch {
+//                            print("Failed to enroll a user with error: \(error)")
+//                        }
+//                    }
+//                }
         }
     }
 }

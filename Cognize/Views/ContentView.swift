@@ -6,36 +6,38 @@
 //
 
 import SwiftUI
-import FamilyControls
-import DeviceActivity
 
 struct ContentView: View {
     @State private var activeTab: TabItem = .home
     
     var body: some View {
-        VStack {
-            switch activeTab {
-            case .home:
-                CategoriesView()
-            case .achievements:
-                Text("To Be Created")
-            case .profile:
-                SettingsView()
+        VStack(spacing: 0) {
+            ZStack {
+                switch activeTab {
+                case .home:
+                    CategoriesView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                        .transition(.opacity)
+                case .achievements:
+                    Text("To Be Created")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                        .transition(.opacity)
+                case .profile:
+                    SettingsView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                        .transition(.opacity)
+                }
             }
-            
-            Spacer()
-            
+            .animation(.easeInOut(duration: 0.3), value: activeTab)
+
             CustomTabBar(activeTab: $activeTab) { _ in
-                
+                // Tab tapped
             } onSearchTextChanged: { _ in
-                
+                // Search input
             }
-
         }
-
-        
+        .permissionSheet([.familyControls, .notifications])
     }
-    
 }
 
 #Preview {

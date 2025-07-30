@@ -9,6 +9,21 @@ import Foundation
 import FamilyControls
 import SwiftUI
 
+/// A model representing a user-defined app usage category, including the selected apps, restriction type, and associated color.
+///
+/// This class encapsulates:
+/// - A unique `id` to identify the category.
+/// - A `name` for user display.
+/// - An `appSelection` to define which apps are part of the category (via `FamilyActivitySelection`).
+/// - A `restrictionType` that determines how usage is limited (e.g., allow, shield, interval).
+/// - A `color` for visual differentiation in the UI, stored in a codable format using `Data`.
+///
+/// It also includes:
+/// - A computed `strategy` property which returns the corresponding `RestrictionStrategy` (e.g., shield or interval-based),
+///   dynamically constructed based on the selected restriction type.
+/// - Computed `color` property backed by encoded `Data` for storage compatibility.
+///
+/// This model enables the app to group apps under customizable categories and apply personalized usage control logic.
 class Category: Codable, ObservableObject, Identifiable {
     enum RestrictionType: String, Codable {
         case allow

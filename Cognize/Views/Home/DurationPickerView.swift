@@ -67,7 +67,7 @@ struct DurationPickerView: View {
                         .fontWeight(.regular)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.gray.opacity(0.2))
+                        .background(.gray.opacity(0.2))
                         .foregroundColor(.white)
                         .cornerRadius(12)
                 }

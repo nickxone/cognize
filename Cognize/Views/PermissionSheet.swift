@@ -10,7 +10,7 @@ import SwiftUI
 
 /// Permissions required by the app
 enum Permission: String, CaseIterable {
-    case notifications = "notifications"
+    case notifications = "Notifications"
     case familyControls = "Family Controls"
 
     var symbol: String {
@@ -27,30 +27,32 @@ enum Permission: String, CaseIterable {
         }
     }
 
-    var isGranted: Bool? {
+    func isGranted() async -> Bool? {
+        var result: Bool?
+
         switch self {
         case .notifications:
-            let center = UNUserNotificationCenter.current()
-
-            var status: Bool? = false
-            center.getNotificationSettings { settings in
-                if settings.authorizationStatus == .notDetermined {
-                    status = nil
-                } else if settings.authorizationStatus == .authorized
-                    || settings.authorizationStatus == .provisional
-                {
-                    status = true
-                } else {
-                    status = false
-                }
+            let settings = await UNUserNotificationCenter.current()
+                .notificationSettings()
+            switch settings.authorizationStatus {
+            case .notDetermined:
+                result = nil
+            case .authorized, .provisional, .ephemeral:
+                result = true
+            default:
+                result = false
             }
-            return status
         case .familyControls:
             let status = AuthorizationCenter.shared.authorizationStatus
-            return status == .notDetermined
+            result =
+                status == .notDetermined
                 ? nil : (status == .denied ? false : true)
+
         }
+        return result
+
     }
+
 }
 
 extension View {
@@ -63,17 +65,12 @@ extension View {
 
 private struct PermissionSheetViewModifier: ViewModifier {
     init(permissions: [Permission]) {
-        let initialState = permissions.sorted(by: {
-            $0.orderedIndex < $1.orderedIndex
-        }).compactMap {
-            PermissionState(id: $0)
-        }
-
-        self._states = .init(initialValue: initialState)
+        self._permissions = .init(initialValue: permissions)
     }
 
+    @State private var permissions: [Permission] = []
     @State private var showSheet: Bool = false
-    @State private var states: [PermissionState]
+    @State private var states: [PermissionState] = []
     @State private var currentIndex: Int = 0
 
     @Environment(\.openURL) var openURL
@@ -164,12 +161,25 @@ private struct PermissionSheetViewModifier: ViewModifier {
                 requestPermission(newValue)
             }
             .onAppear {
-                showSheet = !isAllGranted
-                if let firstRequestPermission = states.firstIndex(where: {
-                    $0.isGranted == nil
-                }) {
-                    currentIndex = firstRequestPermission
-                    requestPermission(firstRequestPermission)
+                Task {
+                    let initialState = permissions.sorted(by: {
+                        $0.orderedIndex < $1.orderedIndex
+                    })
+                    var permissionStates: [PermissionState] = []
+                    
+                    for permission in initialState {
+                        permissionStates.append(await PermissionState(id: permission))
+                    }
+                    
+                    states = permissionStates
+                    
+                    showSheet = !isAllGranted
+                    if let firstRequestPermission = states.firstIndex(where: {
+                        $0.isGranted == nil
+                    }) {
+                        currentIndex = firstRequestPermission
+                        requestPermission(firstRequestPermission)
+                    }
                 }
             }
     }
@@ -238,10 +248,11 @@ private struct PermissionSheetViewModifier: ViewModifier {
         var id: Permission
         var isGranted: Bool?
 
-        init(id: Permission) {
+        init(id: Permission) async {
             self.id = id
-            self.isGranted = id.isGranted
+            self.isGranted = await id.isGranted()
         }
+
     }
 }
 

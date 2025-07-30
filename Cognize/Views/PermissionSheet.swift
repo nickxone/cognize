@@ -10,20 +10,20 @@ import SwiftUI
 
 /// Permissions required by the app
 enum Permission: String, CaseIterable {
-    case notifications = "Notifications"
     case familyControls = "Family Controls"
+    case notifications = "Notifications"
 
     var symbol: String {
         switch self {
-        case .notifications: "message.badge.filled.fill"
         case .familyControls: "figure.and.child.holdinghands"
+        case .notifications: "message.badge.filled.fill"
         }
     }
 
     var orderedIndex: Int {
         switch self {
-        case .notifications: 0
-        case .familyControls: 1
+        case .familyControls: 0
+        case .notifications: 1
         }
     }
 
@@ -43,10 +43,16 @@ enum Permission: String, CaseIterable {
                 result = false
             }
         case .familyControls:
-            let status = AuthorizationCenter.shared.authorizationStatus
-            result =
-                status == .notDetermined
-                ? nil : (status == .denied ? false : true)
+            do {
+                try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
+                return true
+            } catch {
+                print("Error Authorizing Family Controls: \(error)")
+                return false
+            }
+//            result =
+//                status == .notDetermined
+//                ? nil : (status == .denied ? false : true)
 
         }
         return result
@@ -138,24 +144,25 @@ private struct PermissionSheetViewModifier: ViewModifier {
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 30)
-                .presentationDetents([.height(480)])
+                .presentationDetents([.medium])
                 .interactiveDismissDisabled()
 
             }
-            .onChange(of: AuthorizationCenter.shared.authorizationStatus) {
-                oldValue,
-                status in
-                if let index = states.firstIndex(where: {
-                    $0.id == .familyControls
-                }) {
-                    if status == .notDetermined {
-                        requestPermission(index)
-                    }
-                    states[index].isGranted =
-                        status == .notDetermined
-                        ? nil : (status == .denied ? false : true)
-                }
-            }
+            //            .onChange(of: AuthorizationCenter.shared.authorizationStatus) {
+            //                oldValue,
+            //                status in
+            //                if let index = states.firstIndex(where: {
+            //                    $0.id == .familyControls
+            //                }) {
+            //                    if status == .notDetermined {
+            //                        requestPermission(index)
+            //                    }
+            //
+            //                    states[index].isGranted =
+            //                        status == .notDetermined
+            //                        ? nil : (status == .denied ? false : true)
+            //                }
+            //            }
             .onChange(of: currentIndex) { oldValue, newValue in
                 guard states[newValue].isGranted == nil else { return }
                 requestPermission(newValue)
@@ -166,17 +173,21 @@ private struct PermissionSheetViewModifier: ViewModifier {
                         $0.orderedIndex < $1.orderedIndex
                     })
                     var permissionStates: [PermissionState] = []
-                    
+
                     for permission in initialState {
-                        permissionStates.append(await PermissionState(id: permission))
+                        permissionStates.append(
+                            await PermissionState(id: permission)
+                        )
                     }
-                    
+
                     states = permissionStates
-                    
+
                     showSheet = !isAllGranted
+                
                     if let firstRequestPermission = states.firstIndex(where: {
                         $0.isGranted == nil
                     }) {
+                        print("firstRequestPermission: \(firstRequestPermission)")
                         currentIndex = firstRequestPermission
                         requestPermission(firstRequestPermission)
                     }
@@ -224,7 +235,16 @@ private struct PermissionSheetViewModifier: ViewModifier {
                 states[index].isGranted = status
             case .familyControls:
                 let center = AuthorizationCenter.shared
-                try await center.requestAuthorization(for: .individual)
+                do {
+                    try await center.requestAuthorization(for: .individual)
+                    states[index].isGranted = true
+                } catch {
+                    states[index].isGranted = false
+                }
+//                states[index].isGranted =
+//                    center.authorizationStatus == .notDetermined
+//                    ? nil
+//                    : (center.authorizationStatus == .denied ? false : true)
             }
 
             currentIndex = min(currentIndex + 1, states.count - 1)

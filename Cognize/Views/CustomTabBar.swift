@@ -43,6 +43,8 @@ struct CustomTabBar: View {
     @State private var searchText: String = ""
     @FocusState private var isKeyboardActive: Bool
     
+    @Environment(\.scenePhase) private var scenePhase
+    
     var body: some View {
         GeometryReader {
             let size = $0.size
@@ -146,6 +148,7 @@ struct CustomTabBar: View {
         .foregroundStyle(activeTab == tab ? accentColor : Color.primary)
         .frame(width: width, height: height)
         .contentShape(.capsule)
+        .hapticFeedback(.defaultHaptic)
         .simultaneousGesture(
             DragGesture(minimumDistance: 0)
                 .updating($isActive, body: { _, out, _ in
@@ -176,6 +179,16 @@ struct CustomTabBar: View {
                     dragOffset = CGFloat(tab.index) * width
                 }
         )
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase != .active {
+                lastDragOffset = nil
+                let landingIndex = Int((dragOffset / width).rounded())
+                if tabs.indices.contains(landingIndex) {
+                    dragOffset = CGFloat(landingIndex) * width
+                    activeTab = tabs[landingIndex]
+                }
+            }
+        }
         .geometryGroup()
     }
     

@@ -37,6 +37,7 @@ struct ContentView: View {
             }
         }
         .permissionSheet([.familyControls, .notifications])
+        .preferredColorScheme(.dark)
     }
 }
 

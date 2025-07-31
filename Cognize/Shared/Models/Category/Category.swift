@@ -30,9 +30,9 @@ class Category: Codable, ObservableObject, Identifiable, Equatable {
     }
     
     enum RestrictionType: String, Codable {
-        case allow
         case shield
         case interval
+        case allow
     }
     
     var id: UUID

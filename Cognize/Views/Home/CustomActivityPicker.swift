@@ -13,6 +13,7 @@ struct CustomActivityPicker: View {
     @Environment(\.dismiss) var dismiss
     
     @Binding var activitySelection: FamilyActivitySelection
+    let color: Color
     
     var body: some View {
         VStack(spacing: 0) {
@@ -32,32 +33,38 @@ struct CustomActivityPicker: View {
 
             VStack(spacing: 16) {
                 Button(action: {
-//                    model.saveSelections()
                     dismiss()
                 }) {
-                    Text("Select Apps or Website")
+                    Text("Save Intention")
                         .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(12)
+                        .frame(maxWidth: .infinity)
+                        .background {
+                            ZStack {
+                                Capsule()
+                                    .fill(color.gradient)
+                                Capsule()
+                                    .fill(.black.opacity(0.2))
+                            }
+                            .clipShape(Capsule())
+                        }
+                        .foregroundStyle(.white)
                 }
                 .padding(.top, 4)
                 .hapticFeedback(.confirmHaptic)
 
-                Button(action: {
+                Button {
                     dismiss()
-                }) {
+                } label: {
                     Text("Cancel")
-                        .fontWeight(.regular)
-                        .frame(maxWidth: .infinity)
+                        .fontWeight(.semibold)
                         .padding()
-                        .background(Color.gray.opacity(0.2))
-                        .foregroundColor(.white)
-                        .cornerRadius(12)
+                        .frame(maxWidth: .infinity)
+                        .background(.gray.gradient.opacity(0.25), in: Capsule())
+                        .foregroundStyle(.white)
                 }
                 .hapticFeedback(.cancelHaptic)
+                .padding(.top, -8)
             }
             .padding(.horizontal)
         }
@@ -68,5 +75,5 @@ struct CustomActivityPicker: View {
 }
 
 #Preview {
-    
+    CustomActivityPicker(activitySelection: .constant(FamilyActivitySelection()), color: .green)
 }

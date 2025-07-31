@@ -8,6 +8,11 @@
 import SwiftUI
 import FamilyControls
 
+fileprivate enum CategoryCreationDestination: Hashable {
+    case appSelection
+    case restrictionSelection
+}
+
 struct CategoryCreationView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.categoryStore) private var store
@@ -18,101 +23,130 @@ struct CategoryCreationView: View {
     @State private var newType: Category.RestrictionType = .shield
     @State private var newSelection = FamilyActivitySelection()
     @State private var selectedColor: Color = .black
-    @State private var showPicker = false
     
-    @State private var presentationDetent: PresentationDetent = .medium
+    @State private var showPicker = false
+    @State private var showRestrictionView = false
+    @State private var showActivityPicker = false
     
     init(categories: Binding<[Category]>) {
         self._categories = categories
     }
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                // Background
-                AngularGradient(
-                    gradient: Gradient(colors: gradientColors(from: selectedColor)),
-                    center: gradientCenter(for: selectedColor),
-                    angle: .degrees(360)
-                )
-                .blur(radius: 20)
-                .ignoresSafeArea()
+        ZStack {
+            // Background
+            AngularGradient(
+                gradient: Gradient(colors: gradientColors(from: selectedColor)),
+                center: gradientCenter(for: selectedColor),
+                angle: .degrees(360)
+            )
+            .blur(radius: 20)
+            .ignoresSafeArea()
+            
+            VStack {
+                Text("Create New Category")
+                    .font(.title.bold())
+                    .foregroundStyle(.white)
+                    .padding(.top, 50)
+                    .padding(.bottom, -3)
                 
-                VStack {
-                    Text("Create New Category")
-                        .font(.title.bold())
-                        .foregroundStyle(.white)
-                        .padding(.top, 50)
-                    
-                    TextField("Enter name", text: $newName)
-                        .padding()
-                        .background(selectedColor == .black ? .white.opacity(0.25) : .black.opacity(0.25))
-                        .cornerRadius(12)
-                    
-                    Spacer()
-                    
-                    CustomColorPicker(selectedColour: $selectedColor)
-                    
-                    Spacer()
-                    
-                    NavigationLink {
-                        appSelection
-                    } label: {
-                        Text("Next")
-                            .fontWeight(.semibold)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background {
-                                ZStack {
-                                    Capsule()
-                                        .fill(selectedColor.gradient)
-                                    Capsule()
-                                        .fill(.black.opacity(0.2))
-                                }
-                                .clipShape(Capsule())
-                            }
-                            .foregroundStyle(.white)
-                    }
-                    .disabled(newName.isEmpty)
-                    .opacity(newName.isEmpty ? 0.6 : 1)
-                    
-                }
+                TextField("Enter name", text: $newName)
+                    .padding()
+                    .background(selectedColor == .black ? .white.opacity(0.25) : .black.opacity(0.25))
+                    .cornerRadius(12)
+                    .padding(.vertical, 12)
+                    .contentShape(Rectangle())
                 
-                .padding()
-            }
-            .overlay(alignment: .topLeading) {
+                Spacer()
+                
+                CustomColorPicker(selectedColour: $selectedColor)
+                
+                Spacer()
+                
                 Button {
-                    dismiss()
+                    showRestrictionView = true
                 } label: {
-                    Image(systemName: "xmark")
-                        .font(.callout)
-                        .foregroundStyle(.white)
-                        .padding(12)
+                    Text("Next")
+                        .fontWeight(.semibold)
+                        .padding()
+                        .frame(maxWidth: .infinity)
                         .background {
-                            Circle()
-                                .fill(.ultraThinMaterial)
+                            ZStack {
+                                Capsule()
+                                    .fill(selectedColor.gradient)
+                                Capsule()
+                                    .fill(.black.opacity(0.2))
+                            }
+                            .clipShape(Capsule())
                         }
-                        .padding(12)
+                        .foregroundStyle(.white)
                 }
-                .hapticFeedback(.cancelHaptic)
+                .disabled(newName.isEmpty)
+                .opacity(newName.isEmpty ? 0.6 : 1)
+                
             }
+            
+            .padding()
         }
-        .presentationDetents([presentationDetent])
+        .overlay(alignment: .topLeading) {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.callout)
+                    .foregroundStyle(.white)
+                    .padding(12)
+                    .background {
+                        Circle()
+                            .fill(.ultraThinMaterial)
+                    }
+                    .padding(12)
+            }
+            .hapticFeedback(.cancelHaptic)
+        }
+        .presentationDetents([.medium])
         .presentationCornerRadius(32)
         .background(.clear)
-    }
-    
-    var appSelection: some View {
-        CustomActivityPicker(activitySelection: $newSelection, color: selectedColor)
-        .onAppear {
-            withAnimation { presentationDetent = .large }
+        .fullScreenCover(isPresented: $showRestrictionView) {
+            restrictionSelection
         }
-        .navigationBarBackButtonHidden()
     }
     
-//    var restrictionSelection: some View {
-//        
-//    }
+    var restrictionSelection: some View {
+        VStack {
+            Spacer()
+            Text("Restrictions")
+            
+            Spacer()
+            
+            Button {
+                showActivityPicker = true
+            } label: {
+                Text("Show Activity Picker")
+            }
+            Spacer()
+        }
+        .overlay(alignment: .topLeading) {
+            Button {
+                showRestrictionView = false
+            } label: {
+                Image(systemName: "chevron.backward")
+                    .font(.callout)
+                    .foregroundStyle(.white)
+                    .padding(12)
+                    .background {
+                        Circle()
+                            .fill(.ultraThinMaterial)
+                    }
+                    .padding(12)
+            }
+            .hapticFeedback(.cancelHaptic)
+        }
+        .fullScreenCover(isPresented: $showActivityPicker) {
+            CustomActivityPicker(activitySelection: $newSelection, color: selectedColor)
+        }
+        
+    }
     
     // MARK: - Helpers
     private func gradientColors(from base: Color) -> [Color] {
@@ -139,9 +173,15 @@ struct CategoryCreationView: View {
 }
 
 #Preview {
+    @Previewable @State var showSheet: Bool = false
     @Previewable @State var categories: [Category] = []
-    Color.clear
-        .sheet(isPresented: .constant(true)) {
-            CategoryCreationView(categories: $categories)
-        }
+    Button {
+        showSheet.toggle()
+    } label: {
+        Text("Show Sheet")
+    }
+    .sheet(isPresented: $showSheet) {
+        CategoryCreationView(categories: $categories)
+    }
+    
 }

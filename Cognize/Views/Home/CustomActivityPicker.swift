@@ -14,6 +14,8 @@ struct CustomActivityPicker: View {
     @Binding var activitySelection: FamilyActivitySelection
     let color: Color
     
+    @State private var activSel = FamilyActivitySelection()
+    
     var body: some View {
         VStack(spacing: 0) {
             // Picker with bottom shadow effect
@@ -52,38 +54,20 @@ struct CustomActivityPicker: View {
                 .padding(.top, 4)
                 .hapticFeedback(.confirmHaptic)
                 
-//                Button {
-//                    dismiss()
-//                } label: {
-//                    Text("Cancel")
-//                        .fontWeight(.semibold)
-//                        .padding()
-//                        .frame(maxWidth: .infinity)
-//                        .background(.gray.gradient.opacity(0.25), in: Capsule())
-//                        .foregroundStyle(.white)
-//                }
-//                .hapticFeedback(.cancelHaptic)
-//                .padding(.top, -8)
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Cancel")
+                        .fontWeight(.semibold)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(.gray.gradient.opacity(0.25), in: Capsule())
+                        .foregroundStyle(.white)
+                }
+                .padding(.top, -8)
+                .hapticFeedback(.cancelHaptic)
             }
             .padding(.horizontal)
-        }
-        .padding(.bottom)
-        .preferredColorScheme(.dark)
-        .background(Color.black.ignoresSafeArea())
-        .overlay(alignment: .topLeading) {
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.callout)
-                    .foregroundStyle(.white)
-                    .padding(12)
-                    .background {
-                        Circle()
-                            .fill(.ultraThinMaterial)
-                    }
-                    .padding(12)
-            }
         }
     }
 }

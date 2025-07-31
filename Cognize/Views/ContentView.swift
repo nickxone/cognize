@@ -29,7 +29,7 @@ struct ContentView: View {
                 }
             }
             .animation(.easeInOut(duration: 0.3), value: activeTab)
-
+            
             CustomTabBar(activeTab: $activeTab) { _ in
                 // Tab tapped
             } onSearchTextChanged: { _ in

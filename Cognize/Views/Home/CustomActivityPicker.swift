@@ -9,7 +9,6 @@ import SwiftUI
 import FamilyControls
 
 struct CustomActivityPicker: View {
-    
     @Environment(\.dismiss) var dismiss
     
     @Binding var activitySelection: FamilyActivitySelection
@@ -30,12 +29,12 @@ struct CustomActivityPicker: View {
                 .frame(height: 50)
                 .edgesIgnoringSafeArea(.horizontal)
             }
-
+            
             VStack(spacing: 16) {
                 Button(action: {
                     dismiss()
                 }) {
-                    Text("Save Intention")
+                    Text("Next")
                         .fontWeight(.semibold)
                         .padding()
                         .frame(maxWidth: .infinity)
@@ -52,25 +51,40 @@ struct CustomActivityPicker: View {
                 }
                 .padding(.top, 4)
                 .hapticFeedback(.confirmHaptic)
-
-                Button {
-                    dismiss()
-                } label: {
-                    Text("Cancel")
-                        .fontWeight(.semibold)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(.gray.gradient.opacity(0.25), in: Capsule())
-                        .foregroundStyle(.white)
-                }
-                .hapticFeedback(.cancelHaptic)
-                .padding(.top, -8)
+                
+//                Button {
+//                    dismiss()
+//                } label: {
+//                    Text("Cancel")
+//                        .fontWeight(.semibold)
+//                        .padding()
+//                        .frame(maxWidth: .infinity)
+//                        .background(.gray.gradient.opacity(0.25), in: Capsule())
+//                        .foregroundStyle(.white)
+//                }
+//                .hapticFeedback(.cancelHaptic)
+//                .padding(.top, -8)
             }
             .padding(.horizontal)
         }
         .padding(.bottom)
         .preferredColorScheme(.dark)
         .background(Color.black.ignoresSafeArea())
+        .overlay(alignment: .topLeading) {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.callout)
+                    .foregroundStyle(.white)
+                    .padding(12)
+                    .background {
+                        Circle()
+                            .fill(.ultraThinMaterial)
+                    }
+                    .padding(12)
+            }
+        }
     }
 }
 

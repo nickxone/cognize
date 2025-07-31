@@ -24,7 +24,7 @@ struct CustomColorPicker: View {
     ]
     
     var body: some View {
-        ColorButton {
+        ColorButton(selectedColor: selectedColour) {
             colourSheetPresented = true
         }
         .sheet(isPresented: $colourSheetPresented) {
@@ -54,10 +54,6 @@ struct CustomColorPicker: View {
                     }
                     .padding(.horizontal)
                     .toolbar {
-                        ToolbarItem(placement: .topBarLeading) {
-                            ColorPicker("Colours", selection: $selectedColour, supportsOpacity: false)
-                                .labelsHidden()
-                        }
                         ToolbarItem(placement: .primaryAction) {
                             Button(action: {
                                 colourSheetPresented = false

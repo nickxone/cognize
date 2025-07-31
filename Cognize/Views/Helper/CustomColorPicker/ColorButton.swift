@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct ColorButton: View {
+    let selectedColor: Color
+    
     let action: () -> Void
+    
     var body: some View {
         Button(action: action){
             Label(
@@ -20,12 +23,12 @@ struct ColorButton: View {
                 },
                 icon: {
                     Image(systemName: "paintpalette.fill")
-                        .tint(.green2)
+                        .tint(.white)
                         .font(.title2)
                         .frame(width: 50, height: 50)
                         .background {
                             Circle()
-                                .fill(Color.green3)
+                                .fill(selectedColor.gradient)
                         }
                 }
             )
@@ -50,5 +53,7 @@ struct ColourLabelStyle: LabelStyle {
 }
 
 #Preview {
-    ColorButton {}
+    ColorButton(selectedColor: .blue) {
+        
+    }
 }

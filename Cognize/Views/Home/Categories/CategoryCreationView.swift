@@ -27,65 +27,6 @@ struct CategoryCreationView: View {
     }
     
     var body: some View {
-        //        NavigationView {
-        //            Form {
-        //                Section(header: Text("Name")) {
-        //                    TextField("Enter name", text: $newName)
-        //                }
-        //
-        //                Section(header: Text("Restriction Type")) {
-        //                    Picker("Type", selection: $newType) {
-        //                        Text("Shield").tag(Category.RestrictionType.shield)
-        //                        Text("Interval").tag(Category.RestrictionType.interval)
-        //                    }
-        //                    .pickerStyle(SegmentedPickerStyle())
-        //                }
-        //
-        //                Section(header: Text("App Selection")) {
-        //                    Button("Choose Apps") {
-        //                        showPicker = true
-        //                    }
-        //                    Text("\(newSelection.applicationTokens.count) apps selected")
-        //                        .font(.footnote)
-        //                }
-        //
-        //                Section(header: Text("Color")) {
-        //                    ColorPicker("Choose Color", selection: $selectedColor)
-        //                }
-        //
-        //                Section {
-        //                    Button("Save") {
-        //                        let newCategory = Category(name: newName, appSelection: newSelection, restrictionType: newType, color: selectedColor)
-        //                        categories.append(newCategory)
-        //
-        //                        // Apply the initial restriction
-        //                        switch newCategory.restrictionType {
-        //                        case .shield:
-        //                            (newCategory.strategy as? ShieldRestriction)?.shield()
-        //                        case .interval:
-        //                            (newCategory.strategy as? IntervalTrackRestriction)?.track(thresholdUsageMinutes: 2, duringIntervalMinutes: 15)
-        //                        case .allow:
-        //                            (newCategory.strategy as? ShieldRestriction)?.shield()
-        //                        }
-        //
-        //                        store.save(categories)
-        //                        dismiss()
-        //                    }
-        //                    .disabled(newName.isEmpty)
-        //                }
-        //            }
-        //            .sheet(isPresented: $showPicker) {
-        //                CustomActivityPicker(activitySelection: $newSelection)
-        //            }
-        //            .navigationTitle("New Category")
-        //            .toolbar {
-        //                ToolbarItem(placement: .cancellationAction) {
-        //                    Button("Cancel") {
-        //                        dismiss()
-        //                    }
-        //                }
-        //            }
-        //        }
         NavigationStack {
             ZStack {
                 // Background
@@ -98,12 +39,10 @@ struct CategoryCreationView: View {
                 .ignoresSafeArea()
                 
                 VStack {
-                    Spacer()
-                    
                     Text("Create New Category")
                         .font(.title.bold())
                         .foregroundStyle(.white)
-                        .padding(.top)
+                        .padding(.top, 50)
                     
                     TextField("Enter name", text: $newName)
                         .padding()
@@ -113,8 +52,8 @@ struct CategoryCreationView: View {
                     Spacer()
                     
                     CustomColorPicker(selectedColour: $selectedColor)
-//                    ColorPicker("Choose Color", selection: $selectedColor, supportsOpacity: false)
-//                        .padding()
+                    
+                    Spacer()
                     
                     NavigationLink {
                         appSelection
@@ -159,30 +98,21 @@ struct CategoryCreationView: View {
             }
         }
         .presentationDetents([presentationDetent])
-        .onAppear {
-            presentationDetent = .medium
-        }
+        .presentationCornerRadius(32)
+        .background(.clear)
     }
     
     var appSelection: some View {
-        ZStack {
-            AngularGradient(
-                gradient: Gradient(colors: gradientColors(from: selectedColor)),
-                center: gradientCenter(for: selectedColor),
-                angle: .degrees(360)
-            )
-            .blur(radius: 20)
-            .ignoresSafeArea()
-            
-            VStack {
-                CustomActivityPicker(activitySelection: $newSelection, color: selectedColor)
-            }
-        }
-        .presentationDetents([.large])
+        CustomActivityPicker(activitySelection: $newSelection, color: selectedColor)
         .onAppear {
-            presentationDetent = .large
+            withAnimation { presentationDetent = .large }
         }
+        .navigationBarBackButtonHidden()
     }
+    
+//    var restrictionSelection: some View {
+//        
+//    }
     
     // MARK: - Helpers
     private func gradientColors(from base: Color) -> [Color] {

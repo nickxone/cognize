@@ -145,7 +145,7 @@ struct CustomTabBar: View {
                     .lineLimit(1)
             }
         }
-        .foregroundStyle(activeTab == tab ? accentColor : Color.primary)
+        .foregroundStyle(activeTab == tab ? accentColor : Color.gray)
         .frame(width: width, height: height)
         .contentShape(.capsule)
         .hapticFeedback(.defaultHaptic)
@@ -249,7 +249,7 @@ struct CustomTabBar: View {
     }
     
     var accentColor: Color {
-        return .blue
+        return .white
     }
     
 }

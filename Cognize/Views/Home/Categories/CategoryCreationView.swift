@@ -113,18 +113,70 @@ struct CategoryCreationView: View {
     }
     
     var restrictionSelection: some View {
-        VStack {
-            Spacer()
-            Text("Restrictions")
+        ZStack {
+            // Background
+            AngularGradient(
+                gradient: Gradient(colors: gradientColors(from: selectedColor)),
+                center: gradientCenter(for: selectedColor),
+                angle: .degrees(360)
+            )
+            .blur(radius: 20)
+            .ignoresSafeArea()
             
-            Spacer()
-            
-            Button {
-                showActivityPicker = true
-            } label: {
-                Text("Show Activity Picker")
+            VStack(spacing: 24) {
+                Text("Choose Restriction Type")
+                    .font(.title2.bold())
+                    .foregroundStyle(.white)
+                    .padding(.top, 50)
+                
+                Picker("Restriction Type", selection: $newType) {
+                    Text("Shield").tag(Category.RestrictionType.shield)
+                    Text("Interval").tag(Category.RestrictionType.interval)
+                    Text("Allow").tag(Category.RestrictionType.allow)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+                
+                Text(restrictionDescription(for: newType))
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.7))
+                    .padding(.horizontal)
+                    .multilineTextAlignment(.center)
+
+                Spacer()
+                
+                Button {
+                    showActivityPicker = true
+                } label: {
+                    Text("Select Apps")
+                        .fontWeight(.semibold)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background {
+                            ZStack {
+                                Capsule().fill(selectedColor.gradient)
+                                Capsule().fill(.black.opacity(0.2))
+                            }
+                            .clipShape(Capsule())
+                        }
+                        .foregroundStyle(.white)
+                }
+                .padding(.horizontal)
+
+                Button {
+                    showRestrictionView = false
+                } label: {
+                    Text("Done")
+                        .fontWeight(.semibold)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(.gray.opacity(0.25), in: Capsule())
+                        .foregroundStyle(.white)
+                }
+                .padding(.horizontal)
+                .padding(.top, -8)
             }
-            Spacer()
+            .padding()
         }
         .overlay(alignment: .topLeading) {
             Button {
@@ -145,7 +197,6 @@ struct CategoryCreationView: View {
         .fullScreenCover(isPresented: $showActivityPicker) {
             CustomActivityPicker(activitySelection: $newSelection, color: selectedColor)
         }
-        
     }
     
     // MARK: - Helpers
@@ -170,6 +221,18 @@ struct CategoryCreationView: View {
         let offset = CGFloat((h - 0.5) * 0.2)
         return UnitPoint(x: 0.5 + offset, y: 0.5 - offset)
     }
+    
+    private func restrictionDescription(for type: Category.RestrictionType) -> String {
+        switch type {
+        case .shield:
+            return "Apps in this category will be fully blocked until you return to Cognize."
+        case .interval:
+            return "Apps will be available until you exceed a limit in a short interval (e.g. 15 mins)."
+        case .allow:
+            return "Apps are always available, but usage can be tracked or limited gently."
+        }
+    }
+    
 }
 
 #Preview {

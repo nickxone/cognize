@@ -61,8 +61,16 @@ struct IntentionCreationView: View {
                         Text("minute\(duration == 1 ? "" : "s")")
                             .padding(.trailing)
                     }
+                    .padding()
                     .background(.black.opacity(0.25))
-                    .cornerRadius(12)
+                    .cornerRadius(16)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                    )
+                    .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4)
+//                    .background(.black.opacity(0.25))
+//                    .cornerRadius(12)
                 }
                 
                 Spacer()

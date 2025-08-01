@@ -170,7 +170,13 @@ struct CategoryCreationView: View {
                         .fontWeight(.semibold)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(.gray.opacity(0.25), in: Capsule())
+                        .background {
+                            ZStack {
+                                Capsule().fill(selectedColor.gradient)
+                                Capsule().fill(.black.opacity(0.2))
+                            }
+                            .clipShape(Capsule())
+                        }
                         .foregroundStyle(.white)
                 }
                 .padding(.horizontal)
@@ -236,7 +242,7 @@ struct CategoryCreationView: View {
 }
 
 #Preview {
-    @Previewable @State var showSheet: Bool = false
+    @Previewable @State var showSheet: Bool = true
     @Previewable @State var categories: [Category] = []
     Button {
         showSheet.toggle()
@@ -246,5 +252,5 @@ struct CategoryCreationView: View {
     .sheet(isPresented: $showSheet) {
         CategoryCreationView(categories: $categories)
     }
-    
+
 }

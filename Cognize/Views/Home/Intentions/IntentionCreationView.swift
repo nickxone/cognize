@@ -38,8 +38,7 @@ struct IntentionCreationView: View {
                 VStack(spacing: 16) {
                     TextField("What's your intention?", text: $reason)
                         .padding()
-                        .background(.black.opacity(0.25))
-                        .cornerRadius(12)
+                        .glass(color: .black, shadowColor: .black)
                     
                     HStack {
                         Text("Break duration:")
@@ -62,15 +61,7 @@ struct IntentionCreationView: View {
                             .padding(.trailing)
                     }
                     .padding()
-                    .background(.black.opacity(0.25))
-                    .cornerRadius(16)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(Color.white.opacity(0.1), lineWidth: 1)
-                    )
-                    .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4)
-//                    .background(.black.opacity(0.25))
-//                    .cornerRadius(12)
+                    .glass(color: .black, shadowColor: .black)
                 }
                 
                 Spacer()
@@ -111,7 +102,7 @@ struct IntentionCreationView: View {
                     }
                     .padding(.top, -15)
                 }
-
+                
                 
             }
             .padding()

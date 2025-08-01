@@ -12,7 +12,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            ZStack {
+            Group {
                 switch activeTab {
                 case .home:
                     CategoriesView()
@@ -36,8 +36,6 @@ struct ContentView: View {
                 // Search input
             }
         }
-        .permissionSheet([.familyControls, .notifications])
-        .preferredColorScheme(.dark)
     }
 }
 

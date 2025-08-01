@@ -36,12 +36,7 @@ struct CategoriesOverview: View {
             .padding()
         }
         .frame(width: UIScreen.main.bounds.width - 60)
-        .cornerRadius(20)
-        .shadow(radius: 8)
-        .overlay(
-            RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.white.opacity(0.1), lineWidth: 1)
-        )
+        .glass(shadowColor: .black)
         .preferredColorScheme(.dark)
     }
 

@@ -37,6 +37,7 @@ struct CategoryDetailView: View {
             ScrollView {
                 Spacer(minLength: 80)
                 CategoryCardView(category: category, animate: false)
+                    .frame(width: UIScreen.main.bounds.width)
             }
         }
         .ignoresSafeArea()

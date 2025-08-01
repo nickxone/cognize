@@ -19,10 +19,10 @@ struct CategoryCreationView: View {
     
     @Binding var categories: [Category]
     
-    @State private var newName = ""
-    @State private var newType: Category.RestrictionType = .shield
-    @State private var newSelection = FamilyActivitySelection()
-    @State private var selectedColor: Color = .black
+    @State private var name = ""
+    @State private var restrictionType: Category.RestrictionType = .shield
+    @State private var appSelection = FamilyActivitySelection()
+    @State private var color: Color = .black
     
     @State private var showPicker = false
     @State private var showRestrictionView = false
@@ -36,8 +36,8 @@ struct CategoryCreationView: View {
         ZStack {
             // Background
             AngularGradient(
-                gradient: Gradient(colors: gradientColors(from: selectedColor)),
-                center: gradientCenter(for: selectedColor),
+                gradient: Gradient(colors: gradientColors(from: color)),
+                center: gradientCenter(for: color),
                 angle: .degrees(360)
             )
             .blur(radius: 20)
@@ -48,18 +48,14 @@ struct CategoryCreationView: View {
                     .font(.title.bold())
                     .foregroundStyle(.white)
                     .padding(.top, 50)
-                    .padding(.bottom, -3)
                 
-                TextField("Enter name", text: $newName)
+                TextField("Enter name", text: $name)
                     .padding()
-                    .background(selectedColor == .black ? .white.opacity(0.25) : .black.opacity(0.25))
-                    .cornerRadius(12)
-                    .padding(.vertical, 12)
-                    .contentShape(Rectangle())
+                    .glass(strokeWidth: 1.0, shadowColor: .black)
                 
                 Spacer()
                 
-                CustomColorPicker(selectedColour: $selectedColor)
+                CustomColorPicker(selectedColour: $color)
                 
                 Spacer()
                 
@@ -73,7 +69,7 @@ struct CategoryCreationView: View {
                         .background {
                             ZStack {
                                 Capsule()
-                                    .fill(selectedColor.gradient)
+                                    .fill(color.gradient)
                                 Capsule()
                                     .fill(.black.opacity(0.2))
                             }
@@ -81,8 +77,8 @@ struct CategoryCreationView: View {
                         }
                         .foregroundStyle(.white)
                 }
-                .disabled(newName.isEmpty)
-                .opacity(newName.isEmpty ? 0.6 : 1)
+                .disabled(name.isEmpty)
+                .opacity(name.isEmpty ? 0.6 : 1)
                 
             }
             
@@ -116,8 +112,8 @@ struct CategoryCreationView: View {
         ZStack {
             // Background
             AngularGradient(
-                gradient: Gradient(colors: gradientColors(from: selectedColor)),
-                center: gradientCenter(for: selectedColor),
+                gradient: Gradient(colors: gradientColors(from: color)),
+                center: gradientCenter(for: color),
                 angle: .degrees(360)
             )
             .blur(radius: 20)
@@ -129,7 +125,7 @@ struct CategoryCreationView: View {
                     .foregroundStyle(.white)
                     .padding(.top, 50)
                 
-                Picker("Restriction Type", selection: $newType) {
+                Picker("Restriction Type", selection: $restrictionType) {
                     Text("Shield").tag(Category.RestrictionType.shield)
                     Text("Interval").tag(Category.RestrictionType.interval)
                     Text("Allow").tag(Category.RestrictionType.allow)
@@ -137,7 +133,7 @@ struct CategoryCreationView: View {
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
                 
-                Text(restrictionDescription(for: newType))
+                Text(restrictionDescription(for: restrictionType))
                     .font(.subheadline)
                     .foregroundStyle(.white.opacity(0.7))
                     .padding(.horizontal)
@@ -154,7 +150,7 @@ struct CategoryCreationView: View {
                         .frame(maxWidth: .infinity)
                         .background {
                             ZStack {
-                                Capsule().fill(selectedColor.gradient)
+                                Capsule().fill(color.gradient)
                                 Capsule().fill(.black.opacity(0.2))
                             }
                             .clipShape(Capsule())
@@ -164,7 +160,19 @@ struct CategoryCreationView: View {
                 .padding(.horizontal)
 
                 Button {
+                    let category = Category(name: name, appSelection: appSelection, restrictionType: restrictionType, color: color)
+                    categories.append(category)
+                    switch restrictionType {
+                    case .shield:
+                        (category.strategy as! ShieldRestriction).shield()
+                    case .interval:
+                        (category.strategy as! IntervalTrackRestriction).track(thresholdUsageMinutes: 2, duringIntervalMinutes: 15)
+                    case .allow:
+                        print("Allow")
+                    }
+                    store.save(categories)
                     showRestrictionView = false
+                    dismiss()
                 } label: {
                     Text("Done")
                         .fontWeight(.semibold)
@@ -172,7 +180,7 @@ struct CategoryCreationView: View {
                         .frame(maxWidth: .infinity)
                         .background {
                             ZStack {
-                                Capsule().fill(selectedColor.gradient)
+                                Capsule().fill(color.gradient)
                                 Capsule().fill(.black.opacity(0.2))
                             }
                             .clipShape(Capsule())
@@ -201,7 +209,7 @@ struct CategoryCreationView: View {
             .hapticFeedback(.cancelHaptic)
         }
         .fullScreenCover(isPresented: $showActivityPicker) {
-            CustomActivityPicker(activitySelection: $newSelection, color: selectedColor)
+            CustomActivityPicker(activitySelection: $appSelection, color: color)
         }
     }
     
@@ -250,7 +258,7 @@ struct CategoryCreationView: View {
         Text("Show Sheet")
     }
     .sheet(isPresented: $showSheet) {
-        CategoryCreationView(categories: $categories)
+        CategoryCreationView(categories: $categories).restrictionSelection
     }
 
 }

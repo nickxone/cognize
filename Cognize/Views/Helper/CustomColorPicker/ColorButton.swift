@@ -30,6 +30,7 @@ struct ColorButton: View {
                             Circle()
                                 .fill(selectedColor.gradient)
                         }
+                        .glass(shadowColor: .black)
                 }
             )
             .labelStyle(.colourLabelStyle)

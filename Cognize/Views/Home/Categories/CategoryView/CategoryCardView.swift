@@ -47,9 +47,9 @@ struct CategoryCardView: View {
             }
             .padding()
         }
+        .glass(gradientOpacity: 0.35, shadowOpacity: 0.4)
         .frame(width: UIScreen.main.bounds.width - 60,
                height: UIScreen.main.bounds.height * 0.5)
-        .glass(gradientOpacity: 0.35)
 //        .cornerRadius(20)
 //        .shadow(color: category.color.opacity(0.25), radius: 12, x: 0, y: 6)
 //        .overlay(

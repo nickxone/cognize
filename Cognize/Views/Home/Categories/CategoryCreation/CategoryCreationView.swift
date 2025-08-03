@@ -28,6 +28,8 @@ struct CategoryCreationView: View {
     @State private var showRestrictionView = false
     @State private var showActivityPicker = false
     
+    @State private var limitType: ShieldRestriction.LimitType = .timeLimit
+    
     init(categories: Binding<[Category]>) {
         self._categories = categories
     }
@@ -104,114 +106,18 @@ struct CategoryCreationView: View {
         .presentationCornerRadius(32)
         .background(.clear)
         .fullScreenCover(isPresented: $showRestrictionView) {
-            restrictionSelection
+            RestrictionSelectionView(color: color, restrictionType: $restrictionType, appSelection: $appSelection, limitType: $limitType) {
+                showRestrictionView = false
+            } doneAction: {
+                
+            }
+//            cancelAction: {
+//                
+//            }
+
         }
     }
     
-    var restrictionSelection: some View {
-        ZStack {
-            // Background
-            AngularGradient(
-                gradient: Gradient(colors: gradientColors(from: color)),
-                center: gradientCenter(for: color),
-                angle: .degrees(360)
-            )
-            .blur(radius: 20)
-            .ignoresSafeArea()
-            
-            VStack(spacing: 24) {
-                Text("Choose Restriction Type")
-                    .font(.title2.bold())
-                    .foregroundStyle(.white)
-                    .padding(.top, 50)
-                
-                Picker("Restriction Type", selection: $restrictionType) {
-                    Text("Shield").tag(Category.RestrictionType.shield)
-                    Text("Interval").tag(Category.RestrictionType.interval)
-                    Text("Allow").tag(Category.RestrictionType.allow)
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
-                
-                Text(restrictionDescription(for: restrictionType))
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.7))
-                    .padding(.horizontal)
-                    .multilineTextAlignment(.center)
-
-                Spacer()
-                
-                Button {
-                    showActivityPicker = true
-                } label: {
-                    Text("Select Apps")
-                        .fontWeight(.semibold)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background {
-                            ZStack {
-                                Capsule().fill(color.gradient)
-                                Capsule().fill(.black.opacity(0.2))
-                            }
-                            .clipShape(Capsule())
-                        }
-                        .foregroundStyle(.white)
-                }
-                .padding(.horizontal)
-
-                Button {
-                    let category = Category(name: name, appSelection: appSelection, restrictionType: restrictionType, color: color)
-                    categories.append(category)
-                    switch restrictionType {
-                    case .shield:
-                        (category.strategy as! ShieldRestriction).shield()
-                    case .interval:
-                        (category.strategy as! IntervalTrackRestriction).track(thresholdUsageMinutes: 2, duringIntervalMinutes: 15)
-                    case .allow:
-                        print("Allow")
-                    }
-                    store.save(categories)
-                    showRestrictionView = false
-                    dismiss()
-                } label: {
-                    Text("Done")
-                        .fontWeight(.semibold)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background {
-                            ZStack {
-                                Capsule().fill(color.gradient)
-                                Capsule().fill(.black.opacity(0.2))
-                            }
-                            .clipShape(Capsule())
-                        }
-                        .foregroundStyle(.white)
-                }
-                .padding(.horizontal)
-                .padding(.top, -8)
-            }
-            .padding()
-        }
-        .overlay(alignment: .topLeading) {
-            Button {
-                showRestrictionView = false
-            } label: {
-                Image(systemName: "chevron.backward")
-                    .font(.callout)
-                    .foregroundStyle(.white)
-                    .padding(12)
-                    .background {
-                        Circle()
-                            .fill(.ultraThinMaterial)
-                    }
-                    .padding(12)
-            }
-            .hapticFeedback(.cancelHaptic)
-        }
-        .fullScreenCover(isPresented: $showActivityPicker) {
-            CustomActivityPicker(activitySelection: $appSelection, color: color)
-        }
-    }
     
     // MARK: - Helpers
     private func gradientColors(from base: Color) -> [Color] {
@@ -236,17 +142,6 @@ struct CategoryCreationView: View {
         return UnitPoint(x: 0.5 + offset, y: 0.5 - offset)
     }
     
-    private func restrictionDescription(for type: Category.RestrictionType) -> String {
-        switch type {
-        case .shield:
-            return "Apps in this category will be fully blocked until you return to Cognize."
-        case .interval:
-            return "Apps will be available until you exceed a limit in a short interval (e.g. 15 mins)."
-        case .allow:
-            return "Apps are always available, but usage can be tracked or limited gently."
-        }
-    }
-    
 }
 
 #Preview {
@@ -258,7 +153,7 @@ struct CategoryCreationView: View {
         Text("Show Sheet")
     }
     .sheet(isPresented: $showSheet) {
-        CategoryCreationView(categories: $categories).restrictionSelection
+        CategoryCreationView(categories: $categories)
     }
-
+    
 }

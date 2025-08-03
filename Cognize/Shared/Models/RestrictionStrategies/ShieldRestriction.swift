@@ -12,6 +12,12 @@ import DeviceActivity
 
 class ShieldRestriction: BaseRestriction, RestrictionStrategy {
     
+    enum LimitType: CaseIterable, Identifiable {
+        case timeLimit
+        case openLimit
+        var id: Self { self }
+    }
+    
     private var deviceActivityName: DeviceActivityName {
         .init("allow-\(categoryId.uuidString)")
     }

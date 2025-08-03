@@ -23,8 +23,11 @@ struct CategoryReportView: View {
         Group {
             if let filter {
                 DeviceActivityReport(context, filter: filter)
+                    .onAppear {
+                        print("Appeared")
+                    }
             } else {
-                Text("Nothing yet...")
+                Text("Loading")
             }
         }
         .onAppear {

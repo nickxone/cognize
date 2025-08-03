@@ -17,7 +17,7 @@ struct CategoriesReportView: View {
     @State private var context: DeviceActivityReport.Context = .categoriesActivity
     
     var body: some View {
-        Group { 
+        Group {
             DeviceActivityReport(context)
         }
     }

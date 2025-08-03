@@ -50,13 +50,6 @@ struct CategoryCardView: View {
         .glass(gradientOpacity: 0.35, shadowOpacity: 0.4)
         .frame(width: UIScreen.main.bounds.width - 60,
                height: UIScreen.main.bounds.height * 0.5)
-//        .cornerRadius(20)
-//        .shadow(color: category.color.opacity(0.25), radius: 12, x: 0, y: 6)
-//        .overlay(
-//            RoundedRectangle(cornerRadius: 20)
-//                .stroke(category.color.opacity(0.15), lineWidth: 1)
-//        )
-        
         .preferredColorScheme(.dark)
     }
 

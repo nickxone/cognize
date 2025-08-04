@@ -19,9 +19,17 @@ struct RestrictionSelectionView: View {
     let doneAction: () -> ()
     
     @State private var showActivityPicker = false
+    
+    // Shield
     @State private var timeAllowed: Int = 30
     @State private var opensAllowed: Int = 5
     @State private var forUpTo: Int = 5
+    // Interval
+    @State private var thresholdTime: Int = 5
+    @State private var intervalTime: Int = 30
+    // Allow
+    @State private var hasLimit: Bool = false
+    @State private var allowTimeLimit: Int = 30
     
     var body: some View {
         ZStack {
@@ -72,86 +80,7 @@ struct RestrictionSelectionView: View {
                     showActivityPicker = true
                 }
                 
-                VStack {
-                    HStack {
-                        Text("Limit Type")
-                        Spacer()
-                        Picker("Limit Type", selection: $limitType) {
-                            Text("Time Limit").tag(ShieldRestriction.LimitType.timeLimit).foregroundStyle(.gray)
-                            Text("Open Limit").tag(ShieldRestriction.LimitType.openLimit).foregroundStyle(.gray)
-                        }
-                        .tint(.gray)
-                    }
-                    .frame(height: 30)
-                    Divider()
-                    Group {
-                        switch limitType {
-                        case .timeLimit:
-                            HStack {
-                                Text("Time Allowed")
-                                Spacer()
-                                Group {
-                                    Button {
-                                        if timeAllowed >= 30 { timeAllowed -= 15 }
-                                    } label: {
-                                        Text("-")
-                                    }
-                                    Text(selectedTimeAllowed)
-                                    Button {
-                                        timeAllowed += 15
-                                    } label: {
-                                        Text("+")
-                                    }
-                                }
-                                .tint(.gray)
-                            }
-                            .frame(height: 30)
-                        case .openLimit:
-                            HStack {
-                                Text("Opens Allowed")
-                                Spacer()
-                                Group {
-                                    Button {
-                                        if opensAllowed >= 1 { opensAllowed -= 1 }
-                                    } label: {
-                                        Text("-")
-                                    }
-                                    Text("\(opensAllowed)")
-                                    Button {
-                                        opensAllowed += 1
-                                    } label: {
-                                        Text("+")
-                                    }
-                                }
-                                .tint(.gray)
-                            }
-                            .frame(height: 30)
-                            Divider()
-                            HStack {
-                                Text("For Up To")
-                                Spacer()
-                                Group {
-                                    Button {
-                                        if forUpTo >= 3 { forUpTo -= 1 }
-                                    } label: {
-                                        Text("-")
-                                    }
-                                    Text("\(forUpTo)m")
-                                    Button {
-                                        if forUpTo < 60 { forUpTo += 1 }
-                                    } label: {
-                                        Text("+")
-                                    }
-                                }
-                                .tint(.gray)
-                            }
-                            .frame(height: 30)
-                        }
-                    }
-                }
-                .padding()
-                .font(.body)
-                .glass(gradientOpacity: 0.3, gradientStyle: .normal, shadowColor: .clear)
+                restrictionLimitOptions
                 
                 Button {
                     doneAction()
@@ -199,6 +128,164 @@ struct RestrictionSelectionView: View {
         
     }
     
+    var restrictionLimitOptions: some View {
+        Group {
+            switch restrictionType {
+            case .shield:
+                VStack {
+                    HStack {
+                        Text("Limit Type")
+                        Spacer()
+                        Picker("Limit Type", selection: $limitType) {
+                            Text("Time Limit").tag(ShieldRestriction.LimitType.timeLimit).foregroundStyle(.gray)
+                            Text("Open Limit").tag(ShieldRestriction.LimitType.openLimit).foregroundStyle(.gray)
+                        }
+                        .tint(.gray)
+                    }
+                    .frame(height: 30)
+                    Divider()
+                    Group {
+                        switch limitType {
+                        case .timeLimit:
+                            HStack {
+                                Text("Time Allowed")
+                                Spacer()
+                                Group {
+                                    Button {
+                                        if timeAllowed >= 30 { timeAllowed -= 15 }
+                                    } label: {
+                                        Text("-")
+                                    }
+                                    Text(selectedTimeFormatted(timeAllowed))
+                                    Button {
+                                        timeAllowed += 15
+                                    } label: {
+                                        Text("+")
+                                    }
+                                }
+                                .tint(.gray)
+                            }
+                            .frame(height: 30)
+                        case .openLimit:
+                            HStack {
+                                Text("Opens Allowed")
+                                Spacer()
+                                Group {
+                                    Button {
+                                        if opensAllowed >= 1 { opensAllowed -= 1 }
+                                    } label: {
+                                        Text("-")
+                                    }
+                                    Text("\(opensAllowed)")
+                                    Button {
+                                        if opensAllowed < 15 { opensAllowed += 1 }
+                                    } label: {
+                                        Text("+")
+                                    }
+                                }
+                                .tint(.gray)
+                            }
+                            .frame(height: 35)
+                            Divider()
+                            HStack {
+                                Text("For Up To")
+                                Spacer()
+                                Group {
+                                    Button {
+                                        if forUpTo >= 3 { forUpTo -= 1 }
+                                    } label: {
+                                        Text("-")
+                                    }
+                                    Text("\(forUpTo)m")
+                                    Button {
+                                        if forUpTo < 60 { forUpTo += 1 }
+                                    } label: {
+                                        Text("+")
+                                    }
+                                }
+                                .tint(.gray)
+                            }
+                            .frame(height: 30)
+                        }
+                    }
+                }
+            case .interval:
+                VStack {
+                    HStack {
+                        Text("Block Threshold")
+                        Spacer()
+                        Group {
+                            Button {
+                                if thresholdTime > 2 { thresholdTime -= 1 }
+                            } label: {
+                                Text("-")
+                            }
+                            Text("\(thresholdTime)m")
+                            Button {
+                                if thresholdTime + 1 < intervalTime { thresholdTime += 1 }
+                            } label: {
+                                Text("+")
+                            }
+                        }
+                        .tint(.gray)
+                    }
+                    .frame(height: 30)
+                    Divider()
+                    HStack {
+                        Text("Interval")
+                        Spacer()
+                        Group {
+                            Button {
+                                if intervalTime > 15 && intervalTime > thresholdTime + 1{ intervalTime -= 1 }
+                            } label: {
+                                Text("-")
+                            }
+                            Text("\(intervalTime)m")
+                            Button {
+                                if intervalTime < 60 { intervalTime += 1 }
+                            } label: {
+                                Text("+")
+                            }
+                        }
+                        .tint(.gray)
+                    }
+                    .frame(height: 30)
+                }
+            case .allow:
+                VStack {
+                    Toggle("Has Limits?", isOn: $hasLimit)
+                        .tint(color)
+                        .frame(height: 30)
+                    if hasLimit {
+                        Divider()
+                        HStack {
+                            Text("Time Allowed")
+                            Spacer()
+                            Group {
+                                Button {
+                                    if allowTimeLimit >= 30 { allowTimeLimit -= 15 }
+                                } label: {
+                                    Text("-")
+                                }
+                                Text(selectedTimeFormatted(allowTimeLimit))
+                                Button {
+                                    timeAllowed += 15
+                                } label: {
+                                    Text("+")
+                                }
+                            }
+                            .tint(.gray)
+                        }
+                        .frame(height: 30)
+                    }
+                }
+            }
+        }
+        .padding()
+        .font(.body)
+        .glass(gradientOpacity: 0.3, gradientStyle: .normal, shadowColor: .clear)
+    }
+    
     // MARK: - Helpers
     private func gradientColors(from base: Color) -> [Color] {
         let uiColor = UIColor(base)
@@ -227,7 +314,7 @@ struct RestrictionSelectionView: View {
         case .shield:
             return "Apps in this category will be fully blocked until you return to Cognize."
         case .interval:
-            return "Apps will be available until you exceed a limit in a short interval (e.g. 15 mins)."
+            return "Apps will be available until you exceed a block threshold in a short interval (e.g. 15 mins)."
         case .allow:
             return "Apps are always available, but usage can be tracked or limited gently."
         }
@@ -252,7 +339,7 @@ struct RestrictionSelectionView: View {
         return text
     }
     
-    private var selectedTimeAllowed: String {
+    private func selectedTimeFormatted(_ timeAllowed: Int) -> String {
         let hours = timeAllowed / 60
         let minutes = timeAllowed % 60
         return hours == 0 ? "\(minutes)m" : "\(hours)h \(minutes)m"

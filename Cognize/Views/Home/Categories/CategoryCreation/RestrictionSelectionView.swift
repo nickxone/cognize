@@ -5,6 +5,7 @@
 //  Created by Matvii Ustich on 02/08/2025.
 //
 
+// TODO: this view should initialise a Restriction class rather than different parameters
 import SwiftUI
 import FamilyControls
 
@@ -18,6 +19,9 @@ struct RestrictionSelectionView: View {
     let doneAction: () -> ()
     
     @State private var showActivityPicker = false
+    @State private var timeAllowed: Int = 30
+    @State private var opensAllowed: Int = 5
+    @State private var forUpTo: Int = 5
     
     var body: some View {
         ZStack {
@@ -44,7 +48,7 @@ struct RestrictionSelectionView: View {
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
                 
-                Text(restrictionDescription(for: restrictionType))
+                Text(restrictionDescription)
                     .font(.subheadline)
                     .foregroundStyle(.white.opacity(0.7))
                     .padding(.horizontal)
@@ -61,7 +65,7 @@ struct RestrictionSelectionView: View {
                     }
                     .foregroundStyle(.gray)
                 }
-                .font(.callout)
+                .font(.body)
                 .padding()
                 .glass(gradientOpacity: 0.3, gradientStyle: .reverted, shadowColor: .clear)
                 .onTapGesture {
@@ -78,32 +82,80 @@ struct RestrictionSelectionView: View {
                         }
                         .tint(.gray)
                     }
-//                    Divider()
-//                    switch limitType {
-//                    case .timeLimit:
-//                        TimeLimitView(restriction: $restriction)
-//                    case .openLimit:
-//                        OpenLimitView(restriction: $restriction)
-//                    }
+                    .frame(height: 30)
+                    Divider()
+                    Group {
+                        switch limitType {
+                        case .timeLimit:
+                            HStack {
+                                Text("Time Allowed")
+                                Spacer()
+                                Group {
+                                    Button {
+                                        if timeAllowed >= 30 { timeAllowed -= 15 }
+                                    } label: {
+                                        Text("-")
+                                    }
+                                    Text(selectedTimeAllowed)
+                                    Button {
+                                        timeAllowed += 15
+                                    } label: {
+                                        Text("+")
+                                    }
+                                }
+                                .tint(.gray)
+                            }
+                            .frame(height: 30)
+                        case .openLimit:
+                            HStack {
+                                Text("Opens Allowed")
+                                Spacer()
+                                Group {
+                                    Button {
+                                        if opensAllowed >= 1 { opensAllowed -= 1 }
+                                    } label: {
+                                        Text("-")
+                                    }
+                                    Text("\(opensAllowed)")
+                                    Button {
+                                        opensAllowed += 1
+                                    } label: {
+                                        Text("+")
+                                    }
+                                }
+                                .tint(.gray)
+                            }
+                            .frame(height: 30)
+                            Divider()
+                            HStack {
+                                Text("For Up To")
+                                Spacer()
+                                Group {
+                                    Button {
+                                        if forUpTo >= 3 { forUpTo -= 1 }
+                                    } label: {
+                                        Text("-")
+                                    }
+                                    Text("\(forUpTo)m")
+                                    Button {
+                                        if forUpTo < 60 { forUpTo += 1 }
+                                    } label: {
+                                        Text("+")
+                                    }
+                                }
+                                .tint(.gray)
+                            }
+                            .frame(height: 30)
+                        }
+                    }
                 }
                 .padding()
+                .font(.body)
                 .glass(gradientOpacity: 0.3, gradientStyle: .normal, shadowColor: .clear)
                 
                 Button {
                     doneAction()
-//                    let category = Category(name: name, appSelection: appSelection, restrictionType: restrictionType, color: color)
-//                    categories.append(category)
-//                    switch restrictionType {
-//                    case .shield:
-//                        (category.strategy as! ShieldRestriction).shield()
-//                    case .interval:
-//                        (category.strategy as! IntervalTrackRestriction).track(thresholdUsageMinutes: 2, duringIntervalMinutes: 15)
-//                    case .allow:
-//                        print("Allow")
-//                    }
-//                    store.save(categories)
-//                    showRestrictionView = false
-//                    dismiss()
+                    
                 } label: {
                     Text("Done")
                         .fontWeight(.semibold)
@@ -170,8 +222,8 @@ struct RestrictionSelectionView: View {
         return UnitPoint(x: 0.5 + offset, y: 0.5 - offset)
     }
     
-    private func restrictionDescription(for type: Category.RestrictionType) -> String {
-        switch type {
+    private var restrictionDescription: String {
+        switch restrictionType {
         case .shield:
             return "Apps in this category will be fully blocked until you return to Cognize."
         case .interval:
@@ -199,6 +251,12 @@ struct RestrictionSelectionView: View {
         }
         return text
     }
+    
+    private var selectedTimeAllowed: String {
+        let hours = timeAllowed / 60
+        let minutes = timeAllowed % 60
+        return hours == 0 ? "\(minutes)m" : "\(hours)h \(minutes)m"
+    }
 }
 
 #Preview {
@@ -211,5 +269,5 @@ struct RestrictionSelectionView: View {
     } doneAction: {
         
     }
-
+    
 }

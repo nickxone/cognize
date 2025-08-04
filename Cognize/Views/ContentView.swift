@@ -36,6 +36,8 @@ struct ContentView: View {
                 // Search input
             }
         }
+        .permissionSheet([.familyControls, .notifications])
+        .preferredColorScheme(.dark)
     }
 }
 

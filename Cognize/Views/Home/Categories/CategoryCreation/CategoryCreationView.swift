@@ -109,11 +109,21 @@ struct CategoryCreationView: View {
             RestrictionSelectionView(color: color, restrictionType: $restrictionType, appSelection: $appSelection, limitType: $limitType) {
                 showRestrictionView = false
             } doneAction: {
-                
+                let category = Category(name: name, appSelection: appSelection, restrictionType: restrictionType, color: color)
+                categories.append(category)
+                switch category.restrictionType {
+                case .shield:
+                    (category.strategy as! ShieldRestriction).shield()
+                case .interval:
+                    (category.strategy as! IntervalTrackRestriction).track(thresholdUsageMinutes: 2, duringIntervalMinutes: 15)
+                case .allow:
+                    print("Allow")
+                }
+                store.save(categories)
+                print(category)
+                dismiss()
+//                showRestrictionView = false
             }
-//            cancelAction: {
-//                
-//            }
 
         }
     }

@@ -28,6 +28,7 @@ struct LiquidGlassBackgroundModifier: ViewModifier {
     let gradientOpacity: Double
     let gradientStyle: GradientStyle
     let strokeWidth: CGFloat
+    let renderShadows: Bool
     let shadowColor: Color
     let shadowOpacity: Double
     let shadowRadius: CGFloat
@@ -43,6 +44,7 @@ struct LiquidGlassBackgroundModifier: ViewModifier {
         gradientOpacity: Double = 0.5,
         gradientStyle: GradientStyle = .normal,
         strokeWidth: CGFloat = 1.5,
+        renderShadows: Bool = false,
         shadowColor: Color = .white,
         shadowOpacity: Double = 0.5,
         shadowRadius: CGFloat? = nil,
@@ -57,7 +59,9 @@ struct LiquidGlassBackgroundModifier: ViewModifier {
         self.gradientOpacity = gradientOpacity
         self.gradientStyle = gradientStyle
         self.strokeWidth = strokeWidth
+        
         self.shadowColor = shadowColor
+        self.renderShadows = renderShadows
         self.shadowOpacity = shadowOpacity
         self.shadowRadius = shadowRadius ?? radius
         self.shadowX = shadowX
@@ -65,21 +69,38 @@ struct LiquidGlassBackgroundModifier: ViewModifier {
     }
     
     public func body(content: Content) -> some View {
-        content
-            .background(material.opacity(materialOpacity))
-            .cornerRadius(radius)
-            .overlay(
-                RoundedRectangle(cornerRadius: radius)
-                    .stroke(
-                        LinearGradient(
-                            gradient: Gradient(colors: gradientColors()),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ),
-                        lineWidth: strokeWidth
-                    )
-            )
-            .shadow(color: shadowColor.opacity(shadowOpacity), radius: shadowRadius, x: shadowX, y: shadowY)
+        if renderShadows {
+            content
+                .background(material.opacity(materialOpacity))
+                .cornerRadius(radius)
+                .overlay(
+                    RoundedRectangle(cornerRadius: radius)
+                        .stroke(
+                            LinearGradient(
+                                gradient: Gradient(colors: gradientColors()),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: strokeWidth
+                        )
+                )
+                .shadow(color: shadowColor.opacity(shadowOpacity), radius: shadowRadius, x: shadowX, y: shadowY)
+        } else {
+            content
+                .background(material.opacity(materialOpacity))
+                .cornerRadius(radius)
+                .overlay(
+                    RoundedRectangle(cornerRadius: radius)
+                        .stroke(
+                            LinearGradient(
+                                gradient: Gradient(colors: gradientColors()),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: strokeWidth
+                        )
+                )
+        }
     }
     
     private func gradientColors() -> [Color] {

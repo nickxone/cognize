@@ -37,13 +37,7 @@ struct CategoryCreationView: View {
     var body: some View {
         ZStack {
             // Background
-            AngularGradient(
-                gradient: Gradient(colors: gradientColors(from: color)),
-                center: gradientCenter(for: color),
-                angle: .degrees(360)
-            )
-            .blur(radius: 20)
-            .ignoresSafeArea()
+            ColorfulBackground(color: color, animate: true)
             
             VStack {
                 Text("Create New Category")
@@ -106,7 +100,7 @@ struct CategoryCreationView: View {
         .presentationCornerRadius(32)
         .background(.clear)
         .fullScreenCover(isPresented: $showRestrictionView) {
-            RestrictionSelectionView(color: color, restrictionType: $restrictionType, appSelection: $appSelection, limitType: $limitType) {
+            RestrictionSelectionView(color: color, restrictionType: $restrictionType, appSelection: $appSelection, shieldLimitType: $limitType) {
                 showRestrictionView = false
             } doneAction: {
                 let category = Category(name: name, appSelection: appSelection, restrictionType: restrictionType, color: color)
@@ -127,7 +121,6 @@ struct CategoryCreationView: View {
 
         }
     }
-    
     
     // MARK: - Helpers
     private func gradientColors(from base: Color) -> [Color] {

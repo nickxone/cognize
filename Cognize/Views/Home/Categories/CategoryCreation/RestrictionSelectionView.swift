@@ -10,10 +10,36 @@ import SwiftUI
 import FamilyControls
 
 struct RestrictionSelectionView: View {
+    struct RestrictionConfiguration {
+        var restrictionType: Category.RestrictionType
+        var appSelection: FamilyActivitySelection
+        
+        var shieldOptions: ShieldOptions?
+        var intervalOptions: IntervalOptions?
+        var allowOptions: AllowOptions?
+        
+        struct ShieldOptions {
+            var limitType: ShieldRestriction.LimitType
+            var timeAllowed: Int = 30 // minutes
+            var opensAllowed: Int = 5
+            var forUpTo: Int = 5 // unlock duration
+        }
+        
+        struct IntervalOptions {
+            var thresholdTime: Int = 5  // minutes of use before lock
+            var intervalTime: Int = 30  // duration of lock
+        }
+        
+        struct AllowOptions {
+            var hasLimit: Bool = false
+            var timeLimit: Int = 30
+        }
+    }
+    
     let color: Color
     @Binding var restrictionType: Category.RestrictionType
     @Binding var appSelection: FamilyActivitySelection
-    @Binding var limitType: ShieldRestriction.LimitType
+    @Binding var shieldLimitType: ShieldRestriction.LimitType
     
     let backAction: () -> ()
     let doneAction: () -> ()
@@ -34,13 +60,7 @@ struct RestrictionSelectionView: View {
     var body: some View {
         ZStack {
             // Background
-            AngularGradient(
-                gradient: Gradient(colors: gradientColors(from: color)),
-                center: gradientCenter(for: color),
-                angle: .degrees(360)
-            )
-            .blur(radius: 20)
-            .ignoresSafeArea()
+            ColorfulBackground(color: color, animate: true)
             
             VStack(spacing: 24) {
                 Text("Choose Restriction Type")
@@ -136,7 +156,7 @@ struct RestrictionSelectionView: View {
                     HStack {
                         Text("Limit Type")
                         Spacer()
-                        Picker("Limit Type", selection: $limitType) {
+                        Picker("Limit Type", selection: $shieldLimitType) {
                             Text("Time Limit").tag(ShieldRestriction.LimitType.timeLimit).foregroundStyle(.gray)
                             Text("Open Limit").tag(ShieldRestriction.LimitType.openLimit).foregroundStyle(.gray)
                         }
@@ -145,7 +165,7 @@ struct RestrictionSelectionView: View {
                     .frame(height: 30)
                     Divider()
                     Group {
-                        switch limitType {
+                        switch shieldLimitType {
                         case .timeLimit:
                             HStack {
                                 Text("Time Allowed")
@@ -351,7 +371,7 @@ struct RestrictionSelectionView: View {
     @Previewable @State var appSelection = FamilyActivitySelection()
     @Previewable @State var limitType: ShieldRestriction.LimitType = .timeLimit
     
-    RestrictionSelectionView(color: .blue, restrictionType: $restrictionType, appSelection: $appSelection, limitType: $limitType) {
+    RestrictionSelectionView(color: .blue, restrictionType: $restrictionType, appSelection: $appSelection, shieldLimitType: $limitType) {
         
     } doneAction: {
         

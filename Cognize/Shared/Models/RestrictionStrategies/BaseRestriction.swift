@@ -26,7 +26,6 @@ class BaseRestriction {
     }
     
     // MARK: - Shielding
-    
     func removeShielding() {
         let store = ManagedSettingsStore(named: storeName)
         store.clearAllSettings()

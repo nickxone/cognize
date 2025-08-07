@@ -10,13 +10,11 @@ import FamilyControls
 import ManagedSettings
 import DeviceActivity
 
-class BaseRestriction {
-    let categoryName: String
+class BaseRestriction: Codable {
     let categoryId: UUID
     let appSelection: FamilyActivitySelection
     
-    init(categoryName: String, categoryId: UUID, appSelection: FamilyActivitySelection) {
-        self.categoryName = categoryName
+    init(categoryId: UUID, appSelection: FamilyActivitySelection) {
         self.categoryId = categoryId
         self.appSelection = appSelection
     }

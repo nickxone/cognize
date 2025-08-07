@@ -58,11 +58,11 @@ struct CategoriesActivityReport: DeviceActivityReportScene {
     }
     
     private func appIn(category: Category, matches app: Application) -> Bool {
-        category.appSelection.applications.contains { $0.token == app.token }
+        category.configuration.appSelection.applications.contains { $0.token == app.token }
     }
     
     private func activityCategoryIn(category: Category, matches activityCategory: ActivityCategory) -> Bool {
-        category.appSelection.categories.contains { $0.token == activityCategory.token }
+        category.configuration.appSelection.categories.contains { $0.token == activityCategory.token }
     }
     
 }

@@ -20,9 +20,10 @@ struct CategoryCreationView: View {
     @Binding var categories: [Category]
     
     @State private var name = ""
+    @State private var color: Color = .black
+    
     @State private var restrictionType: Category.RestrictionType = .shield
     @State private var appSelection = FamilyActivitySelection()
-    @State private var color: Color = .black
     
     @State private var showPicker = false
     @State private var showRestrictionView = false
@@ -103,46 +104,23 @@ struct CategoryCreationView: View {
             RestrictionSelectionView(color: color, restrictionType: $restrictionType, appSelection: $appSelection, shieldLimitType: $limitType) {
                 showRestrictionView = false
             } doneAction: {
-                let category = Category(name: name, appSelection: appSelection, restrictionType: restrictionType, color: color)
-                categories.append(category)
-                switch category.restrictionType {
-                case .shield:
-                    (category.strategy as! ShieldRestriction).shield()
-                case .interval:
-                    (category.strategy as! IntervalTrackRestriction).track(thresholdUsageMinutes: 2, duringIntervalMinutes: 15)
-                case .allow:
-                    print("Allow")
-                }
-                store.save(categories)
-                print(category)
+//                let category = Category(name: name, appSelection: appSelection, restrictionType: restrictionType, color: color)
+//                categories.append(category)
+//                switch category.restrictionType {
+//                case .shield:
+//                    (category.strategy as! ShieldRestriction).shield()
+//                case .interval:
+//                    (category.strategy as! IntervalTrackRestriction).track(thresholdUsageMinutes: 2, duringIntervalMinutes: 15)
+//                case .allow:
+//                    print("Allow")
+//                }
+//                store.save(categories)
+//                print(category)
                 dismiss()
 //                showRestrictionView = false
             }
 
         }
-    }
-    
-    // MARK: - Helpers
-    private func gradientColors(from base: Color) -> [Color] {
-        let uiColor = UIColor(base)
-        var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-        guard uiColor.getHue(&h, saturation: &s, brightness: &b, alpha: &a) else {
-            return [base.opacity(0.6), base.opacity(0.3), base.opacity(0.6)]
-        }
-        
-        let c1 = Color(hue: Double(h), saturation: Double(s), brightness: Double(b * 1.1), opacity: 0.3)
-        let c2 = Color(hue: Double((h + 0.03).truncatingRemainder(dividingBy: 1)), saturation: Double(s * 0.9), brightness: Double(b), opacity: 0.4)
-        let c3 = Color(hue: Double((h + 0.06).truncatingRemainder(dividingBy: 1)), saturation: Double(s * 0.7), brightness: Double(b * 0.9), opacity: 0.25)
-        
-        return [c1, c2, c3, c1]
-    }
-    
-    private func gradientCenter(for color: Color) -> UnitPoint {
-        let uiColor = UIColor(color)
-        var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-        uiColor.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
-        let offset = CGFloat((h - 0.5) * 0.2)
-        return UnitPoint(x: 0.5 + offset, y: 0.5 - offset)
     }
     
 }

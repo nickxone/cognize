@@ -10,31 +10,6 @@ import SwiftUI
 import FamilyControls
 
 struct RestrictionSelectionView: View {
-    struct RestrictionConfiguration {
-        var restrictionType: Category.RestrictionType
-        var appSelection: FamilyActivitySelection
-        
-        var shieldOptions: ShieldOptions?
-        var intervalOptions: IntervalOptions?
-        var allowOptions: AllowOptions?
-        
-        struct ShieldOptions {
-            var limitType: ShieldRestriction.LimitType
-            var timeAllowed: Int = 30 // minutes
-            var opensAllowed: Int = 5
-            var forUpTo: Int = 5 // unlock duration
-        }
-        
-        struct IntervalOptions {
-            var thresholdTime: Int = 5  // minutes of use before lock
-            var intervalTime: Int = 30  // duration of lock
-        }
-        
-        struct AllowOptions {
-            var hasLimit: Bool = false
-            var timeLimit: Int = 30
-        }
-    }
     
     let color: Color
     @Binding var restrictionType: Category.RestrictionType

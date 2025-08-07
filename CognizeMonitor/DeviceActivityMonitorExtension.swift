@@ -23,7 +23,8 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         
         // Handle the start of the interval.
         guard let category = findCategory(for: activity) else { return }
-        category.strategy.intervalDidStart(for: activity)
+        let strategy = category.makeStrategy()
+        strategy.intervalDidStart(for: activity)
     }
     
     override func intervalDidEnd(for activity: DeviceActivityName) {
@@ -31,12 +32,13 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         
         // Handle the end of the interval.
         guard let category = findCategory(for: activity) else { return }
-        category.strategy.intervalDidEnd(for: activity)
-//        if activity == .allow {
-//            NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended \(activity.rawValue)", inSeconds: 1.5)
-//            let model = ShieldViewModel()
-//            model.shield(.entertainment)
-//        }
+        let strategy = category.makeStrategy()
+        strategy.intervalDidEnd(for: activity)
+        //        if activity == .allow {
+        //            NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended \(activity.rawValue)", inSeconds: 1.5)
+        //            let model = ShieldViewModel()
+        //            model.shield(.entertainment)
+        //        }
     }
     
     override func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
@@ -44,12 +46,13 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         
         // Handle the event reaching its threshold.
         guard let category = findCategory(for: activity) else { return }
-        category.strategy.eventDidReachThreshold(event, for: activity)
-//        if event == .productivityUsageThresholdEvent {
-//            let model = ShieldViewModel()
-//            model.shield(.work)
-//            NotificationManager.shared.scheduleNotification(title: "Log your intention", body: "\(activity.rawValue)", inSeconds: 1.5)
-//        }
+        let strategy = category.makeStrategy()
+        strategy.eventDidReachThreshold(event, for: activity)
+        //        if event == .productivityUsageThresholdEvent {
+        //            let model = ShieldViewModel()
+        //            model.shield(.work)
+        //            NotificationManager.shared.scheduleNotification(title: "Log your intention", body: "\(activity.rawValue)", inSeconds: 1.5)
+        //        }
     }
     
     override func intervalWillStartWarning(for activity: DeviceActivityName) {
@@ -57,7 +60,8 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         
         // Handle the warning before the interval starts.
         guard let category = findCategory(for: activity) else { return }
-        category.strategy.intervalWillStartWarning(for: activity)
+        let strategy = category.makeStrategy()
+        strategy.intervalWillStartWarning(for: activity)
     }
     
     override func intervalWillEndWarning(for activity: DeviceActivityName) {
@@ -65,16 +69,17 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         
         // Handle the warning before the interval ends.
         guard let category = findCategory(for: activity) else { return }
-        category.strategy.intervalWillEndWarning(for: activity)
-//        if activity == .allow {
-//            NotificationManager.shared.scheduleNotification(title: "Cognize", body: "Apps are about to relock", inSeconds: 1.5)
-//        } else if activity == .productivityFirst {
-//            let model = ShieldViewModel()
-//            model.scheduleProductivity(name: .productivitySecond)
-//        } else if activity == .productivitySecond {
-//            let model = ShieldViewModel()
-//            model.scheduleProductivity(name: .productivityFirst)
-//        }
+        let strategy = category.makeStrategy()
+        strategy.intervalWillEndWarning(for: activity)
+        //        if activity == .allow {
+        //            NotificationManager.shared.scheduleNotification(title: "Cognize", body: "Apps are about to relock", inSeconds: 1.5)
+        //        } else if activity == .productivityFirst {
+        //            let model = ShieldViewModel()
+        //            model.scheduleProductivity(name: .productivitySecond)
+        //        } else if activity == .productivitySecond {
+        //            let model = ShieldViewModel()
+        //            model.scheduleProductivity(name: .productivityFirst)
+        //        }
     }
     
     override func eventWillReachThresholdWarning(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
@@ -82,9 +87,10 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         
         // Handle the warning before the event reaches its threshold.
         guard let category = findCategory(for: activity) else { return }
-        category.strategy.eventWillReachThresholdWarning(event, for: activity)
-//        if event == .productivityUsageThresholdEvent {
-//            
-//        }
+        let strategy = category.makeStrategy()
+        strategy.eventWillReachThresholdWarning(event, for: activity)
+        //        if event == .productivityUsageThresholdEvent {
+        //
+        //        }
     }
 }

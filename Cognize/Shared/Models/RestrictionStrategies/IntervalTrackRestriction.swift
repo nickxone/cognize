@@ -14,12 +14,6 @@ class IntervalTrackRestriction: BaseRestriction, RestrictionStrategy {
     var productivityUsageThreshold = Int()
     var productivityInterval = Int()
     
-    override init(categoryName: String, categoryId: UUID, appSelection: FamilyActivitySelection) {
-        super.init(categoryName: categoryName, categoryId: categoryId, appSelection: appSelection)
-        
-        loadSelections()
-    }
-    
     private var deviceActivityNameFirst: DeviceActivityName {
         .init("first-\(categoryId.uuidString)")
     }
@@ -30,16 +24,6 @@ class IntervalTrackRestriction: BaseRestriction, RestrictionStrategy {
     
     private var deviceActivityEventName: DeviceActivityEvent.Name {
         .init("event-\(categoryId.uuidString)")
-    }
-    
-    func loadSelections() {
-        let defaults = UserDefaults(suiteName: "group.com.app.cognize") ?? .standard
-        if let pThreshold = loadCodable(Int.self, forKey: "productivityUsageThreshold-\(categoryId.uuidString)", from: defaults) {
-            productivityUsageThreshold = pThreshold
-        }
-        if let pInterval = loadCodable(Int.self, forKey: "productivityInterval-\(categoryId.uuidString)", from: defaults) {
-            productivityInterval = pInterval
-        }
     }
     
     func scheduleProductivity(name: DeviceActivityName) {
@@ -97,12 +81,10 @@ class IntervalTrackRestriction: BaseRestriction, RestrictionStrategy {
     
     //    MARK: - RestrictionStrategy Implementation
     func intervalDidStart(for activity: DeviceActivityName) {
-        print("\(categoryName) intervalDidStart")
         NotificationManager.shared.scheduleNotification(title: "intervalDidStart", body: "\(activity.rawValue)", inSeconds: 1.5)
     }
     
     func intervalDidEnd(for activity: DeviceActivityName) {
-        print("\(categoryName) intervalDidEnd")
         NotificationManager.shared.scheduleNotification(title: "intervalDidEnd", body: "\(activity.rawValue)", inSeconds: 1.5)
     }
     
@@ -114,7 +96,6 @@ class IntervalTrackRestriction: BaseRestriction, RestrictionStrategy {
     }
     
     func intervalWillStartWarning(for activity: DeviceActivityName) {
-        print("\(categoryName) intervalWillStartWarning")
         NotificationManager.shared.scheduleNotification(title: "intervalWillStartWarning", body: "\(activity.rawValue)", inSeconds: 1.5)
     }
     
@@ -129,7 +110,6 @@ class IntervalTrackRestriction: BaseRestriction, RestrictionStrategy {
     }
     
     func eventWillReachThresholdWarning(_ event: DeviceActivityEvent.Name, for activity: DeviceActivityName) {
-        print("\(categoryName) eventWillReachThresholdWarning")
         NotificationManager.shared.scheduleNotification(title: "eventWillReachThresholdWarning", body: "\(event.rawValue) \(activity.rawValue)", inSeconds: 1.5)
     }
     

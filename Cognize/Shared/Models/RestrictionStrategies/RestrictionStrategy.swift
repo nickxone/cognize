@@ -8,7 +8,7 @@
 import Foundation
 import DeviceActivity
 
-protocol RestrictionStrategy {
+protocol RestrictionStrategy: Codable {
     func intervalDidStart(for activity: DeviceActivityName)
     func intervalDidEnd(for activity: DeviceActivityName)
     func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, for activity: DeviceActivityName)

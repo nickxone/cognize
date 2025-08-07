@@ -46,16 +46,14 @@ class ShieldRestriction: BaseRestriction, RestrictionStrategy {
     
 //    MARK: - RestrictionStrategy Implementation
     func intervalDidStart(for activity: DeviceActivityName) {
-        print("\(categoryName) intervalDidStart")
     }
     
     func intervalDidEnd(for activity: DeviceActivityName) {
-        NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended \(categoryName)", inSeconds: 1.5)
+        NotificationManager.shared.scheduleNotification(title: "End schedule", body: "Ended ", inSeconds: 1.5)
         shield()
     }
     
     func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, for activity: DeviceActivityName) {
-        print("\(categoryName) eventDidReachThreshold")
     }
     
     func intervalWillStartWarning(for activity: DeviceActivityName) {
@@ -67,6 +65,5 @@ class ShieldRestriction: BaseRestriction, RestrictionStrategy {
     }
     
     func eventWillReachThresholdWarning(_ event: DeviceActivityEvent.Name, for activity: DeviceActivityName) {
-        print("\(categoryName) eventWillReachThresholdWarning")
     }
 }

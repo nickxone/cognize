@@ -43,8 +43,7 @@ struct CategoryCardView: View {
 }
 
 #Preview {
-    let appSelection = FamilyActivitySelection()
-    let category = Category(name: "Social", appSelection: appSelection, restrictionType: .shield, color: .blue)
+    let category = Category(name: "Social", color: .blue, configuration: RestrictionConfiguration.shield(.init(appSelection: FamilyActivitySelection(), timeAllowed: 5, opensAllowed: 5)))
     CategoryCardView(category: category)
     
 }

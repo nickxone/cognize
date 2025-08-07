@@ -24,11 +24,8 @@ import SwiftUI
 /// - Computed `color` property backed by encoded `Data` for storage compatibility.
 ///
 /// This model enables the app to group apps under customizable categories and apply personalized usage control logic.
-class Category: Codable, ObservableObject, Identifiable, Equatable {
-    static func == (lhs: Category, rhs: Category) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
+
+class Category: Codable, Identifiable {
     enum RestrictionType: String, Codable {
         case shield
         case interval
@@ -37,27 +34,18 @@ class Category: Codable, ObservableObject, Identifiable, Equatable {
     
     var id: UUID
     var name = String()
-    var appSelection: FamilyActivitySelection
-    var restrictionType: RestrictionType
+    var configuration: RestrictionConfiguration
     private var colorData: Data?
     
-    init(name: String, appSelection: FamilyActivitySelection, restrictionType: RestrictionType, color: Color) {
+    init(name: String, color: Color, configuration: RestrictionConfiguration) {
         self.id = UUID()
         self.name = name
-        self.appSelection = appSelection
-        self.restrictionType = restrictionType
+        self.configuration = configuration
         self.colorData = try? encodeColor(color)
     }
     
-    var strategy: RestrictionStrategy {
-        switch restrictionType {
-        case .shield:
-            return ShieldRestriction(categoryName: name, categoryId: id, appSelection: appSelection)
-        case .allow:
-            return ShieldRestriction(categoryName: name, categoryId: id, appSelection: appSelection)
-        case .interval:
-            return IntervalTrackRestriction(categoryName: name, categoryId: id, appSelection: appSelection)
-        }
+    var restrictionType: RestrictionType {
+        configuration.type
     }
     
     var color: Color {
@@ -78,4 +66,27 @@ class Category: Codable, ObservableObject, Identifiable, Equatable {
         }
     }
     
+}
+
+extension Category: Equatable {
+    static func == (lhs: Category, rhs: Category) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+extension Category {
+    func makeStrategy() -> RestrictionStrategy {
+        switch configuration {
+        case .shield(let config):
+            let strategy = ShieldRestriction(categoryId: id, appSelection: config.appSelection)
+            let _ = config.timeAllowed
+            return strategy
+        case .interval(let config):
+            let strategy = IntervalTrackRestriction(categoryId: id, appSelection: config.appSelection)
+            return strategy
+        case .allow(let config):
+            let strategy = ShieldRestriction(categoryId: id, appSelection: config.appSelection)
+            return strategy
+        }
+    }
 }

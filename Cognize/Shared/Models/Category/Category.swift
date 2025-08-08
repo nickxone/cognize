@@ -26,12 +26,7 @@ import SwiftUI
 /// This model enables the app to group apps under customizable categories and apply personalized usage control logic.
 
 class Category: Codable, Identifiable {
-    enum RestrictionType: String, Codable {
-        case shield
-        case interval
-        case allow
-    }
-    
+
     var id: UUID
     var name = String()
     var configuration: RestrictionConfiguration
@@ -42,10 +37,6 @@ class Category: Codable, Identifiable {
         self.name = name
         self.configuration = configuration
         self.colorData = try? encodeColor(color)
-    }
-    
-    var restrictionType: RestrictionType {
-        configuration.type
     }
     
     var color: Color {

@@ -30,14 +30,6 @@ enum RestrictionConfiguration: Codable, Equatable {
         var timeLimit: Int
     }
     
-    var type: Category.RestrictionType {
-        switch self {
-        case .shield: return .shield
-        case .interval: return .interval
-        case .allow: return .allow
-        }
-    }
-    
     var appSelection: FamilyActivitySelection {
         switch self {
         case .shield(let config): return config.appSelection

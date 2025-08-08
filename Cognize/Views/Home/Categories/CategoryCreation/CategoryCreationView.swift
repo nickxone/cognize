@@ -19,17 +19,14 @@ struct CategoryCreationView: View {
     
     @Binding var categories: [Category]
     
+    // New category properties
     @State private var name = ""
     @State private var color: Color = .black
-    
-    @State private var restrictionType: Category.RestrictionType = .shield
-    @State private var appSelection = FamilyActivitySelection()
+    @State private var configuration = RestrictionConfiguration.shield(.init(appSelection: FamilyActivitySelection(), timeAllowed: 5, opensAllowed: 5))
     
     @State private var showPicker = false
     @State private var showRestrictionView = false
     @State private var showActivityPicker = false
-    
-    @State private var limitType: ShieldRestriction.LimitType = .timeLimit
     
     init(categories: Binding<[Category]>) {
         self._categories = categories
@@ -101,7 +98,7 @@ struct CategoryCreationView: View {
         .presentationCornerRadius(32)
         .background(.clear)
         .fullScreenCover(isPresented: $showRestrictionView) {
-            RestrictionSelectionView(color: color, restrictionType: $restrictionType, appSelection: $appSelection, shieldLimitType: $limitType) {
+            RestrictionSelectionView(color: color, configuration: $configuration    ) {
                 showRestrictionView = false
             } doneAction: {
 //                let category = Category(name: name, appSelection: appSelection, restrictionType: restrictionType, color: color)

@@ -10,7 +10,7 @@ import SwiftUI
 import FamilyControls
 
 fileprivate enum RestrictionKind: String, CaseIterable, Identifiable {
-    case shield, interval, allow
+    case shield, interval, open
     var id: Self { self }
 }
 
@@ -21,7 +21,6 @@ struct RestrictionSelectionView: View {
     let doneAction: () -> ()
     
     @State private var showActivityPicker = false
-    @State private var appSelection = FamilyActivitySelection()
     @State private var selectedKind: RestrictionKind = .shield
     
     init(
@@ -41,7 +40,7 @@ struct RestrictionSelectionView: View {
         switch configuration.wrappedValue {
         case .shield:   _selectedKind = State(initialValue: .shield)
         case .interval: _selectedKind = State(initialValue: .interval)
-        case .allow:    _selectedKind = State(initialValue: .allow)
+        case .open:    _selectedKind = State(initialValue: .open)
         }
     }
     
@@ -59,7 +58,7 @@ struct RestrictionSelectionView: View {
                 Picker("Restriction Type", selection: $selectedKind) {
                     Text("Shield").tag(RestrictionKind.shield)
                     Text("Interval").tag(RestrictionKind.interval)
-                    Text("Allow").tag(RestrictionKind.allow)
+                    Text("Open").tag(RestrictionKind.open)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
@@ -67,11 +66,11 @@ struct RestrictionSelectionView: View {
                     let sel = configuration.appSelection // keep the current selection
                     switch newKind {
                     case .shield:
-                        configuration = .shield(.init(appSelection: sel, timeAllowed: 30, opensAllowed: 5))
+                        configuration = .shield(.timeLimit(.init(appSelection: sel, timeAllowed: 30)))
                     case .interval:
                         configuration = .interval(.init(appSelection: sel, thresholdTime: 5, intervalLength: 30))
-                    case .allow:
-                        configuration = .allow(.init(appSelection: sel, hasLimit: false, timeLimit: 30))
+                    case .open:
+                        configuration = .open(.alwaysOpen(.init(appSelection: sel)))
                     }
                 }
                 
@@ -315,7 +314,7 @@ struct RestrictionSelectionView: View {
             return "Apps in this category will be fully blocked until you return to Cognize."
         case .interval:
             return "Apps will be available until you exceed a block threshold in a short interval (e.g. 15 mins)."
-        case .allow:
+        case .open:
             return "Apps are always available, but usage can be tracked or limited gently."
         }
     }
@@ -347,14 +346,12 @@ struct RestrictionSelectionView: View {
 }
 
 #Preview {
-    //    @Previewable @State var restrictionType: Category.RestrictionType = .shield
-    @Previewable @State var appSelection = FamilyActivitySelection()
-    @Previewable @State var limitType: ShieldRestriction.LimitType = .timeLimit
+    @Previewable @State var configuration = RestrictionConfiguration.shield(ShieldRestriction.Configuration.timeLimit(.init(appSelection: FamilyActivitySelection(), timeAllowed: 30)))
     //
-    //    RestrictionSelectionView(color: .blue, restrictionType: $restrictionType, appSelection: $appSelection, shieldLimitType: $limitType) {
-    //
-    //    } doneAction: {
-    //
-    //    }
+    RestrictionSelectionView(color: .blue, configuration: $configuration) {
+        
+    } doneAction: {
+        
+    }
     
 }

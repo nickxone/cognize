@@ -70,12 +70,12 @@ extension Category {
         switch configuration {
         case .shield(let config):
             let strategy = ShieldRestriction(categoryId: id, appSelection: config.appSelection)
-            let _ = config.timeAllowed
+//            let _ = config.timeAllowed
             return strategy
         case .interval(let config):
-            let strategy = IntervalTrackRestriction(categoryId: id, appSelection: config.appSelection)
+            let strategy = IntervalRestriction(categoryId: id, appSelection: config.appSelection)
             return strategy
-        case .allow(let config):
+        case .open(let config):
             let strategy = ShieldRestriction(categoryId: id, appSelection: config.appSelection)
             return strategy
         }

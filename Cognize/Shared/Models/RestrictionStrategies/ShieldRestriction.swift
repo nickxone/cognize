@@ -11,11 +11,29 @@ import FamilyControls
 import DeviceActivity
 
 class ShieldRestriction: BaseRestriction, RestrictionStrategy {
-    
-    enum LimitType: CaseIterable, Identifiable {
-        case timeLimit
-        case openLimit
-        var id: Self { self }
+    enum Configuration: Codable, Equatable {
+        case timeLimit(TimeLimit)
+        case openLimit(OpenLimit)
+        
+        struct TimeLimit: Codable, Equatable {
+            var appSelection: FamilyActivitySelection
+            var timeAllowed: Int
+        }
+        
+        struct OpenLimit: Codable, Equatable {
+            var appSelection: FamilyActivitySelection
+            var opensAllowed: Int
+            var timePerOpen: Int
+        }
+        
+        var appSelection: FamilyActivitySelection {
+            switch self {
+            case .timeLimit(let config):
+                return config.appSelection
+            case .openLimit(let config):
+                return config.appSelection
+            }
+        }
     }
     
     private var deviceActivityName: DeviceActivityName {

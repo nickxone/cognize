@@ -61,6 +61,7 @@ struct CategoryActionView: View {
 }
 
 #Preview {
-    let category = Category(name: "Social", color: .blue, configuration: RestrictionConfiguration.shield(.init(appSelection: FamilyActivitySelection(), timeAllowed: 5, opensAllowed: 5)))
+    let configuration = RestrictionConfiguration.shield(ShieldRestriction.Configuration.timeLimit(.init(appSelection: FamilyActivitySelection(), timeAllowed: 30)))
+    let category = Category(name: "Social", color: .blue, configuration: configuration)
     CategoryActionView(category: category)
 }

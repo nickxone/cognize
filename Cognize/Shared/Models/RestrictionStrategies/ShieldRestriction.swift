@@ -10,31 +10,17 @@ import ManagedSettings
 import FamilyControls
 import DeviceActivity
 
+struct ShieldConfig: Codable, Equatable {
+    var appSelection: FamilyActivitySelection
+    var limit: Limit
+    
+    enum Limit: Codable, Equatable {
+        case timeLimit(minutesAllowed: Int)
+        case openLimit(opensAllowed: Int, minutesPerOpen: Int)
+    }    
+}
+
 class ShieldRestriction: BaseRestriction, RestrictionStrategy {
-    enum Configuration: Codable, Equatable {
-        case timeLimit(TimeLimit)
-        case openLimit(OpenLimit)
-        
-        struct TimeLimit: Codable, Equatable {
-            var appSelection: FamilyActivitySelection
-            var timeAllowed: Int
-        }
-        
-        struct OpenLimit: Codable, Equatable {
-            var appSelection: FamilyActivitySelection
-            var opensAllowed: Int
-            var timePerOpen: Int
-        }
-        
-        var appSelection: FamilyActivitySelection {
-            switch self {
-            case .timeLimit(let config):
-                return config.appSelection
-            case .openLimit(let config):
-                return config.appSelection
-            }
-        }
-    }
     
     private var deviceActivityName: DeviceActivityName {
         .init("allow-\(categoryId.uuidString)")

@@ -22,7 +22,7 @@ struct CategoryCreationView: View {
     // New category properties
     @State private var name = ""
     @State private var color: Color = .black
-    @State private var configuration = RestrictionConfiguration.shield(ShieldRestriction.Configuration.timeLimit(.init(appSelection: FamilyActivitySelection(), timeAllowed: 30)))
+    @State private var draftConfig = RestrictionDraft()
     
     @State private var showPicker = false
     @State private var showRestrictionView = false
@@ -98,7 +98,7 @@ struct CategoryCreationView: View {
         .presentationCornerRadius(32)
         .background(.clear)
         .fullScreenCover(isPresented: $showRestrictionView) {
-            RestrictionSelectionView(color: color, configuration: $configuration    ) {
+            RestrictionSelectionView(color: color, configuration: $draftConfig) {
                 showRestrictionView = false
             } doneAction: {
 //                let category = Category(name: name, appSelection: appSelection, restrictionType: restrictionType, color: color)

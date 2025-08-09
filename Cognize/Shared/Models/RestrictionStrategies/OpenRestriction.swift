@@ -8,29 +8,19 @@
 import DeviceActivity
 import FamilyControls
 
-class OpenRestriction: BaseRestriction, RestrictionStrategy {
-    enum Configuration: Codable, Equatable {
-        case alwaysOpen(AlwaysOpen)
-        case timeLimit(TimeLimit)
-        
-        struct AlwaysOpen: Codable, Equatable {
-            var appSelection: FamilyActivitySelection
-        }
-        
-        struct TimeLimit: Codable, Equatable {
-            var appSelection: FamilyActivitySelection
-            var timeLimit: Int
-        }
-        
-        var appSelection: FamilyActivitySelection {
-            switch self {
-            case .alwaysOpen(let config):
-                return config.appSelection
-            case .timeLimit(let config):
-                return config.appSelection
-            }
-        }
+struct OpenConfig: Codable, Equatable {
+    var appSelection: FamilyActivitySelection
+    var limit: Limit
+    
+    enum Limit: Codable, Equatable {
+        case timeLimit(minutes: Int)
+        case alwaysOpen
     }
+
+}
+
+class OpenRestriction: BaseRestriction, RestrictionStrategy {
+    
     func intervalDidStart(for activity: DeviceActivityName) {
         // TODO: Implement
     }

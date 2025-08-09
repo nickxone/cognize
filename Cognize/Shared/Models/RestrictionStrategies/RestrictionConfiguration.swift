@@ -8,15 +8,24 @@
 import FamilyControls
 
 enum RestrictionConfiguration: Codable, Equatable {
-    case shield(ShieldRestriction.Configuration)
-    case interval(IntervalRestriction.Configuration)
-    case open(OpenRestriction.Configuration)
+    case shield(ShieldConfig)
+    case interval(IntervalConfig)
+    case open(OpenConfig)
     
     var appSelection: FamilyActivitySelection {
-        switch self {
-        case .shield(let config): return config.appSelection
-        case .interval(let config): return config.appSelection
-        case .open(let config): return config.appSelection
+        get {
+            switch self {
+            case .shield(let c):   return c.appSelection
+            case .interval(let c): return c.appSelection
+            case .open(let c):    return c.appSelection
+            }
+        }
+        set {
+            switch self {
+            case .shield(var c):   c.appSelection = newValue; self = .shield(c)
+            case .interval(var c): c.appSelection = newValue; self = .interval(c)
+            case .open(var c):    c.appSelection = newValue; self = .open(c)
+            }
         }
     }
 }

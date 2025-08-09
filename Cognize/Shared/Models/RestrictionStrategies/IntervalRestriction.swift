@@ -10,12 +10,13 @@ import ManagedSettings
 import FamilyControls
 import DeviceActivity
 
+struct IntervalConfig: Codable, Equatable {
+    var appSelection: FamilyActivitySelection
+    var thresholdTime: Int
+    var intervalLength: Int
+}
+
 class IntervalRestriction: BaseRestriction, RestrictionStrategy {
-    struct Configuration: Codable, Equatable {
-        var appSelection: FamilyActivitySelection
-        var thresholdTime: Int
-        var intervalLength: Int
-    }
     
     var productivityUsageThreshold = Int()
     var productivityInterval = Int()

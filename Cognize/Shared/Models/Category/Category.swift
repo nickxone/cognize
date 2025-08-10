@@ -37,6 +37,7 @@ class Category: Codable, Identifiable {
         self.name = name
         self.configuration = configuration
         self.colorData = try? encodeColor(color)
+        makeStrategy().start()
     }
     
     var color: Color {
@@ -69,14 +70,13 @@ extension Category {
     func makeStrategy() -> RestrictionStrategy {
         switch configuration {
         case .shield(let config):
-            let strategy = ShieldRestriction(categoryId: id, appSelection: config.appSelection)
-//            let _ = config.timeAllowed
+            let strategy = ShieldRestriction(categoryId: id, config: config)
             return strategy
         case .interval(let config):
-            let strategy = IntervalRestriction(categoryId: id, appSelection: config.appSelection)
+            let strategy = IntervalRestriction(categoryId: id, config: config)
             return strategy
         case .open(let config):
-            let strategy = ShieldRestriction(categoryId: id, appSelection: config.appSelection)
+            let strategy = OpenRestriction(categoryId: id, config: config)
             return strategy
         }
     }

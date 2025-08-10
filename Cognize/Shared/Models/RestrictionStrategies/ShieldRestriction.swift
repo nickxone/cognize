@@ -20,7 +20,14 @@ struct ShieldConfig: Codable, Equatable {
     }    
 }
 
-class ShieldRestriction: BaseRestriction, RestrictionStrategy {
+class ShieldRestriction: BaseRestriction {
+    var config: ShieldConfig
+    
+    init(categoryId: UUID, config: ShieldConfig) {
+        self.config = config
+        super.init(categoryId: categoryId, appSelection: config.appSelection)
+    }
+    
     
     private var deviceActivityName: DeviceActivityName {
         .init("allow-\(categoryId.uuidString)")
@@ -48,7 +55,13 @@ class ShieldRestriction: BaseRestriction, RestrictionStrategy {
         }
     }
     
-//    MARK: - RestrictionStrategy Implementation
+}
+
+extension ShieldRestriction: RestrictionStrategy {
+    func start() {
+        shield()
+    }
+    
     func intervalDidStart(for activity: DeviceActivityName) {
     }
     

@@ -5,6 +5,7 @@
 //  Created by Matvii Ustich on 08/08/2025.
 //
 
+import Foundation
 import DeviceActivity
 import FamilyControls
 
@@ -19,7 +20,20 @@ struct OpenConfig: Codable, Equatable {
 
 }
 
-class OpenRestriction: BaseRestriction, RestrictionStrategy {
+class OpenRestriction: BaseRestriction {
+    var config: OpenConfig
+    
+    init(categoryId: UUID, config: OpenConfig) {
+        self.config = config
+        super.init(categoryId: categoryId, appSelection: config.appSelection)
+    }
+    
+}
+
+extension OpenRestriction: RestrictionStrategy {
+    func start() {
+        print("Open restriction started")
+    }
     
     func intervalDidStart(for activity: DeviceActivityName) {
         // TODO: Implement
@@ -44,6 +58,5 @@ class OpenRestriction: BaseRestriction, RestrictionStrategy {
     func eventWillReachThresholdWarning(_ event: DeviceActivityEvent.Name, for activity: DeviceActivityName) {
         // TODO: Implement
     }
-    
     
 }

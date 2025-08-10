@@ -16,10 +16,13 @@ struct IntervalConfig: Codable, Equatable {
     var intervalLength: Int
 }
 
-class IntervalRestriction: BaseRestriction, RestrictionStrategy {
+class IntervalRestriction: BaseRestriction {
+    var config: IntervalConfig
     
-    var productivityUsageThreshold = Int()
-    var productivityInterval = Int()
+    init(categoryId: UUID, config: IntervalConfig) {
+        self.config = config
+        super.init(categoryId: categoryId, appSelection: config.appSelection)
+    }
     
     private var deviceActivityNameFirst: DeviceActivityName {
         .init("first-\(categoryId.uuidString)")
@@ -35,15 +38,15 @@ class IntervalRestriction: BaseRestriction, RestrictionStrategy {
     
     func scheduleProductivity(name: DeviceActivityName) {
         let schedule = createSchedule(
-            endOffset: TimeInterval(productivityInterval * 60),
-            warningTime: DateComponents(minute: productivityUsageThreshold)
+            endOffset: TimeInterval(config.intervalLength * 60),
+            warningTime: DateComponents(minute: config.thresholdTime)
         )
         let events: [DeviceActivityEvent.Name: DeviceActivityEvent] = [
             deviceActivityEventName: DeviceActivityEvent(
                 applications: appSelection.applicationTokens, // potential source of errors in case appSelection contains categoryTokens rather than applicationTokens
                 categories: appSelection.categoryTokens,
                 webDomains: appSelection.webDomainTokens,
-                threshold: DateComponents(minute: productivityUsageThreshold)
+                threshold: DateComponents(minute: config.thresholdTime)
             )
         ]
         
@@ -55,38 +58,23 @@ class IntervalRestriction: BaseRestriction, RestrictionStrategy {
         }
     }
     
-    func track(thresholdUsageMinutes threshold: Int, duringIntervalMinutes interval: Int) {
-        guard interval > threshold && interval >= 15  && threshold >= 1 else {
+    func track() {
+        guard config.intervalLength > config.thresholdTime && config.intervalLength >= 15  && config.thresholdTime >= 1 else {
             print("Interval must be greater than threshold & interval must be greater than 15 minutes & threshold must be greater than 1 minute")
             return
         }
         
-        productivityUsageThreshold = threshold
-        productivityInterval = interval
-        saveProductivitySettings()
-        
         scheduleProductivity(name: deviceActivityNameFirst)
-        NotificationManager.shared.scheduleNotification(title: "track", body: "\(threshold) \(interval)", inSeconds: 1.5)
+        NotificationManager.shared.scheduleNotification(title: "track", body: "\(config.thresholdTime) \(config.intervalLength)", inSeconds: 1.5)
     }
     
-    private func saveCodable<T: Codable>(_ value: T, forKey key: String, in defaults: UserDefaults) {
-        if let data = try? JSONEncoder().encode(value) {
-            defaults.set(data, forKey: key)
-        }
+}
+
+extension IntervalRestriction: RestrictionStrategy {
+    func start() {
+        track()
     }
     
-    private func loadCodable<T: Codable>(_ type: T.Type, forKey key: String, from defaults: UserDefaults) -> T? {
-        guard let data = defaults.data(forKey: key) else { return nil }
-        return try? JSONDecoder().decode(type, from: data)
-    }
-    
-    func saveProductivitySettings() {
-        let defaults = UserDefaults(suiteName: "group.com.app.cognize") ?? .standard
-        saveCodable(productivityUsageThreshold, forKey: "productivityUsageThreshold-\(categoryId.uuidString)", in: defaults)
-        saveCodable(productivityInterval, forKey: "productivityInterval-\(categoryId.uuidString)", in: defaults)
-    }
-    
-    //    MARK: - RestrictionStrategy Implementation
     func intervalDidStart(for activity: DeviceActivityName) {
         NotificationManager.shared.scheduleNotification(title: "intervalDidStart", body: "\(activity.rawValue)", inSeconds: 1.5)
     }
@@ -119,6 +107,5 @@ class IntervalRestriction: BaseRestriction, RestrictionStrategy {
     func eventWillReachThresholdWarning(_ event: DeviceActivityEvent.Name, for activity: DeviceActivityName) {
         NotificationManager.shared.scheduleNotification(title: "eventWillReachThresholdWarning", body: "\(event.rawValue) \(activity.rawValue)", inSeconds: 1.5)
     }
-    
     
 }

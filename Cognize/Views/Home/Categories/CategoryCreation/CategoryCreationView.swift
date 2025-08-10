@@ -28,10 +28,6 @@ struct CategoryCreationView: View {
     @State private var showRestrictionView = false
     @State private var showActivityPicker = false
     
-    init(categories: Binding<[Category]>) {
-        self._categories = categories
-    }
-    
     var body: some View {
         ZStack {
             // Background
@@ -101,20 +97,11 @@ struct CategoryCreationView: View {
             RestrictionSelectionView(color: color, configuration: $draftConfig) {
                 showRestrictionView = false
             } doneAction: {
-//                let category = Category(name: name, appSelection: appSelection, restrictionType: restrictionType, color: color)
-//                categories.append(category)
-//                switch category.restrictionType {
-//                case .shield:
-//                    (category.strategy as! ShieldRestriction).shield()
-//                case .interval:
-//                    (category.strategy as! IntervalTrackRestriction).track(thresholdUsageMinutes: 2, duringIntervalMinutes: 15)
-//                case .allow:
-//                    print("Allow")
-//                }
-//                store.save(categories)
-//                print(category)
+                let configuration = draftConfig.asConfiguration()
+                let category = Category(name: name, color: color, configuration: configuration)
+                categories.append(category)
+                store.save(categories)
                 dismiss()
-//                showRestrictionView = false
             }
 
         }

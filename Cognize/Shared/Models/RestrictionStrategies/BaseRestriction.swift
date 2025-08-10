@@ -10,7 +10,7 @@ import FamilyControls
 import ManagedSettings
 import DeviceActivity
 
-class BaseRestriction: Codable {
+class BaseRestriction {
     let categoryId: UUID
     let appSelection: FamilyActivitySelection
     

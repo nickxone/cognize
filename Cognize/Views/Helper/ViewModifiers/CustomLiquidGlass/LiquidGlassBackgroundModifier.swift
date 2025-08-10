@@ -15,9 +15,12 @@ struct LiquidGlassBackgroundModifier: ViewModifier {
         case automatic
     }
     
+    /// Use `none` for Category cards, since when the gradient has more than one colour,
+    /// the PieChart gestures stop working
     public enum GradientStyle {
         case normal
         case reverted
+        case none
     }
     
     let displayMode: GlassBackgroundDisplayMode
@@ -118,6 +121,10 @@ struct LiquidGlassBackgroundModifier: ViewModifier {
                 color.opacity(gradientOpacity),
                 color.opacity(gradientOpacity),
                 .clear
+            ]
+        case .none:
+            return [
+                color.opacity(gradientOpacity)
             ]
         }
     }

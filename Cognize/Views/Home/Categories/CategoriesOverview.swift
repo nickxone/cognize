@@ -36,7 +36,7 @@ struct CategoriesOverview: View {
             .padding()
         }
         .frame(width: UIScreen.main.bounds.width - 60)
-        .glass(shadowColor: .black)
+        .glass(gradientOpacity: 0.25, gradientStyle: .none, shadowColor: .black)
         .preferredColorScheme(.dark)
     }
 

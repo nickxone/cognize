@@ -34,7 +34,7 @@ struct CategoryCardView: View {
             }
             .padding()
         }
-        .glass(gradientOpacity: 0.35, shadowOpacity: 0.4)
+        .glass(gradientOpacity: 0.35, gradientStyle: .none, shadowOpacity: 0.4)
         .frame(width: UIScreen.main.bounds.width - 60,
                height: UIScreen.main.bounds.height * 0.5)
         .preferredColorScheme(.dark)

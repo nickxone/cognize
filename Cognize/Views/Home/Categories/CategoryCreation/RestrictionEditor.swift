@@ -31,7 +31,8 @@ struct RestrictionEditor: View {
                     .frame(height: 30)
                     Divider()
                     Group {
-                        if configuration.shield.kind == .shieldTime {
+                        switch configuration.shield.kind {
+                        case .shieldTime:
                             HStack {
                                 Text("Time Allowed")
                                 Spacer()
@@ -51,7 +52,7 @@ struct RestrictionEditor: View {
                                 .tint(.gray)
                             }
                             .frame(height: 30)
-                        } else if configuration.shield.kind == .shieldOpen {
+                        case .shieldOpen:
                             HStack {
                                 Text("Opens Allowed")
                                 Spacer()

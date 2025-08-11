@@ -14,6 +14,12 @@ struct IntervalConfig: Codable, Equatable {
     var appSelection: FamilyActivitySelection
     var thresholdTime: Int
     var intervalLength: Int
+//    var limit: Limit
+//    
+//    enum Limit: Codable, Equatable {
+//        case timeLimit(minutesAllowed: Int)
+//        case none
+//    }
 }
 
 class IntervalRestriction: BaseRestriction {

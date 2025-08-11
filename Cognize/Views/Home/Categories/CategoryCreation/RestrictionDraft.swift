@@ -29,6 +29,9 @@ struct RestrictionDraft {
     
     // interval
     struct Interval {
+        enum Kind { case timeLimit, none }
+        var kind: Kind = .none
+        var timeLimit: Int = 60
         var intervalThresholdTime: Int = 5
         var intervalLength: Int = 30
     }
@@ -53,6 +56,12 @@ extension RestrictionDraft {
             }
         case .interval:
             return .interval(.init(appSelection: appSelection, thresholdTime: interval.intervalThresholdTime, intervalLength: interval.intervalLength))
+//            switch interval.kind {
+//            case .none:
+//                return .interval(.init(appSelection: appSelection, thresholdTime: interval.intervalThresholdTime, intervalLength: interval.intervalLength, limit: .none))
+//            case .timeLimit:
+//                return .interval(.init(appSelection: appSelection, thresholdTime: interval.intervalThresholdTime, intervalLength: interval.intervalLength, limit: .timeLimit(minutesAllowed: interval.timeLimit)))
+//            }
         case .open:
             switch open.kind {
             case .openAlways:

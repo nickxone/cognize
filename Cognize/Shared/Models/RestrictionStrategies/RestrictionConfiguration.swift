@@ -5,27 +5,37 @@
 //  Created by Matvii Ustich on 07/08/2025.
 //
 
+import Foundation
 import FamilyControls
 
+struct RestrictionCommon: Codable, Equatable {
+    var appSelection: FamilyActivitySelection
+    var startTime: DateComponents
+    var endTime: DateComponents
+}
+
 enum RestrictionConfiguration: Codable, Equatable {
-    case shield(ShieldConfig)
-    case interval(IntervalConfig)
-    case open(OpenConfig)
+    case shield(common: RestrictionCommon, ShieldConfig)
+    case interval(common: RestrictionCommon, IntervalConfig)
+    case open(common: RestrictionCommon, OpenConfig)
     
-    var appSelection: FamilyActivitySelection {
+    var common: RestrictionCommon {
         get {
             switch self {
-            case .shield(let c):   return c.appSelection
-            case .interval(let c): return c.appSelection
-            case .open(let c):    return c.appSelection
+            case .shield(let c, _), .interval(common: let c, _), .open(common: let c, _): return c
             }
         }
         set {
             switch self {
-            case .shield(var c):   c.appSelection = newValue; self = .shield(c)
-            case .interval(var c): c.appSelection = newValue; self = .interval(c)
-            case .open(var c):    c.appSelection = newValue; self = .open(c)
+            case .shield(_, let s): self = .shield(common: newValue, s)
+            case .interval(_, let s): self = .interval(common: newValue, s)
+            case .open(_, let s): self = .open(common: newValue, s)
             }
         }
+    }
+    
+    var appSelection: FamilyActivitySelection {
+        get { common.appSelection }
+        set { var c = common; c.appSelection = newValue; common = c}
     }
 }

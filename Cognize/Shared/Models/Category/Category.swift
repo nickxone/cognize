@@ -69,14 +69,14 @@ extension Category: Equatable {
 extension Category {
     func makeStrategy() -> RestrictionStrategy {
         switch configuration {
-        case .shield(let config):
-            let strategy = ShieldRestriction(categoryId: id, config: config)
+        case .shield:
+            let strategy = ShieldRestriction(categoryId: id, configuration: configuration)
             return strategy
-        case .interval(let config):
-            let strategy = IntervalRestriction(categoryId: id, config: config)
+        case .interval:
+            let strategy = IntervalRestriction(categoryId: id, configuration: configuration)
             return strategy
-        case .open(let config):
-            let strategy = OpenRestriction(categoryId: id, config: config)
+        case .open:
+            let strategy = OpenRestriction(categoryId: id, configuration: configuration)
             return strategy
         }
     }

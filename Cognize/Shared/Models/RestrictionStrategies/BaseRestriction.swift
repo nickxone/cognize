@@ -12,11 +12,11 @@ import DeviceActivity
 
 class BaseRestriction {
     let categoryId: UUID
-    let appSelection: FamilyActivitySelection
+    let common: RestrictionCommon
     
-    init(categoryId: UUID, appSelection: FamilyActivitySelection) {
+    init(categoryId: UUID, common: RestrictionCommon) {
         self.categoryId = categoryId
-        self.appSelection = appSelection
+        self.common = common
     }
     
     var storeName: ManagedSettingsStore.Name {
@@ -31,7 +31,7 @@ class BaseRestriction {
     
     func shield() {
         let store = ManagedSettingsStore(named: storeName)
-        store.shield(familyActivitySelection: appSelection)
+        store.shield(familyActivitySelection: common.appSelection)
     }
     
     // MARK: - Scheduling

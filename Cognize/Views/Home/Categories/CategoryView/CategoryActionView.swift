@@ -18,6 +18,12 @@ struct CategoryActionView: View {
             // Background
             ColorfulBackground(color: category.color, animate: false)
             
+            switch category.configuration {
+            case .shield( _, let shieldConfig):
+                ShieldActionView(category: category, shieldConfig: shieldConfig)
+            default:
+                Text("Default")
+            }
             VStack {
                 Spacer()
                 
@@ -39,7 +45,6 @@ struct CategoryActionView: View {
                         }
                         .foregroundStyle(.white)
                 }
-                //                .disabled(reason.isEmpty)
             }
             .padding()
             
@@ -60,8 +65,29 @@ struct CategoryActionView: View {
     
 }
 
+struct ShieldActionView: View {
+    let category: Category
+    let shieldConfig: ShieldConfig
+    let shieldUsageStore = ShieldUsageStore()
+    
+    var body: some View {
+        VStack {
+            switch shieldConfig.limit {
+            case .openLimit(let openLimit, _):
+                Text("Opens Used")
+                ProgressView(value: Float(shieldUsageStore.used(for: category.id, config: shieldConfig)), total: Float(openLimit))
+            case .timeLimit(let minutesAllowed):
+                Text("Time Used")
+                ProgressView(value: Float(shieldUsageStore.used(for: category.id, config: shieldConfig)), total: Float(minutesAllowed))
+            }
+            Spacer()
+        }
+        .padding()
+    }
+}
+
 #Preview {
-    let configuration = RestrictionConfiguration.shield(ShieldConfig(appSelection: FamilyActivitySelection(), limit: .timeLimit(minutesAllowed: 30)))
+    let configuration = RestrictionConfiguration.shield(common: .init(appSelection: FamilyActivitySelection(), startTime: DateComponents(hour: 0, minute: 0), endTime: DateComponents(hour: 23, minute: 59)), ShieldConfig(limit: .timeLimit(minutesAllowed: 30)))
     let category = Category(name: "Social", color: .blue, configuration: configuration)
     
     CategoryActionView(category: category)

@@ -10,22 +10,23 @@ import DeviceActivity
 import FamilyControls
 
 struct OpenConfig: Codable, Equatable {
-    var appSelection: FamilyActivitySelection
     var limit: Limit
     
     enum Limit: Codable, Equatable {
         case timeLimit(minutes: Int)
         case alwaysOpen
     }
-
 }
 
 class OpenRestriction: BaseRestriction {
     var config: OpenConfig
     
-    init(categoryId: UUID, config: OpenConfig) {
-        self.config = config
-        super.init(categoryId: categoryId, appSelection: config.appSelection)
+    init(categoryId: UUID, configuration: RestrictionConfiguration) {
+        guard case let .open(common, openConfig) = configuration else {
+            preconditionFailure("OpenRestriction only supports .open configuration")
+        }
+        self.config = openConfig
+        super.init(categoryId: categoryId, common: common)
     }
     
 }

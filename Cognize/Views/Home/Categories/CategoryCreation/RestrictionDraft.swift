@@ -5,6 +5,7 @@
 //  Created by Matvii Ustich on 09/08/2025.
 //
 
+import Foundation
 import FamilyControls
 
 /// Ephemeral editor state that mirrors the UI controls.
@@ -13,7 +14,7 @@ struct RestrictionDraft {
     enum Kind { case shield, interval, open }
     
     var kind: Kind = .shield
-    var appSelection: FamilyActivitySelection = FamilyActivitySelection()
+    var common: RestrictionCommon = RestrictionCommon(appSelection: FamilyActivitySelection(), startTime: DateComponents(hour: 0, minute: 0), endTime: DateComponents(hour: 23, minute: 59))
     var shield: Shield = Shield()
     var interval: Interval = Interval()
     var open: Open = Open()
@@ -50,24 +51,18 @@ extension RestrictionDraft {
         case .shield:
             switch shield.kind {
             case .shieldOpen:
-                return .shield(.init(appSelection: appSelection, limit: .openLimit(opensAllowed: shield.shieldOpensAllowed, minutesPerOpen: shield.shieldMinutesPerOpen)))
+                return .shield(common: common, .init(limit: .openLimit(opensAllowed: shield.shieldOpensAllowed, minutesPerOpen: shield.shieldMinutesPerOpen)))
             case .shieldTime:
-                return .shield(.init(appSelection: appSelection, limit: .timeLimit(minutesAllowed: shield.shieldMinutesAllowed)))
+                return .shield(common: common, .init(limit: .timeLimit(minutesAllowed: shield.shieldMinutesAllowed)))
             }
         case .interval:
-            return .interval(.init(appSelection: appSelection, thresholdTime: interval.intervalThresholdTime, intervalLength: interval.intervalLength))
-//            switch interval.kind {
-//            case .none:
-//                return .interval(.init(appSelection: appSelection, thresholdTime: interval.intervalThresholdTime, intervalLength: interval.intervalLength, limit: .none))
-//            case .timeLimit:
-//                return .interval(.init(appSelection: appSelection, thresholdTime: interval.intervalThresholdTime, intervalLength: interval.intervalLength, limit: .timeLimit(minutesAllowed: interval.timeLimit)))
-//            }
+            return .interval(common: common, .init(thresholdTime: interval.intervalThresholdTime, intervalLength: interval.intervalLength))
         case .open:
             switch open.kind {
             case .openAlways:
-                return .open(.init(appSelection: appSelection, limit: .alwaysOpen))
+                return .open(common: common, .init(limit: .alwaysOpen))
             case .openLimit:
-                return .open(.init(appSelection: appSelection, limit: .timeLimit(minutes: open.openMinutesAllowed)))
+                return .open(common: common, .init(limit: .timeLimit(minutes: open.openMinutesAllowed)))
             }
         }
     }

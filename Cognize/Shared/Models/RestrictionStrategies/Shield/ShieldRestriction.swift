@@ -11,7 +11,6 @@ import FamilyControls
 import DeviceActivity
 
 struct ShieldConfig: Codable, Equatable {
-    var appSelection: FamilyActivitySelection
     var limit: Limit
     
     enum Limit: Codable, Equatable {
@@ -23,9 +22,12 @@ struct ShieldConfig: Codable, Equatable {
 class ShieldRestriction: BaseRestriction {
     var config: ShieldConfig
     
-    init(categoryId: UUID, config: ShieldConfig) {
-        self.config = config
-        super.init(categoryId: categoryId, appSelection: config.appSelection)
+    init(categoryId: UUID, configuration: RestrictionConfiguration) {
+        guard case let .shield(common, shieldConfig) = configuration else {
+            preconditionFailure("ShieldRestriction requires a .shield conguration")
+        }
+        self.config = shieldConfig
+        super.init(categoryId: categoryId, common: common)
     }
     
     

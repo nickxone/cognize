@@ -77,6 +77,19 @@ final class ShieldUsageStore {
         }
     }
     
+    func used(for categoryId: UUID, config: ShieldConfig) -> Int {
+        let s = load(for: categoryId, config: config)
+        
+        switch (config.limit, s.usage) {
+        case let (.timeLimit(_), .timeLimit(used)):
+            return used
+        case let (.openLimit(_, _), .openLimit(usedOpens)):
+            return usedOpens
+        default:
+            return 0
+        }
+    }
+    
     func remaining(for categoryId: UUID, config: ShieldConfig) -> Int {
         let s = load(for: categoryId, config: config)
         

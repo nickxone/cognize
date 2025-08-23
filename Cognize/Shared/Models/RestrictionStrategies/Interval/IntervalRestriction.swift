@@ -11,7 +11,6 @@ import FamilyControls
 import DeviceActivity
 
 struct IntervalConfig: Codable, Equatable {
-    var appSelection: FamilyActivitySelection
     var thresholdTime: Int
     var intervalLength: Int
 //    var limit: Limit
@@ -25,9 +24,12 @@ struct IntervalConfig: Codable, Equatable {
 class IntervalRestriction: BaseRestriction {
     var config: IntervalConfig
     
-    init(categoryId: UUID, config: IntervalConfig) {
-        self.config = config
-        super.init(categoryId: categoryId, appSelection: config.appSelection)
+    init(categoryId: UUID, configuration: RestrictionConfiguration) {
+        guard case let .interval(common, intervalConfig) = configuration else {
+            preconditionFailure("IntervalRestriction requires .interval configuration")
+        }
+        self.config = intervalConfig
+        super.init(categoryId: categoryId, common: common)
     }
     
     private var deviceActivityNameFirst: DeviceActivityName {
@@ -49,9 +51,9 @@ class IntervalRestriction: BaseRestriction {
         )
         let events: [DeviceActivityEvent.Name: DeviceActivityEvent] = [
             deviceActivityEventName: DeviceActivityEvent(
-                applications: appSelection.applicationTokens, // potential source of errors in case appSelection contains categoryTokens rather than applicationTokens
-                categories: appSelection.categoryTokens,
-                webDomains: appSelection.webDomainTokens,
+                applications: common.appSelection.applicationTokens, // potential source of errors in case appSelection contains categoryTokens rather than applicationTokens
+                categories: common.appSelection.categoryTokens,
+                webDomains: common.appSelection.webDomainTokens,
                 threshold: DateComponents(minute: config.thresholdTime)
             )
         ]

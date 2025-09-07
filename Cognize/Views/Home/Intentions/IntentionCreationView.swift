@@ -10,8 +10,8 @@ import FamilyControls
 import SwiftData
 
 struct IntentionCreationView: View {
-    //    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var context
     
     let category: Category
     
@@ -20,14 +20,7 @@ struct IntentionCreationView: View {
     
     var body: some View {
         ZStack {
-            // Background
-            AngularGradient(
-                gradient: Gradient(colors: gradientColors(from: category.color)),
-                center: gradientCenter(for: category.color),
-                angle: .degrees(360)
-            )
-            .blur(radius: 20)
-            .ignoresSafeArea()
+            ColorfulBackground(color: category.color, animate: true)
             
             VStack(spacing: 24) {
                 Text("Log Your Intention")
@@ -69,7 +62,9 @@ struct IntentionCreationView: View {
                 Group {
                     Button {
                         let _ = IntentionLog(category: category, reason: reason, duration: duration)
-                        //                    modelContext.insert(log)
+                        let log = IntentionLog(category: category, reason: reason, duration: duration)
+                        context.insert(log)
+                        try? context.save()
                         dismiss()
                     } label: {
                         Text("Save Intention")
@@ -116,28 +111,6 @@ struct IntentionCreationView: View {
         .preferredColorScheme(.dark)
     }
     
-    // MARK: - Helpers
-    private func gradientColors(from base: Color) -> [Color] {
-        let uiColor = UIColor(base)
-        var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-        guard uiColor.getHue(&h, saturation: &s, brightness: &b, alpha: &a) else {
-            return [base.opacity(0.6), base.opacity(0.3), base.opacity(0.6)]
-        }
-        
-        let c1 = Color(hue: Double(h), saturation: Double(s), brightness: Double(b * 1.1), opacity: 0.3)
-        let c2 = Color(hue: Double((h + 0.03).truncatingRemainder(dividingBy: 1)), saturation: Double(s * 0.9), brightness: Double(b), opacity: 0.4)
-        let c3 = Color(hue: Double((h + 0.06).truncatingRemainder(dividingBy: 1)), saturation: Double(s * 0.7), brightness: Double(b * 0.9), opacity: 0.25)
-        
-        return [c1, c2, c3, c1]
-    }
-    
-    private func gradientCenter(for color: Color) -> UnitPoint {
-        let uiColor = UIColor(color)
-        var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-        uiColor.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
-        let offset = CGFloat((h - 0.5) * 0.2)
-        return UnitPoint(x: 0.5 + offset, y: 0.5 - offset)
-    }
 }
 
 #Preview {

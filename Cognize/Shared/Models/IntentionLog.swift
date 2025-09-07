@@ -10,13 +10,13 @@ import SwiftData
 
 @Model
 class IntentionLog {
-    var category: Category
+    var categoryId: UUID
     var reason: String
     var date: Date
     var duration: Int
     
     init(category: Category, reason: String, date: Date = .now, duration: Int) {
-        self.category = category
+        self.categoryId = category.id
         self.reason = reason
         self.date = date
         self.duration = duration

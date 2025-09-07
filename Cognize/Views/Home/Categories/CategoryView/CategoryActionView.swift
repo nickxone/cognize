@@ -15,7 +15,6 @@ struct CategoryActionView: View {
     
     var body: some View {
         ZStack {
-            // Background
             ColorfulBackground(color: category.color, animate: false)
             
             switch category.configuration {

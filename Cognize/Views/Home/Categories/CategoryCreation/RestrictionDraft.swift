@@ -14,7 +14,8 @@ struct RestrictionDraft {
     enum Kind { case shield, interval, open }
     
     var kind: Kind = .shield
-    var common: RestrictionCommon = RestrictionCommon(appSelection: FamilyActivitySelection(), startTime: DateComponents(hour: 0, minute: 0), endTime: DateComponents(hour: 23, minute: 59))
+    var appSelection = FamilyActivitySelection()
+    var common: RestrictionCommon = RestrictionCommon(startTime: DateComponents(hour: 0, minute: 0), endTime: DateComponents(hour: 23, minute: 59))
     var shield: Shield = Shield()
     var interval: Interval = Interval()
     var open: Open = Open()

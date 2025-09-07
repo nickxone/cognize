@@ -32,7 +32,7 @@ struct CategoryReportView: View {
         }
         .onAppear {
             withAnimation {
-                filter = DeviceActivityFilter(segment: .daily(during: thisDay), applications: category.configuration.appSelection.applicationTokens, categories: category.configuration.appSelection.categoryTokens, webDomains: category.configuration.appSelection.webDomainTokens)
+                filter = DeviceActivityFilter(segment: .daily(during: thisDay), applications: category.appSelection.applicationTokens, categories: category.appSelection.categoryTokens, webDomains: category.appSelection.webDomainTokens)
             }
         }
     }

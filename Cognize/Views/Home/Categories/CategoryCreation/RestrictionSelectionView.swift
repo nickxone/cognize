@@ -86,7 +86,7 @@ struct RestrictionSelectionView: View {
             .hapticFeedback(.cancelHaptic)
         }
         .fullScreenCover(isPresented: $showActivityPicker) {
-            CustomActivityPicker(activitySelection: $configuration.common.appSelection, color: color)
+            CustomActivityPicker(activitySelection: $configuration.appSelection, color: color)
         }
         .preferredColorScheme(.dark)
         .interactiveDismissDisabled()
@@ -125,8 +125,8 @@ struct RestrictionSelectionView: View {
     
     private var appSelectionText: String {
         var text = ""
-        let categoriesCount = configuration.common.appSelection.categories.count
-        let appsCount = configuration.common.appSelection.applications.count
+        let categoriesCount = configuration.appSelection.categories.count
+        let appsCount = configuration.appSelection.applications.count
         
         if categoriesCount > 0 {
             text.append("\(categoriesCount) \(categoriesCount == 1 ? "category" : "categories")")

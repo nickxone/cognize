@@ -43,8 +43,8 @@ struct CategoryCardView: View {
 }
 
 #Preview {
-    let configuration = RestrictionConfiguration.shield(common: .init(appSelection: FamilyActivitySelection(), startTime: DateComponents(hour: 0, minute: 0), endTime: DateComponents(hour: 23, minute: 59)), ShieldConfig(limit: .timeLimit(minutesAllowed: 30)))
-    let category = Category(name: "Social", color: .blue, configuration: configuration)
+    let configuration = RestrictionConfiguration.shield(common: .init( startTime: DateComponents(hour: 0, minute: 0), endTime: DateComponents(hour: 23, minute: 59)), ShieldConfig(limit: .timeLimit(minutesAllowed: 30)))
+    let category = Category(name: "Social", appSelection: FamilyActivitySelection(), color: .blue, configuration: configuration)
     
     CategoryCardView(category: category)
     

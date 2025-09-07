@@ -21,12 +21,12 @@ struct OpenConfig: Codable, Equatable {
 class OpenRestriction: BaseRestriction {
     var config: OpenConfig
     
-    init(categoryId: UUID, configuration: RestrictionConfiguration) {
+    init(categoryId: UUID, appSelection: FamilyActivitySelection, configuration: RestrictionConfiguration) {
         guard case let .open(common, openConfig) = configuration else {
             preconditionFailure("OpenRestriction only supports .open configuration")
         }
         self.config = openConfig
-        super.init(categoryId: categoryId, common: common)
+        super.init(categoryId: categoryId, appSelection: appSelection, common: common)
     }
     
 }

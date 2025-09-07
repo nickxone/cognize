@@ -22,12 +22,12 @@ struct ShieldConfig: Codable, Equatable {
 class ShieldRestriction: BaseRestriction {
     var config: ShieldConfig
     
-    init(categoryId: UUID, configuration: RestrictionConfiguration) {
+    init(categoryId: UUID, appSelection: FamilyActivitySelection, configuration: RestrictionConfiguration) {
         guard case let .shield(common, shieldConfig) = configuration else {
             preconditionFailure("ShieldRestriction requires a .shield conguration")
         }
         self.config = shieldConfig
-        super.init(categoryId: categoryId, common: common)
+        super.init(categoryId: categoryId, appSelection: appSelection, common: common)
     }
     
     

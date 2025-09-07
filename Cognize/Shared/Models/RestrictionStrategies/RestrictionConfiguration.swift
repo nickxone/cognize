@@ -8,12 +8,13 @@
 import Foundation
 import FamilyControls
 
+/// Properties that are common to every `RestrictionConfiguration`
 struct RestrictionCommon: Codable, Equatable {
-    var appSelection: FamilyActivitySelection
     var startTime: DateComponents
     var endTime: DateComponents
 }
 
+/// Represents possible restrictions that the app supports
 enum RestrictionConfiguration: Codable, Equatable {
     case shield(common: RestrictionCommon, ShieldConfig)
     case interval(common: RestrictionCommon, IntervalConfig)
@@ -34,8 +35,4 @@ enum RestrictionConfiguration: Codable, Equatable {
         }
     }
     
-    var appSelection: FamilyActivitySelection {
-        get { common.appSelection }
-        set { var c = common; c.appSelection = newValue; common = c}
-    }
 }

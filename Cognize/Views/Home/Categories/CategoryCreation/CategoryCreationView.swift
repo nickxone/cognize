@@ -98,7 +98,7 @@ struct CategoryCreationView: View {
                 showRestrictionView = false
             } doneAction: {
                 let configuration = draftConfig.asConfiguration()
-                let category = Category(name: name, color: color, configuration: configuration)
+                let category = Category(name: name, appSelection: draftConfig.appSelection, color: color, configuration: configuration)
                 categories.append(category)
                 store.save(categories)
                 dismiss()

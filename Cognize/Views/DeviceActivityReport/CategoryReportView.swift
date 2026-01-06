@@ -24,7 +24,7 @@ struct CategoryReportView: View {
             if let filter {
                 DeviceActivityReport(context, filter: filter)
                     .onAppear {
-                        print("Appeared")
+//                        print("Appeared")
                     }
             } else {
                 Text("Loading")

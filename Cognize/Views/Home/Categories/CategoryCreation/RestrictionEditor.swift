@@ -180,7 +180,8 @@ struct RestrictionEditor: View {
         }
         .padding()
         .font(.body)
-        .glass(gradientOpacity: 0.3, gradientStyle: .normal, shadowColor: .clear)
+        .glassEffect(in: .rect(cornerRadius: 30))
+//        .glass(gradientOpacity: 0.3, gradientStyle: .normal, shadowColor: .clear)
     }
     
     private func selectedTimeFormatted(_ timeAllowed: Int) -> String {

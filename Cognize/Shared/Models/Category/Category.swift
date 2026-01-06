@@ -124,6 +124,6 @@ extension Category {
         case .open:
             let strategy = OpenRestriction(categoryId: id, appSelection: appSelection, configuration: configuration)
             return strategy
-        }
+        }   
     }
 }

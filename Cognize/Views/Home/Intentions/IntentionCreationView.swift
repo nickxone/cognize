@@ -31,7 +31,8 @@ struct IntentionCreationView: View {
                 VStack(spacing: 16) {
                     TextField("What's your intention?", text: $reason)
                         .padding()
-                        .glass(color: .black, shadowColor: .black)
+                        .glassEffect()
+//                        .glass(color: .black, shadowColor: .black)
                     
                     HStack {
                         Text("Break duration:")
@@ -54,7 +55,8 @@ struct IntentionCreationView: View {
                             .padding(.trailing)
                     }
                     .padding()
-                    .glass(color: .black, shadowColor: .black)
+                    .glassEffect(in: .rect(cornerRadius: 25))
+//                    .glass(color: .black, shadowColor: .black)
                 }
                 
                 Spacer()

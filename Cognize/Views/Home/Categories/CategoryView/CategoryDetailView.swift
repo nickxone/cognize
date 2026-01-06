@@ -36,7 +36,7 @@ struct CategoryDetailView: View {
                 Spacer(minLength: 80)
                 
                 CategoryCardView(category: category, animate: false)
-                    .frame(width: UIScreen.main.bounds.width)
+//                    .frame(width: UIScreen.main.bounds.width)
                     .padding(.bottom, 24)
                 
                 // Logs
@@ -51,7 +51,8 @@ struct CategoryDetailView: View {
                             .foregroundStyle(.white.opacity(0.7))
                             .padding(.horizontal)
                             .padding(.vertical, 12)
-                            .glass(gradientOpacity: 0.25, gradientStyle: .normal, shadowColor: .clear)
+                            .glassEffect()
+//                            .glass(gradientOpacity: 0.25, gradientStyle: .normal, shadowColor: .clear)
                             .padding(.horizontal)
                     } else {
                         ForEach(logs) { log in
@@ -102,7 +103,8 @@ private struct IntentionRow: View {
             Spacer()
         }
         .padding(14)
-        .glass(gradientOpacity: 0.30, gradientStyle: .normal, shadowColor: tint.opacity(0.25))
+        .glassEffect()
+//        .glass(gradientOpacity: 0.30, gradientStyle: .normal, shadowColor: tint.opacity(0.25))
         .overlay(alignment: .topTrailing) {
             Circle()
                 .fill(tint.opacity(0.25))

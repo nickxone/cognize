@@ -22,3 +22,19 @@ class IntentionLog {
         self.duration = duration
     }
 }
+
+extension IntentionLog {
+    var endDate: Date {
+        date.addingTimeInterval(TimeInterval(duration * 60))
+    }
+    
+    var isActive: Bool {
+        let now = Date()
+        return now >= date && now < endDate
+    }
+    
+    var timeLeft: TimeInterval {
+        let remaining = endDate.timeIntervalSince(Date())
+        return max(0, remaining)
+    }
+}

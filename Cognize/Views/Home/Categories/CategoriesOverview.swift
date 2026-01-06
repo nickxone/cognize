@@ -34,9 +34,10 @@ struct CategoriesOverview: View {
                 CategoriesReportView()
             }
             .padding()
+            .glassEffect(in: .rect(cornerRadius: 20))
         }
-        .frame(width: UIScreen.main.bounds.width - 60)
-        .glass(gradientOpacity: 0.25, gradientStyle: .none, shadowColor: .black)
+        .padding(.vertical)
+//        .glass(gradientOpacity: 0.25, gradientStyle: .none, shadowColor: .black)
         .preferredColorScheme(.dark)
     }
 

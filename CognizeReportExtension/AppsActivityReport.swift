@@ -19,7 +19,7 @@ struct AppsActivityReport: DeviceActivityReportScene {
     func makeConfiguration(representing data: DeviceActivityResults<DeviceActivityData>) async -> AppsActivityView.Configuration {
         var totalUsageByApp: [Application: TimeInterval] = [:]
         
-//        Sorry about the nested for-loops 😔
+//        Sorry about the nested for-loops 😔 (the emoji is not AI generated)
 //        I'll try to make it cleaner later
         for await activity in data {
             for await activitySegment in activity.activitySegments {

@@ -25,11 +25,11 @@ class IntervalRestriction: BaseRestriction {
     var config: IntervalConfig
     
     init(categoryId: UUID, appSelection: FamilyActivitySelection, configuration: RestrictionConfiguration) {
-        guard case let .interval(common, intervalConfig) = configuration else {
+        guard case let .interval(intervalConfig) = configuration else {
             preconditionFailure("IntervalRestriction requires .interval configuration")
         }
         self.config = intervalConfig
-        super.init(categoryId: categoryId, appSelection: appSelection, common: common)
+        super.init(categoryId: categoryId, appSelection: appSelection)
     }
     
     private var deviceActivityNameFirst: DeviceActivityName {

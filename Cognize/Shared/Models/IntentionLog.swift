@@ -9,13 +9,15 @@ import Foundation
 import SwiftData
 
 @Model
-class IntentionLog {
+class IntentionLog: Identifiable {
+    var id: UUID
     var categoryId: UUID
     var reason: String
     var date: Date
     var duration: Int
     
-    init(category: Category, reason: String, date: Date = .now, duration: Int) {
+    init(id: UUID = UUID(), category: Category, reason: String, date: Date = .now, duration: Int) {
+        self.id = id
         self.categoryId = category.id
         self.reason = reason
         self.date = date

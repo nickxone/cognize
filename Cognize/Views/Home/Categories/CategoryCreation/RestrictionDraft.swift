@@ -15,7 +15,6 @@ struct RestrictionDraft {
     
     var kind: Kind = .shield
     var appSelection = FamilyActivitySelection()
-    var common: RestrictionCommon = RestrictionCommon(startTime: DateComponents(hour: 0, minute: 0), endTime: DateComponents(hour: 23, minute: 59))
     var shield: Shield = Shield()
     var interval: Interval = Interval()
     var open: Open = Open()
@@ -52,18 +51,18 @@ extension RestrictionDraft {
         case .shield:
             switch shield.kind {
             case .shieldOpen:
-                return .shield(common: common, .init(limit: .openLimit(opensAllowed: shield.shieldOpensAllowed, minutesPerOpen: shield.shieldMinutesPerOpen)))
+                return .shield(.init(limit: .openLimit(opensAllowed: shield.shieldOpensAllowed, minutesPerOpen: shield.shieldMinutesPerOpen)))
             case .shieldTime:
-                return .shield(common: common, .init(limit: .timeLimit(minutesAllowed: shield.shieldMinutesAllowed)))
+                return .shield(.init(limit: .timeLimit(minutesAllowed: shield.shieldMinutesAllowed)))
             }
         case .interval:
-            return .interval(common: common, .init(thresholdTime: interval.intervalThresholdTime, intervalLength: interval.intervalLength))
+            return .interval(.init(thresholdTime: interval.intervalThresholdTime, intervalLength: interval.intervalLength))
         case .open:
             switch open.kind {
             case .openAlways:
-                return .open(common: common, .init(limit: .alwaysOpen))
+                return .open(.init(limit: .alwaysOpen))
             case .openLimit:
-                return .open(common: common, .init(limit: .timeLimit(minutes: open.openMinutesAllowed)))
+                return .open(.init(limit: .timeLimit(minutes: open.openMinutesAllowed)))
             }
         }
     }

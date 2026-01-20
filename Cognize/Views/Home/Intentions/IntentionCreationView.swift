@@ -116,7 +116,7 @@ struct IntentionCreationView: View {
 }
 
 #Preview {
-    let configuration = RestrictionConfiguration.shield(common: .init( startTime: DateComponents(hour: 0, minute: 0), endTime: DateComponents(hour: 23, minute: 59)), ShieldConfig(limit: .timeLimit(minutesAllowed: 30)))
+    let configuration = RestrictionConfiguration.shield( ShieldConfig(limit: .timeLimit(minutesAllowed: 30)))
     let category = Category(name: "Social", appSelection: FamilyActivitySelection(), color: .blue, configuration: configuration)
     
     IntentionCreationView(category: category)

@@ -25,18 +25,18 @@ import SwiftUI
 ///
 /// This model enables the app to group apps under customizable categories and apply personalized usage control logic.
 
-class Category: Codable, Identifiable {
+struct Category: Codable, Identifiable {
     
     var id: UUID
     var name = String()
     var appSelection: FamilyActivitySelection
-    var configurations: [RestrictionConfiguration]
+    var configuration: RestrictionConfiguration
     private var colorData: Data?
     
-    init(name: String, appSelection: FamilyActivitySelection, color: Color, configuration: RestrictionConfiguration) {
-        self.id = UUID()
+    init(id: UUID = UUID(), name: String, appSelection: FamilyActivitySelection, color: Color, configuration: RestrictionConfiguration) {
+        self.id = id
         self.name = name
-        self.configurations = [configuration]
+        self.configuration = configuration
         self.colorData = try? encodeColor(color)
         self.appSelection = appSelection
         makeStrategy().start()
@@ -60,23 +60,6 @@ class Category: Codable, Identifiable {
         }
     }
     
-    var configuration: RestrictionConfiguration {
-        get {
-            guard let config = currentConfiguration() else {
-                fatalError("No configuration found for \(self.name)")
-            }
-            return config
-        }
-        set {
-            // Find the index of the current configuration
-            if let idx = configurations.firstIndex(where: { $0 == currentConfiguration() }) {
-                configurations[idx] = newValue
-            } else {
-                configurations.append(newValue)
-            }
-        }
-    }
-    
 }
 
 extension Category: Equatable {
@@ -86,34 +69,8 @@ extension Category: Equatable {
 }
 
 extension Category {
-    private func currentConfiguration() -> RestrictionConfiguration? {
-        guard !configurations.isEmpty else { return nil }
-        
-        let cal = Calendar.current
-        let now = cal.dateComponents([.hour, .minute], from: Date())
-        let nowM = (now.hour ?? 0) * 60 + (now.minute ?? 0)
-        
-        func minutes(_ comps: DateComponents) -> Int {
-            (comps.hour ?? 0) * 60 + (comps.minute ?? 0)
-        }
-        
-        return configurations.first { config in
-            let startM = minutes(config.common.startTime)
-            let endM   = minutes(config.common.endTime)
-            
-            if startM <= endM { // Same-day window
-                return startM <= nowM && nowM <= endM
-            } else { // Overnight window: e.g. 22:00–02:00
-                return nowM >= startM || nowM <= endM
-            }
-        }
-    }
     
     func makeStrategy() -> RestrictionStrategy {
-        let currConfig = currentConfiguration()
-        guard let configuration = currConfig else {
-            fatalError("No configuration found for \(self)")
-        }
         switch configuration {
         case .shield:
             let strategy = ShieldRestriction(categoryId: id, appSelection: appSelection, configuration: configuration)

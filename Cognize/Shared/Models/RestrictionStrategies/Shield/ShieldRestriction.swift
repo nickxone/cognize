@@ -23,11 +23,11 @@ class ShieldRestriction: BaseRestriction {
     var config: ShieldConfig
     
     init(categoryId: UUID, appSelection: FamilyActivitySelection, configuration: RestrictionConfiguration) {
-        guard case let .shield(common, shieldConfig) = configuration else {
+        guard case let .shield(shieldConfig) = configuration else {
             preconditionFailure("ShieldRestriction requires a .shield conguration")
         }
         self.config = shieldConfig
-        super.init(categoryId: categoryId, appSelection: appSelection, common: common)
+        super.init(categoryId: categoryId, appSelection: appSelection)
     }
     
     

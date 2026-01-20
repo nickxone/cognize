@@ -114,10 +114,12 @@ private struct IntentionRow: View {
     }
 }
 
-#Preview {
-    let configuration = RestrictionConfiguration.shield( ShieldConfig(limit: .timeLimit(minutesAllowed: 30)))
-    let category = Category(name: "Social", appSelection: FamilyActivitySelection(), color: .blue, configuration: configuration)
+#Preview(traits: .intentionLogSampleData) {
+//    let configuration = RestrictionConfiguration.shield( ShieldConfig(limit: .timeLimit(minutesAllowed: 30)))
+//    let category = Category(name: "Social", appSelection: FamilyActivitySelection(), color: .blue, configuration: configuration)
     
+    let category = Category.sampleData[0]
+        
     CategoryDetailView(category: category)
         .preferredColorScheme(.dark)
 }

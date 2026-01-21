@@ -58,11 +58,11 @@ struct CustomColorPicker: View {
                             Button(action: {
                                 colourSheetPresented = false
                             }, label: {
-                                Image(systemName: "xmark.circle.fill")
-                                    .font(.system(size: 24))
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 14))
                                     .fontDesign(.rounded)
                                     .symbolRenderingMode(.hierarchical)
-                                    .foregroundStyle(.gray)
+                                    .foregroundStyle(.gray) 
                             })
                         }
                     }
@@ -80,4 +80,5 @@ struct CustomColorPicker: View {
 #Preview {
     @Previewable @State var color: Color = .blue
     CustomColorPicker(selectedColour: $color)
+        .preferredColorScheme(.dark)
 }

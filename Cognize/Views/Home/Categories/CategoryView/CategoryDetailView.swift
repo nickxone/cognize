@@ -36,7 +36,6 @@ struct CategoryDetailView: View {
                 Spacer(minLength: 80)
                 
                 CategoryCardView(category: category, animate: false)
-//                    .frame(width: UIScreen.main.bounds.width)
                     .padding(.bottom, 24)
                 
                 // Logs
@@ -52,7 +51,6 @@ struct CategoryDetailView: View {
                             .padding(.horizontal)
                             .padding(.vertical, 12)
                             .glassEffect()
-//                            .glass(gradientOpacity: 0.25, gradientStyle: .normal, shadowColor: .clear)
                             .padding(.horizontal)
                     } else {
                         ForEach(logs) { log in

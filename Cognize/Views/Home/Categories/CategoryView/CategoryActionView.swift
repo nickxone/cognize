@@ -12,7 +12,7 @@ import FamilyControls
 struct CategoryActionView: View {
     let category: Category
     
-    @Environment(\.modelContext) private var modelContext
+    @Environment(\.modelContext) private var context
     
     @State private var showCreateIntentionView = false
     
@@ -22,7 +22,14 @@ struct CategoryActionView: View {
     var body: some View {
         ZStack {
             ColorfulBackground(color: category.color, animate: false)
-            
+            switch category.configuration {
+            case .shield(let shieldConfig):
+                ShieldActionView(category: category, shieldConfig: shieldConfig)
+            case .interval(let intervalConfig):
+                IntervalActionView(category: category, intervalConfig: intervalConfig)
+            case .open( _):
+                Text("Open")
+            }
         }
         .glassEffect(in: .rect(cornerRadius: 20))
         .sheet(isPresented: $showCreateIntentionView) {
@@ -48,14 +55,42 @@ struct ShieldActionView: View {
                 ProgressView(value: Float(shieldUsageStore.used(for: category.id, config: shieldConfig)), total: Float(minutesAllowed))
             }
             Spacer()
+            
+            Button {
+                print("Pressed")
+            } label: {
+                Text("New Intention")
+                    .fontWeight(.semibold)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background {
+                        ZStack {
+                            Capsule()
+                                .fill(category.color.gradient)
+                            Capsule()
+                                .fill(.black.opacity(0.2))
+                        }
+                        .clipShape(Capsule())
+                    }
+                    .foregroundStyle(.white)
+            }
+
         }
         .padding()
     }
 }
 
+struct IntervalActionView: View {
+    let category: Category
+    let intervalConfig: IntervalConfig
+    
+    var body: some View {
+        
+    }
+}
+
 #Preview {
-    let configuration = RestrictionConfiguration.shield( ShieldConfig(limit: .timeLimit(minutesAllowed: 30)))
-    let category = Category(name: "Social", appSelection: FamilyActivitySelection(), color: .blue, configuration: configuration)
+    let category = Category.sampleData[0]
     
     CategoryActionView(category: category)
 }

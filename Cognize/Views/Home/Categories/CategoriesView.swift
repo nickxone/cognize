@@ -33,36 +33,7 @@ struct CategoriesView: View {
                             CategoriesOverview(categories: categories)
                         },
                         content: { category in
-                            ZStack {
-                                if let focusedCategory, focusedCategory.id == category.id {
-                                    CategoryBackgroundView(color: focusedCategory.color)
-                                        .padding(-200)
-                                        .allowsHitTesting(false)
-                                }
-                                VStack {
-                                    CategoryCardView(category: category)
-                                        .overlay(alignment: .topLeading) {
-                                            Button {
-                                                showDetailView = true
-                                            } label: {
-                                                Image(systemName: "arrow.up.left.and.arrow.down.right")
-                                                    .font(.callout)
-                                                    .foregroundStyle(.white)
-                                                    .padding(12)
-                                                    .background {
-                                                        Circle()
-                                                            .foregroundStyle(.black.opacity(0.3))
-                                                    }
-                                                    .padding(16) // offset from top and right edge
-                                            }
-                                            .hapticFeedback()
-                                        }
-                                    Spacer()
-                                    
-                                    CategoryActionView(category: category)
-                                    
-                                }
-                            }
+                            CategoryView(category: category, focusedCategory: $focusedCategory)
                         },
                         focusedItem: $focusedCategory
                     )
@@ -70,8 +41,6 @@ struct CategoriesView: View {
                         HapticsEngine.shared.hapticFeedback(intensity: 0.3, sharpness: 1.0)
                     }
                 }
-                
-                Spacer()
             }
             .navigationTitle("Categories")
             .toolbar {
@@ -93,4 +62,16 @@ struct CategoriesView: View {
         }
     }
     
+}
+
+#Preview(traits: .intentionLogSampleData) {
+    let category: Category = Category.sampleData[0]
+    let store: CategoryStore = .shared
+    let defaults = UserDefaults(suiteName: "group.com.app.cognize")!
+    store.save([category])
+
+    return CategoriesView()
+        .environment(\.categoryStore, store)
+        .defaultAppStorage(defaults)
+        .preferredColorScheme(.dark)
 }

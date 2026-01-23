@@ -12,117 +12,39 @@ import FamilyControls
 struct CategoryActionView: View {
     let category: Category
     
-    @Environment(\.modelContext) private var modelContext
+    @Environment(\.modelContext) private var context
     
     @State private var showCreateIntentionView = false
     
     @Query private var latestLog: [IntentionLog]
-
-
+    
+    
     var body: some View {
         ZStack {
             ColorfulBackground(color: category.color, animate: false)
-            
-//            if let lLog = latestLog, lLog.isActive {
-//                VStack {
-//                    Text("Time Left: \(lLog.timeLeft)")
-////                    ProgressView(value: lLog.timeLeft, total: TimeInterval(lLog.duration * 60))
-////                        .scaleEffect(x: 1, y: 4, anchor: .center)
-//                    
-//                    Spacer()
-//                    
-//                    Button {
-//                        
-//                    } label: {
-//                        Text("Cancel session")
-//                            .fontWeight(.semibold)
-//                            .padding()
-//                            .frame(maxWidth: .infinity)
-//                            .background {
-//                                ZStack {
-//                                    Capsule()
-//                                        .fill(category.color.gradient)
-//                                    Capsule()
-//                                        .fill(.black.opacity(0.2))
-//                                }
-//                                .clipShape(Capsule())
-//                            }
-//                            .foregroundStyle(.white)
-//                    }
-//                }
-//                
-//            } else {
-//                VStack {
-//                    switch category.configuration {
-//                    case .shield( _, let shieldConfig):
-//                        ShieldActionView(category: category, shieldConfig: shieldConfig)
-//                    default:
-//                        Text("Default")
-//                    }
-//                    
-//                    Spacer()
-//                    
-//                    Button {
-//                        showCreateIntentionView = true
-//                    } label: {
-//                        Text("Create Intention")
-//                            .fontWeight(.semibold)
-//                            .padding()
-//                            .frame(maxWidth: .infinity)
-//                            .background {
-//                                ZStack {
-//                                    Capsule()
-//                                        .fill(category.color.gradient)
-//                                    Capsule()
-//                                        .fill(.black.opacity(0.2))
-//                                }
-//                                .clipShape(Capsule())
-//                            }
-//                            .foregroundStyle(.white)
-//                    }
-//                }
-//                .padding()
-//            }
-            
+            switch category.configuration {
+            case .shield(let shieldConfig):
+                ShieldActionView(category: category, shieldConfig: shieldConfig, showCreateIntentionView: $showCreateIntentionView)
+            case .interval(let intervalConfig):
+                IntervalActionView(category: category, intervalConfig: intervalConfig)
+            case .open( _):
+                Text("Open")
+            }
         }
-        //        .frame(width: UIScreen.main.bounds.width - 60,
-//               height: UIScreen.main.bounds.height * 0.2)
-//        .cornerRadius(20)
-//        .shadow(color: category.color.opacity(0.25), radius: 12, x: 0, y: 6)
-//        .overlay(
-//            RoundedRectangle(cornerRadius: 20)
-//                .stroke(category.color.opacity(0.15), lineWidth: 1)
-//        )
         .glassEffect(in: .rect(cornerRadius: 20))
         .sheet(isPresented: $showCreateIntentionView) {
             IntentionCreationView(category: category)
         }
-//        .task(id: category.id) {
-//            fetchLatestLog()
-//            print(latestLog?.reason ?? "No data")
-//        }
         .preferredColorScheme(.dark)
     }
-    
-//    private func fetchLatestLog() {
-//        var descriptor = FetchDescriptor<IntentionLog>(
-//            predicate: #Predicate { $0.categoryId == category.id },
-//            sortBy: [SortDescriptor(\.date, order: .reverse)]
-//        )
-//        descriptor.fetchLimit = 1
-//        do {
-//            latestLog = try modelContext.fetch(descriptor).first
-//        } catch {
-//            latestLog = nil
-//            print("Failed to fetch latest IntentionLog for category \(category.id): \(error)")
-//        }
-//    }
 }
 
 struct ShieldActionView: View {
     let category: Category
     let shieldConfig: ShieldConfig
     let shieldUsageStore = ShieldUsageStore()
+    
+    @Binding var showCreateIntentionView: Bool
     
     var body: some View {
         VStack {
@@ -135,14 +57,42 @@ struct ShieldActionView: View {
                 ProgressView(value: Float(shieldUsageStore.used(for: category.id, config: shieldConfig)), total: Float(minutesAllowed))
             }
             Spacer()
+            
+            Button {
+                showCreateIntentionView = true
+            } label: {
+                Text("New Intention")
+                    .fontWeight(.semibold)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background {
+                        ZStack {
+                            Capsule()
+                                .fill(category.color.gradient)
+                            Capsule()
+                                .fill(.black.opacity(0.2))
+                        }
+                        .clipShape(Capsule())
+                    }
+                    .foregroundStyle(.white)
+            }
+
         }
         .padding()
     }
 }
 
+struct IntervalActionView: View {
+    let category: Category
+    let intervalConfig: IntervalConfig
+    
+    var body: some View {
+        
+    }
+}
+
 #Preview {
-    let configuration = RestrictionConfiguration.shield(common: .init( startTime: DateComponents(hour: 0, minute: 0), endTime: DateComponents(hour: 23, minute: 59)), ShieldConfig(limit: .timeLimit(minutesAllowed: 30)))
-    let category = Category(name: "Social", appSelection: FamilyActivitySelection(), color: .blue, configuration: configuration)
+    let category = Category.sampleData[0]
     
     CategoryActionView(category: category)
 }

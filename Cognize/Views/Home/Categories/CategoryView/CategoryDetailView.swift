@@ -36,7 +36,6 @@ struct CategoryDetailView: View {
                 Spacer(minLength: 80)
                 
                 CategoryCardView(category: category, animate: false)
-//                    .frame(width: UIScreen.main.bounds.width)
                     .padding(.bottom, 24)
                 
                 // Logs
@@ -52,7 +51,6 @@ struct CategoryDetailView: View {
                             .padding(.horizontal)
                             .padding(.vertical, 12)
                             .glassEffect()
-//                            .glass(gradientOpacity: 0.25, gradientStyle: .normal, shadowColor: .clear)
                             .padding(.horizontal)
                     } else {
                         ForEach(logs) { log in
@@ -114,10 +112,12 @@ private struct IntentionRow: View {
     }
 }
 
-#Preview {
-    let configuration = RestrictionConfiguration.shield(common: .init(startTime: DateComponents(hour: 0, minute: 0), endTime: DateComponents(hour: 23, minute: 59)), ShieldConfig(limit: .timeLimit(minutesAllowed: 30)))
-    let category = Category(name: "Social", appSelection: FamilyActivitySelection(), color: .blue, configuration: configuration)
+#Preview(traits: .intentionLogSampleData) {
+//    let configuration = RestrictionConfiguration.shield( ShieldConfig(limit: .timeLimit(minutesAllowed: 30)))
+//    let category = Category(name: "Social", appSelection: FamilyActivitySelection(), color: .blue, configuration: configuration)
     
+    let category = Category.sampleData[0]
+        
     CategoryDetailView(category: category)
         .preferredColorScheme(.dark)
 }

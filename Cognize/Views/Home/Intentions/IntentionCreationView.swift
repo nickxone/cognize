@@ -32,7 +32,6 @@ struct IntentionCreationView: View {
                     TextField("What's your intention?", text: $reason)
                         .padding()
                         .glassEffect()
-//                        .glass(color: .black, shadowColor: .black)
                     
                     HStack {
                         Text("Break duration:")
@@ -56,17 +55,13 @@ struct IntentionCreationView: View {
                     }
                     .padding()
                     .glassEffect(in: .rect(cornerRadius: 25))
-//                    .glass(color: .black, shadowColor: .black)
                 }
                 
                 Spacer()
                 
                 Group {
                     Button {
-                        let _ = IntentionLog(category: category, reason: reason, duration: duration)
-                        let log = IntentionLog(category: category, reason: reason, duration: duration)
-                        context.insert(log)
-                        try? context.save()
+                        saveIntention()
                         dismiss()
                     } label: {
                         Text("Save Intention")
@@ -113,11 +108,20 @@ struct IntentionCreationView: View {
         .preferredColorScheme(.dark)
     }
     
+    private func saveIntention() {
+        do {
+            let log = IntentionLog(category: category, reason: reason, duration: duration)
+            context.insert(log)
+            try context.save()
+        } catch {
+            print("Failed to save an intention: \(error)")
+        }
+    }
+    
 }
 
 #Preview {
-    let configuration = RestrictionConfiguration.shield(common: .init( startTime: DateComponents(hour: 0, minute: 0), endTime: DateComponents(hour: 23, minute: 59)), ShieldConfig(limit: .timeLimit(minutesAllowed: 30)))
-    let category = Category(name: "Social", appSelection: FamilyActivitySelection(), color: .blue, configuration: configuration)
+    let category = Category.sampleData[0]
     
     IntentionCreationView(category: category)
 }

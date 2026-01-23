@@ -42,7 +42,6 @@ struct CategoryCreationView: View {
                 TextField("Enter name", text: $name)
                     .padding()
                     .glassEffect()
-//                    .glass(strokeWidth: 1.0, shadowColor: .black)
                 
                 Spacer()
                 

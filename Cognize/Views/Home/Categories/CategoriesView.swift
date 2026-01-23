@@ -15,9 +15,11 @@ struct CategoriesView: View {
     
     @State private var categories: [Category] = []
     @State private var isCreating = false
+    @State private var isEditing = false
     @State private var showDetailView = false
+    @State private var focusedCategory: Category? = nil
     
-    @State private var focusedCategory: Category?
+    @Binding var accentColor: Color
     
     var body: some View {
         NavigationView {
@@ -33,36 +35,11 @@ struct CategoriesView: View {
                             CategoriesOverview(categories: categories)
                         },
                         content: { category in
-                            ZStack {
-                                if let focusedCategory, focusedCategory.id == category.id {
-                                    CategoryBackgroundView(color: focusedCategory.color)
-                                        .padding(-200)
-                                        .allowsHitTesting(false)
+                            CategoryView(category: category, focusedCategory: $focusedCategory, isEditing: $isEditing, onDelete: {
+                                if let index = categories.firstIndex(where: { $0.id == category.id }) {
+                                    categories.remove(at: index)
                                 }
-                                VStack {
-                                    CategoryCardView(category: category)
-                                        .overlay(alignment: .topLeading) {
-                                            Button {
-                                                showDetailView = true
-                                            } label: {
-                                                Image(systemName: "arrow.up.left.and.arrow.down.right")
-                                                    .font(.callout)
-                                                    .foregroundStyle(.white)
-                                                    .padding(12)
-                                                    .background {
-                                                        Circle()
-                                                            .foregroundStyle(.black.opacity(0.3))
-                                                    }
-                                                    .padding(16) // offset from top and right edge
-                                            }
-                                            .hapticFeedback()
-                                        }
-                                    Spacer()
-                                    
-                                    CategoryActionView(category: category)
-                                    
-                                }
-                            }
+                            })
                         },
                         focusedItem: $focusedCategory
                     )
@@ -70,13 +47,19 @@ struct CategoriesView: View {
                         HapticsEngine.shared.hapticFeedback(intensity: 0.3, sharpness: 1.0)
                     }
                 }
-                
-                Spacer()
             }
             .navigationTitle("Categories")
             .toolbar {
-                Button("Add") {
-                    isCreating = true
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Add") {
+                        isCreating = true
+                    }
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Edit") {
+                        withAnimation { isEditing.toggle() }
+                    }
+                    .disabled(focusedCategory == nil)
                 }
             }
             .sheet(isPresented: $isCreating) {
@@ -89,8 +72,28 @@ struct CategoriesView: View {
             }
             .onAppear {
                 categories = store.load()
+                accentColor = focusedCategory?.color ?? .blue
+            }
+            .onChange(of: focusedCategory, { oldValue, newValue in
+                accentColor = focusedCategory?.color ?? .blue
+            })
+            .onDisappear {
+                accentColor = .blue
             }
         }
     }
     
+}
+
+#Preview(traits: .intentionLogSampleData) {
+    @Previewable @State var accentColor: Color = .blue
+    let category: Category = Category.sampleData[0]
+    let store: CategoryStore = .shared
+    let defaults = UserDefaults(suiteName: "group.com.app.cognize")!
+    store.save([category])
+    
+    return CategoriesView(accentColor: $accentColor)
+        .environment(\.categoryStore, store)
+        .defaultAppStorage(defaults)
+        .preferredColorScheme(.dark)
 }

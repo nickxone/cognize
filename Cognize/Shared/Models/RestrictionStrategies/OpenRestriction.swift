@@ -22,11 +22,11 @@ class OpenRestriction: BaseRestriction {
     var config: OpenConfig
     
     init(categoryId: UUID, appSelection: FamilyActivitySelection, configuration: RestrictionConfiguration) {
-        guard case let .open(common, openConfig) = configuration else {
+        guard case let .open(openConfig) = configuration else {
             preconditionFailure("OpenRestriction only supports .open configuration")
         }
         self.config = openConfig
-        super.init(categoryId: categoryId, appSelection: appSelection, common: common)
+        super.init(categoryId: categoryId, appSelection: appSelection)
     }
     
 }

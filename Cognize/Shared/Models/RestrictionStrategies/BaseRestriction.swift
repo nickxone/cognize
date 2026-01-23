@@ -13,12 +13,10 @@ import DeviceActivity
 class BaseRestriction {
     let categoryId: UUID
     let appSelection: FamilyActivitySelection
-    let common: RestrictionCommon
     
-    init(categoryId: UUID, appSelection: FamilyActivitySelection, common: RestrictionCommon) {
+    init(categoryId: UUID, appSelection: FamilyActivitySelection) {
         self.categoryId = categoryId
         self.appSelection = appSelection
-        self.common = common
     }
     
     var storeName: ManagedSettingsStore.Name {

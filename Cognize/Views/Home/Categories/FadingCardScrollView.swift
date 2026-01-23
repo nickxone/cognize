@@ -37,7 +37,7 @@ struct FadingCardScrollView<
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: spacing) {
+            LazyHStack(spacing: spacing) {
                 if let leadingView = leadingView {
                     GeometryReader { geo in
                         let screenWidth = UIScreen.main.bounds.width
@@ -96,3 +96,5 @@ struct FadingCardScrollView<
 #Preview {
     //    FadingCardScrollView()
 }
+
+

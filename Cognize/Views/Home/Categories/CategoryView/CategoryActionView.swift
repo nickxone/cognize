@@ -24,7 +24,7 @@ struct CategoryActionView: View {
             ColorfulBackground(color: category.color, animate: false)
             switch category.configuration {
             case .shield(let shieldConfig):
-                ShieldActionView(category: category, shieldConfig: shieldConfig)
+                ShieldActionView(category: category, shieldConfig: shieldConfig, showCreateIntentionView: $showCreateIntentionView)
             case .interval(let intervalConfig):
                 IntervalActionView(category: category, intervalConfig: intervalConfig)
             case .open( _):
@@ -44,6 +44,8 @@ struct ShieldActionView: View {
     let shieldConfig: ShieldConfig
     let shieldUsageStore = ShieldUsageStore()
     
+    @Binding var showCreateIntentionView: Bool
+    
     var body: some View {
         VStack {
             switch shieldConfig.limit {
@@ -57,7 +59,7 @@ struct ShieldActionView: View {
             Spacer()
             
             Button {
-                print("Pressed")
+                showCreateIntentionView = true
             } label: {
                 Text("New Intention")
                     .fontWeight(.semibold)

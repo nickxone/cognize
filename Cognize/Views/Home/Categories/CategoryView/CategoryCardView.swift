@@ -16,6 +16,9 @@ struct CategoryCardView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var logs: [IntentionLog]
     
+    @State private var logToRename: IntentionLog?
+    @State private var renameText: String = ""
+    
     init(category: Category, animate: Bool = true) {
         self.category = category
         self.animate = animate
@@ -49,7 +52,18 @@ struct CategoryCardView: View {
                         LazyVStack(spacing: 12) {
                             ForEach(logs) { log in
                                 LogRowView(log: log)
+                                    .onLongPressGesture {
+                                        startRenaming(log)
+                                    }
                             }
+                        }
+                        .padding(.top)
+                    }
+                    .mask {
+                        VStack(spacing: 0) {
+                            LinearGradient(colors: [.black.opacity(0), .black], startPoint: .top, endPoint: .bottom)
+                                .frame(height: 20)
+                            Rectangle().fill(.black)
                         }
                     }
                 }
@@ -61,8 +75,37 @@ struct CategoryCardView: View {
         .glassEffect(in: .rect(cornerRadius: 20))
         .preferredColorScheme(.dark)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .alert("Rename Intention", isPresented: Binding(
+            get: { logToRename != nil }, set: { if !$0 { logToRename = nil }
+            })) {
+                TextField("Intention Reason", text: $renameText)
+                    .textInputAutocapitalization(.sentences)
+                
+                Button("Save") {
+                    saveRename()
+                }
+                Button("Cancel", role: .cancel) {
+                    logToRename = nil
+                }
+            }
     }
     
+    private func startRenaming(_ log: IntentionLog) {
+        HapticsEngine.shared.hapticFeedback(intensity: 0.5, sharpness: 0.5)
+        self.renameText = log.reason
+        self.logToRename = log
+    }
+    
+    private func saveRename() {
+        guard let log = logToRename else { return }
+        log.reason = renameText
+        do {
+            try modelContext.save()
+        } catch {
+            print("Error occurred while trying to rename the log: \(error)")
+        }
+        logToRename = nil
+    }
 }
 
 // MARK: - Subviews
@@ -106,16 +149,9 @@ struct LogRowView: View {
             }
         }
         .padding()
+        .contentShape(Rectangle())
         .glassEffect(.regular.tint(.white.opacity(0.1)).interactive())
         .padding(.horizontal, 7)
-        // Inner layer: A thin material to separate the row from the card background
-//        .background(.ultraThinMaterial)
-//        .cornerRadius(12)
-//        // Subtle border to define the row edges
-//        .overlay(
-//            RoundedRectangle(cornerRadius: 12)
-//                .stroke(.white.opacity(0.1), lineWidth: 0.5)
-//        )
     }
 }
 

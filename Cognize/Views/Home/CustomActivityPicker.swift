@@ -74,4 +74,5 @@ struct CustomActivityPicker: View {
 
 #Preview {
     CustomActivityPicker(activitySelection: .constant(FamilyActivitySelection()), color: .green)
+        .preferredColorScheme(.dark)
 }

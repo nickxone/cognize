@@ -62,6 +62,7 @@ struct IntentionCreationView: View {
                 Group {
                     Button {
                         saveIntention()
+                        category.unlock(for: duration)
                         dismiss()
                     } label: {
                         Text("Save Intention")

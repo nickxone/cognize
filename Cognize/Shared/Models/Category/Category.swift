@@ -69,7 +69,6 @@ extension Category: Equatable {
 }
 
 extension Category {
-    
     func makeStrategy() -> RestrictionStrategy {
         switch configuration {
         case .shield:
@@ -81,6 +80,25 @@ extension Category {
         case .open:
             let strategy = OpenRestriction(categoryId: id, appSelection: appSelection, configuration: configuration)
             return strategy
-        }   
+        }
     }
+    
+    func unlock(for minutes: Int) {
+        switch makeStrategy() {
+        case let shieldRestriction as ShieldRestriction:
+            print("Unlocking with ShieldRestriction")
+            shieldRestriction.unlockActivities(for: minutes)
+        case _ as IntervalRestriction:
+            print("Unlocking with IntervalRestriction")
+        case _ as OpenRestriction:
+            print("Unlocking with OpenRestriction")
+        default:
+            print("No strategy to unlock with")
+        }
+    }
+    
+    func relock() {
+        
+    }
+    
 }

@@ -94,16 +94,41 @@ struct CategoryActionView: View {
 struct ShieldActionView: View {
     let category: Category
     let shieldConfig: ShieldConfig
-    let shieldUsageStore = ShieldUsageStore()
     
     @Binding var showCreateIntentionView: Bool
     
+    @Query private var todayLogs: [IntentionLog]
+    
+    init(category: Category, shieldConfig: ShieldConfig, showCreateIntentionView: Binding<Bool>) {
+        self.category = category
+        self.shieldConfig = shieldConfig
+        self._showCreateIntentionView = showCreateIntentionView
+        
+        let categoryId = category.id
+        let start = Calendar.current.startOfDay(for: Date())
+        let end = Calendar.current.date(byAdding: .day, value: 1, to: start) ?? Date()
+        let predicate = #Predicate<IntentionLog> { log in
+            log.categoryId == categoryId &&
+            log.date >= start &&
+            log.date < end
+        }
+        self._todayLogs = Query(filter: predicate)
+    }
+    
     private var stats: (title: String, used: Float, total: Float, unit: String) {
+        let usedAmount: Int
+        switch shieldConfig.limit {
+        case .timeLimit:
+            usedAmount = todayLogs.reduce(0) { $0 + $1.duration }
+        case .openLimit:
+            usedAmount = todayLogs.count
+        }
+        
         switch shieldConfig.limit {
         case .openLimit(let limit, _):
-            return (title: "Opens Used", used: Float(shieldUsageStore.used(for: category.id, config: shieldConfig)), total: Float(limit), unit: "")
+            return (title: "Opens Used", used: Float(usedAmount), total: Float(limit), unit: "")
         case .timeLimit(let minutesAllowed):
-            return (title: "Time Used", used: Float(shieldUsageStore.used(for: category.id, config: shieldConfig)), total: Float(minutesAllowed), unit: "min")
+            return (title: "Time Used", used: Float(usedAmount), total: Float(minutesAllowed), unit: "min")
         }
     }
     

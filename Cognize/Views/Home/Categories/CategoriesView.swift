@@ -56,7 +56,7 @@ struct CategoriesView: View {
                     }
                 }
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Edit", systemImage: "pencil") {
+                    Button("Edit", systemImage: "slider.horizontal.3") {
                         withAnimation { isEditing.toggle() }
                     }
                     .disabled(focusedCategory == nil)

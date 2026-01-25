@@ -35,8 +35,8 @@ extension IntentionLog {
         return now >= date && now < endDate
     }
     
-    var timeLeft: TimeInterval {
-        let remaining = endDate.timeIntervalSince(Date())
-        return max(0, remaining)
-    }
+//    var timeLeft: TimeInterval {
+//        let remaining = endDate.timeIntervalSince(Date())
+//        return max(0, remaining)
+//    }
 }

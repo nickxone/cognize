@@ -12,8 +12,6 @@ struct ContentView: View {
     @State private var activeTab: TabItem = .home
     @State private var accentColor: Color = .blue
     
-    @Query var logs: [IntentionLog]
-    
     var body: some View {
         TabView {
             Tab("Home", systemImage: "house") {
@@ -29,11 +27,6 @@ struct ContentView: View {
         .tint(accentColor)
         .permissionSheet([.familyControls, .notifications])
         .preferredColorScheme(.dark)
-        .onAppear {
-            for log in logs {
-                print(log.reason)
-            }
-        }
     }
 }
 

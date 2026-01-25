@@ -36,7 +36,7 @@ class ShieldRestriction: BaseRestriction {
     }
     
     // MARK: - Unlocking
-    func unlockEntertainmentActivities(for minutes: Int) {
+    func unlockActivities(for minutes: Int) {
         guard minutes >= 1 else {
             print("Unlock duration must be at least 1 minute")
             return

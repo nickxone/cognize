@@ -39,7 +39,7 @@ struct CategoryCardView: View {
                 Text(category.name)
                     .font(.title2.bold())
                     .foregroundStyle(.primary)
-                    .padding()
+                    .padding(4)
                 
                 if logs.isEmpty {
                     ContentUnavailableView(
@@ -57,15 +57,27 @@ struct CategoryCardView: View {
                                     }
                             }
                         }
-                        .padding(.top)
+                        .padding(.vertical, 20)
                     }
+                    .scrollIndicators(.hidden)
                     .mask {
                         VStack(spacing: 0) {
-                            LinearGradient(colors: [.black.opacity(0), .black], startPoint: .top, endPoint: .bottom)
-                                .frame(height: 20)
+                            LinearGradient(
+                                colors: [.black.opacity(0), .black],
+                                startPoint: .top,
+                                endPoint: .bottom)
+                            .frame(height: 20)
+                            
                             Rectangle().fill(.black)
+
+                            LinearGradient(
+                                colors: [.black, .black.opacity(0)],
+                                startPoint: .top,
+                                endPoint: .bottom)
+                            .frame(height: 20)
                         }
                     }
+                    .padding(.top, -20)
                 }
                 //                CategoryReportView(category: category)
                 Spacer()

@@ -17,6 +17,10 @@ struct DailyShieldUsage: Codable {
     }
 }
 
+struct ShieldUsage {
+    
+}
+
 final class ShieldUsageStore {
     private let defaults: UserDefaults
     private let keyPrefix = "shield-usage-"
@@ -64,7 +68,7 @@ final class ShieldUsageStore {
             }
         }
         
-        // Rollover or mismatch → reset to a fresh state for today and persist it.
+        // Rollover or mismatch - reset to a fresh state for today and persist it.
         let fresh = freshUsage(for: config)
         save(fresh, for: categoryId)
         return fresh

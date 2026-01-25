@@ -51,12 +51,12 @@ struct CategoriesView: View {
             .navigationTitle("Categories")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Add") {
+                    Button("Add", systemImage: "plus") {
                         isCreating = true
                     }
                 }
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Edit") {
+                    Button("Edit", systemImage: "pencil") {
                         withAnimation { isEditing.toggle() }
                     }
                     .disabled(focusedCategory == nil)

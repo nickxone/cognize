@@ -113,6 +113,7 @@ struct IntentionCreationView: View {
             let log = IntentionLog(category: category, reason: reason, duration: duration)
             context.insert(log)
             try context.save()
+            
         } catch {
             print("Failed to save an intention: \(error)")
         }

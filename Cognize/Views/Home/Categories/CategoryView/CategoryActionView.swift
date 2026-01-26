@@ -93,8 +93,10 @@ struct CategoryActionView: View {
     private func stopIntention() {
         print("Stop Intention button pressed")
         guard let log = latestLog else { return }
-        log.duration = Date().timeIntervalSince(log.startDate)
-        category.relock()
+        withAnimation {
+            log.duration = Date().timeIntervalSince(log.startDate)
+            category.relock()
+        }
     }
     
 }
@@ -189,6 +191,7 @@ struct ShieldActionView: View {
                     }
                     .foregroundStyle(.white)
             }
+            .disabled(stats.used >= stats.total)
             
         }
         .padding()

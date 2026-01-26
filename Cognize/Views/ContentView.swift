@@ -17,7 +17,7 @@ struct ContentView: View {
             Tab("Home", systemImage: "house") {
                 CategoriesView(accentColor: $accentColor)
             }
-            Tab("Achievements", systemImage: "trophy") {
+            Tab("Achievements", systemImage: "trophy") { // make the second tab "Intentions" instead
                 Text("To Be Created")
             }
             Tab("Profile", systemImage: "person") {

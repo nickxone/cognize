@@ -98,7 +98,17 @@ extension Category {
     }
     
     func relock() {
-        
+        switch makeStrategy() {
+        case let shieldRestriction as ShieldRestriction:
+            print("Unlocking with ShieldRestriction")
+            shieldRestriction.shield()
+        case _ as IntervalRestriction:
+            print("Unlocking with IntervalRestriction")
+        case _ as OpenRestriction:
+            print("Unlocking with OpenRestriction")
+        default:
+            print("No strategy to unlock with")
+        }
     }
     
 }

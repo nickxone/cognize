@@ -26,7 +26,7 @@ struct CategoryActionView: View {
         self.showCreateIntentionView = showCreateIntentionView
         self._logs = Query(filter: #Predicate<IntentionLog> { log in
             log.categoryId == category.id
-        }, sort: \IntentionLog.date, order: .reverse)
+        }, sort: \IntentionLog.startDate, order: .reverse)
     }
     
     
@@ -52,7 +52,7 @@ struct CategoryActionView: View {
                     .padding(.top, 10)
                     
                     Button {
-                        print("Stop Intention button pressed")
+                        stopIntention()
                     } label: {
                         Label("Stop Intention", systemImage: "stop.fill")
                             .fontWeight(.semibold)
@@ -89,6 +89,14 @@ struct CategoryActionView: View {
         }
         .preferredColorScheme(.dark)
     }
+    
+    private func stopIntention() {
+        print("Stop Intention button pressed")
+        guard let log = latestLog else { return }
+        log.duration = Date().timeIntervalSince(log.startDate)
+        category.relock()
+    }
+    
 }
 
 struct ShieldActionView: View {
@@ -109,19 +117,19 @@ struct ShieldActionView: View {
         let end = Calendar.current.date(byAdding: .day, value: 1, to: start) ?? Date()
         let predicate = #Predicate<IntentionLog> { log in
             log.categoryId == categoryId &&
-            log.date >= start &&
-            log.date < end
+            log.startDate >= start &&
+            log.startDate < end
         }
         self._todayLogs = Query(filter: predicate)
     }
     
     private var stats: (title: String, used: Float, total: Float, unit: String) {
-        let usedAmount: Int
+        let usedAmount: Double
         switch shieldConfig.limit {
         case .timeLimit:
-            usedAmount = todayLogs.reduce(0) { $0 + $1.duration }
+            usedAmount = todayLogs.reduce(0) { $0 + $1.duration } / 60
         case .openLimit:
-            usedAmount = todayLogs.count
+            usedAmount = Double(todayLogs.count)
         }
         
         switch shieldConfig.limit {

@@ -111,7 +111,7 @@ struct IntentionCreationView: View {
     
     private func saveIntention() {
         do {
-            let log = IntentionLog(category: category, reason: reason, duration: duration)
+            let log = IntentionLog(category: category, reason: reason, duration: TimeInterval(duration * 60))
             context.insert(log)
             try context.save()
             

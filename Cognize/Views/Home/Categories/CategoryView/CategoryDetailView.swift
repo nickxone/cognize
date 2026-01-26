@@ -20,7 +20,7 @@ struct CategoryDetailView: View {
         self.category = category
         _logs = Query(
             filter: #Predicate<IntentionLog> { $0.categoryId == category.id },
-            sort: [SortDescriptor(\.date, order: .reverse)]
+            sort: [SortDescriptor(\.startDate, order: .reverse)]
         )
     }
     
@@ -92,7 +92,7 @@ private struct IntentionRow: View {
                 
                 HStack(spacing: 12) {
                     Label("\(log.duration) min", systemImage: "hourglass")
-                    Text(log.date, style: .relative)
+                    Text(log.startDate, style: .relative)
                 }
                 .font(.subheadline)
                 .foregroundStyle(.white.opacity(0.7))

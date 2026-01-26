@@ -26,7 +26,7 @@ struct CategoryCardView: View {
         let categoryId = category.id
         self._logs = Query(filter: #Predicate<IntentionLog> { log in
             log.categoryId == categoryId
-        }, sort: \IntentionLog.date, order: .reverse)
+        }, sort: \IntentionLog.startDate, order: .reverse)
     }
     
     var body: some View {
@@ -39,7 +39,7 @@ struct CategoryCardView: View {
                 Text(category.name)
                     .font(.title2.bold())
                     .foregroundStyle(.primary)
-                    .padding()
+                    .padding(4)
                 
                 if logs.isEmpty {
                     ContentUnavailableView(
@@ -57,15 +57,27 @@ struct CategoryCardView: View {
                                     }
                             }
                         }
-                        .padding(.top)
+                        .padding(.vertical, 20)
                     }
+                    .scrollIndicators(.hidden)
                     .mask {
                         VStack(spacing: 0) {
-                            LinearGradient(colors: [.black.opacity(0), .black], startPoint: .top, endPoint: .bottom)
-                                .frame(height: 20)
+                            LinearGradient(
+                                colors: [.black.opacity(0), .black],
+                                startPoint: .top,
+                                endPoint: .bottom)
+                            .frame(height: 20)
+                            
                             Rectangle().fill(.black)
+
+                            LinearGradient(
+                                colors: [.black, .black.opacity(0)],
+                                startPoint: .top,
+                                endPoint: .bottom)
+                            .frame(height: 20)
                         }
                     }
+                    .padding(.top, -20)
                 }
                 //                CategoryReportView(category: category)
                 Spacer()
@@ -112,7 +124,16 @@ struct CategoryCardView: View {
 
 /// A specific row design that looks good inside a glass container
 struct LogRowView: View {
+    
     let log: IntentionLog
+    
+    private var duration: String {
+        if log.duration < 60 {
+            return "\(Int(log.duration))s"
+        } else {
+            return "\(Int(log.duration / 60))m"
+        }
+    }
     
     var body: some View {
         HStack {
@@ -122,7 +143,7 @@ struct LogRowView: View {
                     .foregroundStyle(.white)
                     .lineLimit(1)
                 
-                Text(log.date.formatted(date: .abbreviated, time: .shortened))
+                Text(log.startDate.formatted(date: .abbreviated, time: .shortened))
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.7))
             }
@@ -133,7 +154,7 @@ struct LogRowView: View {
                 HStack(spacing: 2) {
                     Image(systemName: "hourglass")
                         .font(.caption2)
-                    Text("\(log.duration)m")
+                    Text(duration)
                 }
                 .font(.subheadline.bold())
                 .foregroundStyle(.white)

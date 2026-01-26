@@ -16,19 +16,71 @@ struct CategoryActionView: View {
     
     @State private var showCreateIntentionView = false
     
-    @Query private var latestLog: [IntentionLog]
+    @Query private var logs: [IntentionLog]
+    var latestLog: IntentionLog? {
+        logs.first
+    }
+    
+    init(category: Category, showCreateIntentionView: Bool = false) {
+        self.category = category
+        self.showCreateIntentionView = showCreateIntentionView
+        self._logs = Query(filter: #Predicate<IntentionLog> { log in
+            log.categoryId == category.id
+        }, sort: \IntentionLog.startDate, order: .reverse)
+    }
     
     
     var body: some View {
         ZStack {
             ColorfulBackground(color: category.color, animate: false)
-            switch category.configuration {
-            case .shield(let shieldConfig):
-                ShieldActionView(category: category, shieldConfig: shieldConfig, showCreateIntentionView: $showCreateIntentionView)
-            case .interval(let intervalConfig):
-                IntervalActionView(category: category, intervalConfig: intervalConfig)
-            case .open( _):
-                Text("Open")
+            if let latestLog, latestLog.isActive {
+                VStack(spacing: 20) {
+                    VStack(spacing: 6) {
+                        Text("Time Remaining")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(.white.opacity(0.6))
+                            .textCase(.uppercase)
+                            .tracking(1)
+                        
+                        Text(latestLog.endDate, style: .timer)
+                            .font(.system(size: 46, weight: .bold, design: .rounded))
+                            .monospacedDigit()
+                            .contentTransition(.numericText())
+                            .foregroundStyle(.white)
+                            .shadow(color: category.color.opacity(0.5), radius: 10, x: 0, y: 0)
+                    }
+                    .padding(.top, 10)
+                    
+                    Button {
+                        stopIntention()
+                    } label: {
+                        Label("Stop Intention", systemImage: "stop.fill")
+                            .fontWeight(.semibold)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background {
+                                ZStack {
+                                    Capsule()
+                                        .fill(category.color.gradient)
+                                    Capsule()
+                                        .fill(.black.opacity(0.2))
+                                }
+                                .clipShape(Capsule())
+                            }
+                            .foregroundStyle(.white)
+                    }
+                }
+                .padding()
+            }
+            else {
+                switch category.configuration {
+                case .shield(let shieldConfig):
+                    ShieldActionView(category: category, shieldConfig: shieldConfig, showCreateIntentionView: $showCreateIntentionView)
+                case .interval(let intervalConfig):
+                    IntervalActionView(category: category, intervalConfig: intervalConfig)
+                case .open( _):
+                    Text("Open")
+                }
             }
         }
         .glassEffect(in: .rect(cornerRadius: 20))
@@ -37,31 +89,94 @@ struct CategoryActionView: View {
         }
         .preferredColorScheme(.dark)
     }
+    
+    private func stopIntention() {
+        print("Stop Intention button pressed")
+        guard let log = latestLog else { return }
+        withAnimation {
+            log.duration = Date().timeIntervalSince(log.startDate)
+            category.relock()
+        }
+    }
+    
 }
 
 struct ShieldActionView: View {
     let category: Category
     let shieldConfig: ShieldConfig
-    let shieldUsageStore = ShieldUsageStore()
     
     @Binding var showCreateIntentionView: Bool
     
+    @Query private var todayLogs: [IntentionLog]
+    
+    init(category: Category, shieldConfig: ShieldConfig, showCreateIntentionView: Binding<Bool>) {
+        self.category = category
+        self.shieldConfig = shieldConfig
+        self._showCreateIntentionView = showCreateIntentionView
+        
+        let categoryId = category.id
+        let start = Calendar.current.startOfDay(for: Date())
+        let end = Calendar.current.date(byAdding: .day, value: 1, to: start) ?? Date()
+        let predicate = #Predicate<IntentionLog> { log in
+            log.categoryId == categoryId &&
+            log.startDate >= start &&
+            log.startDate < end
+        }
+        self._todayLogs = Query(filter: predicate)
+    }
+    
+    private var stats: (title: String, used: Float, total: Float, unit: String) {
+        let usedAmount: Double
+        switch shieldConfig.limit {
+        case .timeLimit:
+            usedAmount = todayLogs.reduce(0) { $0 + $1.duration } / 60
+        case .openLimit:
+            usedAmount = Double(todayLogs.count)
+        }
+        
+        switch shieldConfig.limit {
+        case .openLimit(let limit, _):
+            return (title: "Opens Used", used: Float(usedAmount), total: Float(limit), unit: "")
+        case .timeLimit(let minutesAllowed):
+            return (title: "Time Used", used: Float(usedAmount), total: Float(minutesAllowed), unit: "min")
+        }
+    }
+    
     var body: some View {
-        VStack {
-            switch shieldConfig.limit {
-            case .openLimit(let openLimit, _):
-                Text("Opens Used")
-                ProgressView(value: Float(shieldUsageStore.used(for: category.id, config: shieldConfig)), total: Float(openLimit))
-            case .timeLimit(let minutesAllowed):
-                Text("Time Used")
-                ProgressView(value: Float(shieldUsageStore.used(for: category.id, config: shieldConfig)), total: Float(minutesAllowed))
+        VStack(spacing: 20) {
+            VStack(alignment: .leading, spacing: 17) {
+                HStack {
+                    Text(stats.title)
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(.white.opacity(0.6))
+                        .textCase(.uppercase)
+                        .tracking(1)
+                    
+                    Spacer()
+                    
+                    HStack(alignment: .firstTextBaseline, spacing: 2) {
+                        Text("\(Int(stats.used))")
+                            .foregroundStyle(.white)
+                        Text("/")
+                            .foregroundStyle(.white.opacity(0.4))
+                        Text("\(Int(stats.total))\(stats.unit)")
+                            .foregroundStyle(.white.opacity(0.7))
+                    }
+                    .font(.system(.body, design: .rounded).bold())
+                }
+                
+                ProgressView(value: stats.used, total: stats.total)
+                    .progressViewStyle(CategoryProgressStyle(color: category.color))
             }
+            .padding(.horizontal)
+            .padding(.top, 5)
+            
             Spacer()
             
             Button {
                 showCreateIntentionView = true
             } label: {
-                Text("New Intention")
+                Label("New Intention", systemImage: "plus")
                     .fontWeight(.semibold)
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -76,7 +191,8 @@ struct ShieldActionView: View {
                     }
                     .foregroundStyle(.white)
             }
-
+            .disabled(stats.used >= stats.total)
+            
         }
         .padding()
     }
@@ -91,7 +207,15 @@ struct IntervalActionView: View {
     }
 }
 
-#Preview {
+#Preview(traits: .intentionLogSampleData) {
+    let category = Category.sampleData[0]
+    GeometryReader { geometry in
+        CategoryActionView(category: category)
+            .frame(height: geometry.size.height / 3.5)
+    }
+}
+
+#Preview(traits: .intentionLogActiveSampleData) {
     let category = Category.sampleData[0]
     
     CategoryActionView(category: category)

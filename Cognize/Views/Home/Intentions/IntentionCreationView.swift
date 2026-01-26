@@ -33,28 +33,31 @@ struct IntentionCreationView: View {
                         .padding()
                         .glassEffect()
                     
-                    HStack {
-                        Text("Break duration:")
-                            .padding(.leading)
-                        
-                        Spacer()
-                        
-                        Picker("Break duration", selection: $duration) {
-                            ForEach(1...30, id: \.self) { minute in
-                                Text("\(minute)").tag(minute)
+                    switch category.configuration {
+                    case .shield(let shieldConfig):
+                        switch shieldConfig.limit {
+                        case .timeLimit:
+                            timePicker
+                        case .openLimit(_, let minutesPerOpen):
+                            HStack {
+                                Text("Unlock Duration")
+                                    .foregroundStyle(.white.opacity(0.7))
+                                Spacer()
+                                HStack(spacing: 4) {
+                                    Image(systemName: "lock.fill")
+                                        .font(.caption)
+                                    Text("\(minutesPerOpen) min")
+                                }
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.white)
                             }
+                            .padding()
+                            .glassEffect(in: .rect(cornerRadius: 20))
+                            .onAppear { duration = minutesPerOpen }
                         }
-                        .pickerStyle(.wheel)
-                        .frame(width: 80, height: 130)
-                        .clipped()
-                        .compositingGroup()
-                        .padding(-8)
-                        
-                        Text("minute\(duration == 1 ? "" : "s")")
-                            .padding(.trailing)
+                    case .interval(_), .open(_):
+                        timePicker
                     }
-                    .padding()
-                    .glassEffect(in: .rect(cornerRadius: 25))
                 }
                 
                 Spacer()
@@ -62,6 +65,7 @@ struct IntentionCreationView: View {
                 Group {
                     Button {
                         saveIntention()
+                        category.unlock(for: duration)
                         dismiss()
                     } label: {
                         Text("Save Intention")
@@ -108,11 +112,37 @@ struct IntentionCreationView: View {
         .preferredColorScheme(.dark)
     }
     
+    var timePicker: some View {
+        HStack {
+            Text("Break duration:")
+                .padding(.leading)
+            
+            Spacer()
+            
+            Picker("Break duration", selection: $duration) {
+                ForEach(1...30, id: \.self) { minute in
+                    Text("\(minute)").tag(minute)
+                }
+            }
+            .pickerStyle(.wheel)
+            .frame(width: 80, height: 130)
+            .clipped()
+            .compositingGroup()
+            .padding(-8)
+            
+            Text("minute\(duration == 1 ? "" : "s")")
+                .padding(.trailing)
+        }
+        .padding()
+        .glassEffect(in: .rect(cornerRadius: 25))
+    }
+    
     private func saveIntention() {
         do {
-            let log = IntentionLog(category: category, reason: reason, duration: duration)
+            let log = IntentionLog(category: category, reason: reason, duration: TimeInterval(duration * 60))
             context.insert(log)
             try context.save()
+            
         } catch {
             print("Failed to save an intention: \(error)")
         }

@@ -111,4 +111,8 @@ extension Category {
         }
     }
     
+    func removeRestrictions() {
+        makeStrategy().finish()
+    }
+    
 }

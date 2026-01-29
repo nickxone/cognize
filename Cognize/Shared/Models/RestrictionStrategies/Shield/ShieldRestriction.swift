@@ -64,6 +64,11 @@ extension ShieldRestriction: RestrictionStrategy {
         shield()
     }
     
+    func finish() {
+        removeShielding()
+        DeviceActivityCenter().stopMonitoring([deviceActivityName])
+    }
+    
     func intervalDidStart(for activity: DeviceActivityName) {
     }
     

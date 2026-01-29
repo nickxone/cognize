@@ -83,6 +83,11 @@ extension IntervalRestriction: RestrictionStrategy {
         track()
     }
     
+    func finish() {
+        removeShielding()
+        DeviceActivityCenter().stopMonitoring([deviceActivityNameFirst, deviceActivityNameSecond])
+    }
+    
     func intervalDidStart(for activity: DeviceActivityName) {
         NotificationManager.shared.scheduleNotification(title: "intervalDidStart", body: "\(activity.rawValue)", inSeconds: 1.5)
     }

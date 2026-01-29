@@ -61,7 +61,9 @@ struct CategoryView: View {
         }
         .alert("Delete \(category.name) category?", isPresented: $showDeletionAlert) {
             Button("Delete", role: .destructive) {
-                deleteCategory()
+                withAnimation {
+                    deleteCategory()
+                }
             }
             Button("Cancel", role: .cancel) {
                 
@@ -86,7 +88,9 @@ struct CategoryView: View {
         } catch {
             print("Failed to delete logs: \(error)")
         }
-        
+        // remove the associated restrictions
+        category.removeRestrictions()
+        // remove the category from UserDefaults
         var allCategories = store.load()
         if let index = allCategories.firstIndex(where: { $0.id == categoryId }) {
             allCategories.remove(at: index)

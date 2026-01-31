@@ -12,176 +12,30 @@ struct RestrictionEditor: View {
     let color: Color
     @Binding var configuration: RestrictionDraft
     
-    @State private var showActivityPicker = false
-    
     var body: some View {
         Group {
             switch configuration.kind {
             case .shield:
-                VStack {
-                    HStack {
-                        Text("Limit Type")
-                        Spacer()
-                        Picker("Limit Type", selection: $configuration.shield.kind) {
-                            Text("Time Limit").tag(RestrictionDraft.Shield.Kind.shieldTime).foregroundStyle(.gray)
-                            Text("Open Limit").tag(RestrictionDraft.Shield.Kind.shieldOpen).foregroundStyle(.gray)
-                        }
-                        .tint(.gray)
-                    }
-                    .frame(height: 30)
-                    Divider()
-                    Group {
-                        switch configuration.shield.kind {
-                        case .shieldTime:
-                            HStack {
-                                Text("Time Allowed")
-                                Spacer()
-                                Group {
-                                    Button {
-                                        if configuration.shield.shieldMinutesAllowed >= 30 { configuration.shield.shieldMinutesAllowed -= 15 }
-                                    } label: {
-                                        Text("-")
-                                    }
-                                    Text(selectedTimeFormatted(configuration.shield.shieldMinutesAllowed))
-                                    Button {
-                                        configuration.shield.shieldMinutesAllowed += 15
-                                    } label: {
-                                        Text("+")
-                                    }
-                                }
-                                .tint(.gray)
-                            }
-                            .frame(height: 30)
-                        case .shieldOpen:
-                            HStack {
-                                Text("Opens Allowed")
-                                Spacer()
-                                Group {
-                                    Button {
-                                        if configuration.shield.shieldOpensAllowed >= 1 { configuration.shield.shieldOpensAllowed -= 1 }
-                                    } label: {
-                                        Text("-")
-                                    }
-                                    Text("\(configuration.shield.shieldOpensAllowed)")
-                                    Button {
-                                        if configuration.shield.shieldOpensAllowed < 15 { configuration.shield.shieldOpensAllowed += 1 }
-                                    } label: {
-                                        Text("+")
-                                    }
-                                }
-                                .tint(.gray)
-                            }
-                            .frame(height: 35)
-                            Divider()
-                            HStack {
-                                Text("For Up To")
-                                Spacer()
-                                Group {
-                                    Button {
-                                        if configuration.shield.shieldMinutesPerOpen >= 3 { configuration.shield.shieldMinutesPerOpen -= 1 }
-                                    } label: {
-                                        Text("-")
-                                    }
-                                    Text("\(configuration.shield.shieldMinutesPerOpen)m")
-                                    Button {
-                                        if configuration.shield.shieldMinutesPerOpen < 60 { configuration.shield.shieldMinutesPerOpen += 1 }
-                                    } label: {
-                                        Text("+")
-                                    }
-                                }
-                                .tint(.gray)
-                            }
-                            .frame(height: 30)
-                        }
-                    }
-                }
+                ShieldEditorView(
+                    config: $configuration.shield,
+                    formatter: selectedTimeFormatted
+                )
             case .interval:
-                VStack {
-                    HStack {
-                        Text("Block Threshold")
-                        Spacer()
-                        Group {
-                            Button {
-                                if configuration.interval.intervalThresholdTime > 2 { configuration.interval.intervalThresholdTime -= 1 }
-                            } label: {
-                                Text("-")
-                            }
-                            Text("\(configuration.interval.intervalThresholdTime)m")
-                            Button {
-                                if configuration.interval.intervalThresholdTime + 1 < configuration.interval.intervalLength { configuration.interval.intervalThresholdTime += 1 }
-                            } label: {
-                                Text("+")
-                            }
-                        }
-                        .tint(.gray)
-                    }
-                    .frame(height: 30)
-                    Divider()
-                    HStack {
-                        Text("Interval")
-                        Spacer()
-                        Group {
-                            Button {
-                                if configuration.interval.intervalLength > 15 && configuration.interval.intervalLength > configuration.interval.intervalThresholdTime + 1 { configuration.interval.intervalLength -= 1 }
-                            } label: {
-                                Text("-")
-                            }
-                            Text("\(configuration.interval.intervalLength)m")
-                            Button {
-                                if configuration.interval.intervalLength < 60 { configuration.interval.intervalLength += 1 }
-                            } label: {
-                                Text("+")
-                            }
-                        }
-                        .tint(.gray)
-                    }
-                    .frame(height: 30)
-                }
+                IntervalEditorView(
+                    color: color,
+                    config: $configuration.interval
+                )
             case .open:
-                VStack {
-                    Toggle("Has Limits?", isOn: Binding(
-                        get: {
-                            configuration.open.kind == .openLimit
-                        },
-                        set: { newValue in
-                            if newValue {
-                                configuration.open.kind = .openLimit
-                            } else {
-                                configuration.open.kind = .openAlways
-                            }
-                        }
-                    ))
-                    .tint(color)
-                    .frame(height: 30)
-                    if configuration.open.kind == .openLimit {
-                        Divider()
-                        HStack {
-                            Text("Time Allowed")
-                            Spacer()
-                            Group {
-                                Button {
-                                    if configuration.open.openMinutesAllowed >= 30 { configuration.open.openMinutesAllowed -= 15 }
-                                } label: {
-                                    Text("-")
-                                }
-                                Text(selectedTimeFormatted(configuration.open.openMinutesAllowed))
-                                Button {
-                                    configuration.open.openMinutesAllowed += 15
-                                } label: {
-                                    Text("+")
-                                }
-                            }
-                            .tint(.gray)
-                        }
-                        .frame(height: 30)
-                    }
-                }
+                OpenEditorView(
+                    color: color,
+                    config: $configuration.open,
+                    formatter: selectedTimeFormatted
+                )
             }
         }
         .padding()
         .font(.body)
         .glassEffect(in: .rect(cornerRadius: 30))
-//        .glass(gradientOpacity: 0.3, gradientStyle: .normal, shadowColor: .clear)
     }
     
     private func selectedTimeFormatted(_ timeAllowed: Int) -> String {
@@ -189,9 +43,190 @@ struct RestrictionEditor: View {
         let minutes = timeAllowed % 60
         return hours == 0 ? "\(minutes)m" : "\(hours)h \(minutes)m"
     }
-    
 }
+
+struct SettingStepper: View {
+    let title: String
+    let value: String
+    let onDecrement: () -> Void
+    let onIncrement: () -> Void
+    
+    var body: some View {
+        HStack {
+            Text(title)
+                .foregroundStyle(.primary)
+            
+            Spacer()
+            
+            HStack(spacing: 0) {
+                Button(action: onDecrement) {
+                    Image(systemName: "minus")
+                        .font(.body.weight(.medium))
+                        .frame(width: 32, height: 32)
+                        .contentShape(Rectangle())
+                }
+                
+                Text(value)
+                    .monospacedDigit()
+                    .font(.body)
+                    .frame(minWidth: 48)
+                    .multilineTextAlignment(.center)
+                    .contentTransition(.numericText())
+                
+                Button(action: onIncrement) {
+                    Image(systemName: "plus")
+                        .font(.body.weight(.medium))
+                        .frame(width: 32, height: 32)
+                        .contentShape(Rectangle())
+                }
+            }
+            .foregroundStyle(.gray)
+        }
+        
+        .frame(height: 30)
+    }
+}
+
+
+struct ShieldEditorView: View {
+    @Binding var config: RestrictionDraft.Shield
+    let formatter: (Int) -> String
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text("Limit Type")
+                Spacer()
+                Picker("Limit Type", selection: $config.kind.animation(.bouncy)) {
+                    Text("Time Limit").tag(RestrictionDraft.Shield.Kind.shieldTime)
+                    Text("Open Limit").tag(RestrictionDraft.Shield.Kind.shieldOpen)
+                }
+                .tint(.gray)
+            }
+            .frame(height: 30)
+            
+            Divider()
+            
+            switch config.kind {
+            case .shieldTime:
+                SettingStepper(
+                    title: "Time Allowed",
+                    value: formatter(config.shieldMinutesAllowed),
+                    onDecrement: { if config.shieldMinutesAllowed >= 30 { config.shieldMinutesAllowed -= 15 } },
+                    onIncrement: { config.shieldMinutesAllowed += 15 }
+                )
+                .transition(.blurReplace) 
+                
+            case .shieldOpen:
+                SettingStepper(
+                    title: "Opens Allowed",
+                    value: "\(config.shieldOpensAllowed)",
+                    onDecrement: { if config.shieldOpensAllowed >= 1 { config.shieldOpensAllowed -= 1 } },
+                    onIncrement: { if config.shieldOpensAllowed < 15 { config.shieldOpensAllowed += 1 } }
+                )
+                .transition(.blurReplace)
+                
+                Divider()
+                
+                SettingStepper(
+                    title: "For Up To",
+                    value: "\(config.shieldMinutesPerOpen)m",
+                    onDecrement: { if config.shieldMinutesPerOpen >= 3 { config.shieldMinutesPerOpen -= 1 } },
+                    onIncrement: { if config.shieldMinutesPerOpen < 60 { config.shieldMinutesPerOpen += 1 } }
+                )
+            }
+        }
+    }
+}
+
+struct IntervalEditorView: View {
+    let color: Color
+    @Binding var config: RestrictionDraft.Interval
+    
+    var body: some View {
+        VStack {
+            Toggle("Custom duration?", isOn: $config.isCustomized.animation(.bouncy))
+                .tint(color)
+                .frame(height: 30)
+            
+            if config.isCustomized {
+                Group {
+                    Divider()
+                    
+                    SettingStepper(
+                        title: "Block Threshold",
+                        value: "\(config.intervalThresholdTime)m",
+                        onDecrement: { if config.intervalThresholdTime > 2 { config.intervalThresholdTime -= 1 } },
+                        onIncrement: { if config.intervalThresholdTime + 1 < config.intervalLength { config.intervalThresholdTime += 1 } }
+                    )
+                    
+                    Divider()
+                    
+                    SettingStepper(
+                        title: "Interval",
+                        value: "\(config.intervalLength)m",
+                        onDecrement: { if config.intervalLength > 15 && config.intervalLength > config.intervalThresholdTime + 1 { config.intervalLength -= 1 } },
+                        onIncrement: { if config.intervalLength < 60 { config.intervalLength += 1 } }
+                    )
+                }
+                .transition(
+                    .asymmetric(
+                        insertion: .opacity.combined(with: .move(edge: .top)),
+                        removal: .opacity.combined(with: .scale(scale: 0.0, anchor: .top))
+                    )
+                )
+                .clipped()
+            }
+        }
+    }
+}
+
+struct OpenEditorView: View {
+    let color: Color
+    @Binding var config: RestrictionDraft.Open
+    let formatter: (Int) -> String
+    
+    var hasLimits: Binding<Bool> {
+        Binding(
+            get: { config.kind == .openLimit },
+            set: { newValue in withAnimation(.bouncy) { config.kind = newValue ? .openLimit : .openAlways } }
+        )
+    }
+    
+    var body: some View {
+        VStack {
+            Toggle("Has Limits?", isOn: hasLimits.animation(.bouncy))
+                .tint(color)
+                .frame(height: 30)
+            
+            if config.kind == .openLimit {
+                Group {
+                    Divider()
+                    SettingStepper(
+                        title: "Time Allowed",
+                        value: formatter(config.openMinutesAllowed),
+                        onDecrement: { if config.openMinutesAllowed >= 30 { config.openMinutesAllowed -= 15 } },
+                        onIncrement: { config.openMinutesAllowed += 15 }
+                    )
+                }
+                .transition(
+                    .asymmetric(
+                        insertion: .opacity.combined(with: .move(edge: .top)),
+                        removal: .opacity.combined(with: .scale(scale: 0.0, anchor: .top))
+                    )
+                )
+                .clipped()
+            }
+        }
+    }
+}
+
 #Preview {
     @Previewable @State var draftConfig = RestrictionDraft()
-    RestrictionEditor(color: .blue, configuration: $draftConfig)
+    
+    RestrictionSelectionView(color: .blue, configuration: $draftConfig) {
+        
+    } doneAction: {
+        
+    }
 }

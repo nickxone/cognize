@@ -104,10 +104,9 @@ struct RestrictionSelectionView: View {
             .foregroundStyle(.gray)
         }
         .font(.body)
+        .frame(height: 30)
         .padding()
         .glassEffect(in: .rect(cornerRadius: 30))
-//        .glassEffect()
-//        .glass(gradientOpacity: 0.3, gradientStyle: .reverted, shadowColor: .clear)
         .onTapGesture {
             showActivityPicker = true
         }

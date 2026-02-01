@@ -36,6 +36,10 @@ extension OpenRestriction: RestrictionStrategy {
         print("Open restriction started")
     }
     
+    func finish() {
+        removeShielding()
+    }
+    
     func intervalDidStart(for activity: DeviceActivityName) {
         // TODO: Implement
     }

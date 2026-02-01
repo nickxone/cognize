@@ -13,12 +13,12 @@ import DeviceActivity
 struct IntervalConfig: Codable, Equatable {
     var thresholdTime: Int
     var intervalLength: Int
-//    var limit: Limit
-//    
-//    enum Limit: Codable, Equatable {
-//        case timeLimit(minutesAllowed: Int)
-//        case none
-//    }
+    //    var limit: Limit
+    //
+    //    enum Limit: Codable, Equatable {
+    //        case timeLimit(minutesAllowed: Int)
+    //        case none
+    //    }
 }
 
 class IntervalRestriction: BaseRestriction {
@@ -32,6 +32,10 @@ class IntervalRestriction: BaseRestriction {
         super.init(categoryId: categoryId, appSelection: appSelection)
     }
     
+    private var deviceUnlockActivityName: DeviceActivityName {
+        .init("unlock-\(categoryId.uuidString)")
+    }
+    
     private var deviceActivityNameFirst: DeviceActivityName {
         .init("first-\(categoryId.uuidString)")
     }
@@ -43,6 +47,7 @@ class IntervalRestriction: BaseRestriction {
     private var deviceActivityEventName: DeviceActivityEvent.Name {
         .init("event-\(categoryId.uuidString)")
     }
+    
     
     func scheduleProductivity(name: DeviceActivityName) {
         let schedule = createSchedule(
@@ -76,11 +81,45 @@ class IntervalRestriction: BaseRestriction {
         NotificationManager.shared.scheduleNotification(title: "track", body: "\(config.thresholdTime) \(config.intervalLength)", inSeconds: 1.5)
     }
     
+    func unlockActivities(for minutes: Int) {
+        guard minutes >= 1 else {
+            print("Unlock duration must be at least 1 minute")
+            return
+        }
+        
+        removeShielding()
+        DeviceActivityCenter().stopMonitoring([deviceActivityNameFirst, deviceActivityNameSecond])
+        
+        let schedule = createSchedule(
+            startOffset: -15 * 60, // 15 minutes in the past
+            endOffset: TimeInterval(minutes * 60),
+            warningTime: DateComponents(minute: 1)
+        )
+        
+        do {
+            try DeviceActivityCenter().startMonitoring(deviceUnlockActivityName, during: schedule)
+            print("Unlocked")
+        } catch {
+            print("Failed to unlock activities: \(error.localizedDescription)")
+        }
+        
+    }
+    
+    func relockActivities() {
+        DeviceActivityCenter().stopMonitoring([deviceUnlockActivityName])
+        shield()
+        track()
+    }
 }
 
 extension IntervalRestriction: RestrictionStrategy {
     func start() {
         track()
+    }
+    
+    func finish() {
+        removeShielding()
+        DeviceActivityCenter().stopMonitoring([deviceActivityNameFirst, deviceActivityNameSecond, deviceUnlockActivityName])
     }
     
     func intervalDidStart(for activity: DeviceActivityName) {
@@ -89,6 +128,9 @@ extension IntervalRestriction: RestrictionStrategy {
     
     func intervalDidEnd(for activity: DeviceActivityName) {
         NotificationManager.shared.scheduleNotification(title: "intervalDidEnd", body: "\(activity.rawValue)", inSeconds: 1.5)
+        if activity == deviceUnlockActivityName {
+            relockActivities()
+        }
     }
     
     func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, for activity: DeviceActivityName) {
@@ -109,6 +151,8 @@ extension IntervalRestriction: RestrictionStrategy {
         } else if activity == deviceActivityNameSecond {
             // schedule first otherwise
             scheduleProductivity(name: deviceActivityNameFirst)
+        } else if activity == deviceUnlockActivityName {
+            NotificationManager.shared.scheduleNotification(title: "Cognize", body: "Apps are about to relock", inSeconds: 1.5)
         }
     }
     

@@ -32,6 +32,7 @@ struct RestrictionDraft {
     struct Interval {
         enum Kind { case timeLimit, none }
         var kind: Kind = .none
+        var isCustomized: Bool = false
         var timeLimit: Int = 60
         var intervalThresholdTime: Int = 5
         var intervalLength: Int = 30

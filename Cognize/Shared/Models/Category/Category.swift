@@ -88,8 +88,9 @@ extension Category {
         case let shieldRestriction as ShieldRestriction:
             print("Unlocking with ShieldRestriction")
             shieldRestriction.unlockActivities(for: minutes)
-        case _ as IntervalRestriction:
+        case let intervalRestriction as IntervalRestriction:
             print("Unlocking with IntervalRestriction")
+            intervalRestriction.unlockActivities(for: minutes)
         case _ as OpenRestriction:
             print("Unlocking with OpenRestriction")
         default:
@@ -100,15 +101,20 @@ extension Category {
     func relock() {
         switch makeStrategy() {
         case let shieldRestriction as ShieldRestriction:
-            print("Unlocking with ShieldRestriction")
+            print("Relocking with ShieldRestriction")
             shieldRestriction.shield()
-        case _ as IntervalRestriction:
-            print("Unlocking with IntervalRestriction")
+        case let intervalRestriction as IntervalRestriction:
+            print("Relocking with IntervalRestriction")
+            intervalRestriction.relockActivities()
         case _ as OpenRestriction:
-            print("Unlocking with OpenRestriction")
+            print("Relocking with OpenRestriction")
         default:
-            print("No strategy to unlock with")
+            print("No strategy to relock with")
         }
+    }
+    
+    func removeRestrictions() {
+        makeStrategy().finish()
     }
     
 }

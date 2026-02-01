@@ -12,6 +12,7 @@ extension Category {
 
     static let sampleData: [Category] =
     [
-        Category(name: "Games", appSelection: FamilyActivitySelection(), color: .red, configuration: .shield(.init(limit: .timeLimit(minutesAllowed: 45))))
+        Category(name: "Games", appSelection: FamilyActivitySelection(), color: .red, configuration: .shield(.init(limit: .timeLimit(minutesAllowed: 45)))),
+        Category(name: "Social", appSelection: FamilyActivitySelection(), color: .green, configuration: .interval(.init(thresholdTime: 2, intervalLength: 15)))
     ]
 }

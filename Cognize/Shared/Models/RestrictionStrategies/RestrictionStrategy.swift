@@ -10,6 +10,7 @@ import DeviceActivity
 
 protocol RestrictionStrategy {
     func start()
+    func finish()
     func intervalDidStart(for activity: DeviceActivityName)
     func intervalDidEnd(for activity: DeviceActivityName)
     func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, for activity: DeviceActivityName)

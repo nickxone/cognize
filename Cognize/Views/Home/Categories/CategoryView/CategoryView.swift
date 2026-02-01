@@ -61,7 +61,9 @@ struct CategoryView: View {
         }
         .alert("Delete \(category.name) category?", isPresented: $showDeletionAlert) {
             Button("Delete", role: .destructive) {
-                deleteCategory()
+                withAnimation {
+                    deleteCategory()
+                }
             }
             Button("Cancel", role: .cancel) {
                 
@@ -86,7 +88,9 @@ struct CategoryView: View {
         } catch {
             print("Failed to delete logs: \(error)")
         }
-        
+        // remove the associated restrictions
+        category.removeRestrictions()
+        // remove the category from UserDefaults
         var allCategories = store.load()
         if let index = allCategories.firstIndex(where: { $0.id == categoryId }) {
             allCategories.remove(at: index)
@@ -101,7 +105,7 @@ struct CategoryView: View {
 #Preview(traits: .intentionLogSampleData) {
     @Previewable @State var focusedCategory: Category? = Category.sampleData[0]
     @Previewable @State var isEditing: Bool = true
-    let category = Category.sampleData[0]
+    let category = Category.sampleData[1]
     
     CategoryView(category: category, focusedCategory: $focusedCategory, isEditing: $isEditing)
 }

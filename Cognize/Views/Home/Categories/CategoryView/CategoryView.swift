@@ -105,7 +105,7 @@ struct CategoryView: View {
 #Preview(traits: .intentionLogSampleData) {
     @Previewable @State var focusedCategory: Category? = Category.sampleData[0]
     @Previewable @State var isEditing: Bool = true
-    let category = Category.sampleData[0]
+    let category = Category.sampleData[1]
     
     CategoryView(category: category, focusedCategory: $focusedCategory, isEditing: $isEditing)
 }

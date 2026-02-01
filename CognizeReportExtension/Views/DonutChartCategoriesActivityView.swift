@@ -106,5 +106,6 @@ struct DonutChartCategoriesActivityView: View {
 
 
 #Preview {
-//    DonutChartCategoriesActivityView()
+    
+//    DonutChartCategoriesActivityView(activity: <#T##CategoriesActivityView.Configuration#>)
 }

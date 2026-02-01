@@ -130,6 +130,9 @@
 				Shared/Models/RestrictionStrategies/RestrictionConfiguration.swift,
 				Shared/Models/RestrictionStrategies/RestrictionStrategy.swift,
 				Shared/Models/RestrictionStrategies/Shield/ShieldRestriction.swift,
+				"Shared/Preview Content/AppsActivityViewConfiguration+Sample.swift",
+				"Shared/Preview Content/CategoriesActivityViewConfiguration+Sample.swift",
+				"Shared/Preview Content/Category+Sample.swift",
 				Shared/Services/HapticsEngine.swift,
 				Shared/Services/NotificationManager.swift,
 			);
@@ -153,6 +156,18 @@
 				Shared/Services/NotificationManager.swift,
 			);
 			target = D83E29CE2E2A6FBB006BECC2 /* CognizeMonitor */;
+		};
+		D8F754732F2FC89E00580619 /* Exceptions for "CognizeReportExtension" folder in "Cognize" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppsActivityReport.swift,
+				CategoriesActivityReport.swift,
+				Views/AppsActivityView.swift,
+				Views/CategoriesActivityView.swift,
+				Views/DonutChartAppsActivityView.swift,
+				Views/DonutChartCategoriesActivityView.swift,
+			);
+			target = D842935E2E27A65C00062B39 /* Cognize */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -193,6 +208,7 @@
 		D8EEDE842E2F998100EB3DF6 /* CognizeReportExtension */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				D8F754732F2FC89E00580619 /* Exceptions for "CognizeReportExtension" folder in "Cognize" target */,
 				D8EEDE902E2F998100EB3DF6 /* Exceptions for "CognizeReportExtension" folder in "CognizeReportExtension" target */,
 			);
 			path = CognizeReportExtension;

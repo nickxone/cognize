@@ -26,5 +26,6 @@ struct AppsActivityView: View {
 // members of your app's Xcode target as well as members of your extension's target. You can use
 // Xcode's File Inspector to modify a file's Target Membership.
 #Preview {
-    //    TotalActivityView(totalActivity: "1h 23m")
+    let config = AppsActivityView.Configuration.sampleData[0]
+    AppsActivityView(totalActivity: config)
 }

@@ -122,5 +122,5 @@ struct DonutChartAppsActivityView: View {
 }
 
 #Preview {
-    //    DonutChartView()
+//        DonutChartView()
 }

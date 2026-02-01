@@ -20,5 +20,6 @@ struct CategoriesActivityView: View {
 }
 
 #Preview {
-    //    CategoriesActivityView()
+    let config = CategoriesActivityView.Configuration.sampleData[0]
+    CategoriesActivityView(totalActivity: config)
 }
